@@ -1,0 +1,17 @@
+package com.mobydick.hms;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+// 메인화면 이동용 컨트롤러
+@Controller
+public class HomeController {
+
+    @GetMapping("/")
+    public String main() {
+
+        return "index";
+
+    }
+
+} // class 끝

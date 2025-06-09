@@ -1,0 +1,71 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '3.3.12'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.mobydick'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+	// Spring MVC, REST, 내장 톰캣 포함 (기본 웹 기능 제공)
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// MyBatis + Spring 연동 자동 설정 (MyBatis 매퍼 사용)
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+
+	// Lombok: @Getter, @Setter 등 코드 자동 생성
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// 개발 중 자동 리시작, 캐시 무효화 등 개발 편의 기능
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Oracle DB 드라이버 (Oracle JDBC 연결에 필요)
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+
+	// 내장 톰캣을 "WAR 배포용"으로 설정 (bootRun은 가능, 배포 시 provided로 설정됨)
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	// Spring Boot 테스트 관련 의존성 (MockMvc, 테스트 util 포함)
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// MyBatis 전용 테스트 지원 (MyBatis 테스트 전용 설정/도구)
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+
+	// JUnit Platform 런처 (IDE나 Gradle에서 테스트 구동용)
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// JSP 컴파일을 위한 Jasper 엔진 (JSP가 HTML로 변환되도록)
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+	// JSTL API (JSP에서 <c:forEach> 등 태그 사용 가능하게 해줌 - Jakarta 네임스페이스)
+	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+
+	// JSTL 구현체 (Glassfish에서 제공 - 위 API를 실제 동작 가능하게)
+	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+
+	implementation 'commons-io:commons-io:2.11.0'  // 또는 최신 버전
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
