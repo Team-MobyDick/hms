@@ -1,4 +1,4 @@
-package com.mobydick.hms.announcement.vo;
+package com.mobydick.hms.notice.vo;
 
 import lombok.Data;
 

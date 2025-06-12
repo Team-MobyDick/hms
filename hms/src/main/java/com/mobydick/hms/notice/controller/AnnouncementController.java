@@ -1,4 +1,4 @@
-package com.mobydick.hms.announcement.controller;
+package com.mobydick.hms.notice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ public class AnnouncementController {
     @GetMapping("/list")
     public String main(Model model) {
 
-        model.addAttribute("bodyPage", "announcement/announcement.jsp");
+        model.addAttribute("bodyPage", "notice/notice.jsp");
         return "index";
 
     }

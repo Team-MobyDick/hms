@@ -1,4 +1,4 @@
-package com.mobydick.hms.announcement.service;
+package com.mobydick.hms.notice.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.mobydick.hms.announcement.dao;
+package com.mobydick.hms.notice.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 
