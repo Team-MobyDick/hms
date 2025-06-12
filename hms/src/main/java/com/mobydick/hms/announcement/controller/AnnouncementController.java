@@ -1,8 +1,21 @@
 package com.mobydick.hms.announcement.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 // 공지사항 컨트롤러
 @Controller
+@RequestMapping("/anno")
 public class AnnouncementController {
+
+    @GetMapping("/list")
+    public String main(Model model) {
+
+        model.addAttribute("bodyPage", "announcement/announcement.jsp");
+        return "index";
+
+    }
+
 }
