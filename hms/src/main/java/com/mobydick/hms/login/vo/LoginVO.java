@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.sql.Date;
 
-// 로그인 데이터 저장용 객체
+// 로그인 시 사용자 정보를 담는 VO
 @Data
 public class LoginVO {
 

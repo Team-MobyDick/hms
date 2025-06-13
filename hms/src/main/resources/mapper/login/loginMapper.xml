@@ -25,8 +25,8 @@
         FROM TB_EMPL
         ]]>
         <where>
-            <if test="empl_id != null and empl_id != ''">
-                EMPL_ID = #{empl_id}
+            <if test="emplId != null and emplId != ''">
+                EMPL_ID = #{emplId}
             </if>
         </where>
     </select>

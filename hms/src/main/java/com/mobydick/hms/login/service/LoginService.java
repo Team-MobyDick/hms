@@ -5,7 +5,7 @@ import com.mobydick.hms.login.vo.LoginVO;
 // 로그인 서비스 인터페이스
 public interface LoginService {
 
-    // 로그인 유저 정보
-    LoginVO selectEmployeeById(String empl_id) throws Exception;
+    // 직원 ID로 로그인 사용자 정보 조회
+    LoginVO selectEmployeeById(String emplId) throws Exception;
     
 }

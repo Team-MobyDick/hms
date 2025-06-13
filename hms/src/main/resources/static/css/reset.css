@@ -1,0 +1,14 @@
+/* 공통 바디 스타일 */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* 반응형: 작은 화면에서 폰트 크기 줄이기 */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}

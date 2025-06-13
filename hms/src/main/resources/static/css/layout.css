@@ -1,0 +1,46 @@
+/* 컨테이너, 메인 콘텐츠 스타일 */
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1em;
+  transition: all 0.3s ease;
+}
+
+.main-content.expanded {
+  margin-left: 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border-top: 1px solid #888;
+  padding: 0.5em 1em;
+  font-size: 0.9em;
+}
+
+/* 반응형: 레이아웃 수직 전환, 푸터 줄이기 */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    width: 100%;
+    margin-left: 0;
+    padding: 0.8em;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5em;
+    font-size: 0.8em;
+  }
+}

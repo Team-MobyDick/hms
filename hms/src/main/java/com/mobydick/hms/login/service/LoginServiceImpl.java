@@ -11,14 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class LoginServiceImpl implements LoginService{
 
 
+    // LoginDAO 주입
     @Autowired
     private LoginDAO loginDAO;
 
+    // 직원 ID로 로그인 사용자 정보 조회
     @Override
-    public LoginVO selectEmployeeById(String empl_id) throws Exception{
+    public LoginVO selectEmployeeById(String emplId) throws Exception{
 
-        System.out.println("service emplId = " + empl_id);
-       return loginDAO.selectEmployeeById(empl_id);
+       return loginDAO.selectEmployeeById(emplId);
+
     }
 
 }

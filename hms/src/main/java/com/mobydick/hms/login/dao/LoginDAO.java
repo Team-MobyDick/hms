@@ -8,7 +8,7 @@ import org.springframework.dao.DataAccessException;
 @Mapper
 public interface LoginDAO {
 
-    // 로그인 유저 정보
-    LoginVO selectEmployeeById(String empl_id) throws DataAccessException;
+    // 직원 ID로 로그인 사용자 정보 조회
+    LoginVO selectEmployeeById(String emplId) throws DataAccessException;
 
 }

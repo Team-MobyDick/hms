@@ -1,0 +1,38 @@
+/* 헤더 관련 스타일 */
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #888;
+  padding: 0 1em;
+}
+
+.menu-icon {
+  font-size: 1.5em;
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+.screen-title {
+  font-size: 1.2em;
+}
+
+/* 반응형: 타이틀 크기, 메뉴 아이콘 크기 조절 */
+@media screen and (max-width: 768px) {
+  .header {
+    height: 45px;
+    padding: 0 0.5em;
+  }
+
+  .menu-icon {
+    font-size: 1.2em;
+    margin-right: 0.5em;
+  }
+
+  .screen-title {
+    font-size: 1em;
+  }
+}
+

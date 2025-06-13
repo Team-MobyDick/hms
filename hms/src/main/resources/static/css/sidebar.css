@@ -1,0 +1,71 @@
+/* 사이드바 관련 스타일 */
+
+.sidebar {
+  width: 150px;
+  background-color: #e0e0e0;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #888;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 1em;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  background-color: #d0d0d0;
+}
+
+.user-name {
+  margin-top: auto;
+  padding: 1em;
+  font-weight: bold;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar.collapsed ul,
+.sidebar.collapsed .user-name {
+  display: none;
+}
+
+/* 반응형: 사이드바 위치 변경 및 숨김 처리 */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    z-index: 1000;
+    top: 50px; /* header 높이 */
+    left: 0;
+    width: 150px;
+    height: 100%;
+    background-color: #e0e0e0;
+    border-right: 1px solid #888;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+
+  .sidebar ul li {
+    padding: 0.8em;
+    font-size: 0.9em;
+  }
+
+  .user-name {
+    font-size: 0.9em;
+  }
+}

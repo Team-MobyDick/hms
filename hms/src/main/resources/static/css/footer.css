@@ -1,0 +1,22 @@
+/* 푸터 스타일 */
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border-top: 1px solid #888;
+  padding: 0.5em 1em;
+  font-size: 0.9em;
+}
+
+/* 반응형: 768px 이하일 때 세로 정렬 + 여백 조정 */
+@media screen and (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3em;
+    padding: 0.8em 1em;
+    font-size: 0.8em;
+  }
+}
