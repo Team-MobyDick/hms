@@ -68,37 +68,40 @@
 </head>
 <body>
 
-  <!-- 헤더 include -->
-  <jsp:include page="include/header.jsp" />
+      <c:if test="${not empty userId}">
 
-  <div class="container">
-    <!-- 사이드바 include -->
-    <jsp:include page="include/sidebar.jsp" />
+        <jsp:include page="include/header.jsp" />
 
-    <!-- 본문 -->
-    <div class="main-content" id="mainContent">
-      <jsp:include page="${bodyPage}" />
-    </div>
-  </div>
+        <div class="container">
+          <jsp:include page="include/sidebar.jsp" />
 
-  <!-- 푸터 include -->
-  <jsp:include page="include/footer.jsp" />
+          <div class="main-content" id="mainContent">
+            <jsp:include page="${bodyPage}" />
+          </div>
+        </div>
 
-<script>
-  window.addEventListener("DOMContentLoaded", function () {
-    const toggleBtn = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
+        <jsp:include page="include/footer.jsp" />
 
-    if (toggleBtn && sidebar && mainContent) {
-      toggleBtn.addEventListener('click', function () {
-        sidebar.classList.toggle('collapsed');
-        mainContent.classList.toggle('expanded');
-      });
-    } else {
-      console.warn("엘리먼트를 찾을 수 없습니다.");
-    }
-  });
-</script>
+        <script>
+          window.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            if (toggleBtn && sidebar && mainContent) {
+              toggleBtn.addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+              });
+            } else {
+              console.warn("엘리먼트를 찾을 수 없습니다.");
+            }
+          });
+        </script>
+      </c:if>
+
+      <c:if test="${empty sessionScope.loginUser}">
+        <jsp:include page="login/login.jsp" />
+      </c:if>
 </body>
 </html>

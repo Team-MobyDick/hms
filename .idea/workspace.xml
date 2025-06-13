@@ -6,18 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="19384fe3-11a7-452d-b34e-4aa5c2e25d5f" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/announcement/controller/AnnouncementController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/notice/controller/AnnouncementController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/announcement/dao/AnnouncementDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/notice/dao/AnnouncementDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/announcement/service/AnnouncementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/notice/service/AnnouncementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/announcement/service/AnnouncementServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/notice/service/AnnouncementServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/announcement/vo/AnnouncementVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/notice/vo/AnnouncementVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/work/dao/WorkDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/work/dao/WorkDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/work/service/WorkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/work/service/WorkService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/work/service/WorkServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/work/service/WorkServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/work/vo/WorkVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/work/vo/WorkVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/resources/mapper/announcement/announcement.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/resources/mapper/notice/notice.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/resources/mapper/work/work.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/resources/mapper/work/work.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hms/src/main/webapp/WEB-INF/views/announcement/announcement.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/webapp/WEB-INF/views/notice/notice.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/HmsApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/HmsApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/dao/LoginDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/dao/LoginDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/service/LoginService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/service/LoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/service/LoginServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/vo/LoginVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/java/com/mobydick/hms/login/vo/LoginVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/resources/mapper/login/login.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/webapp/WEB-INF/views/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/webapp/WEB-INF/views/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hms/src/main/webapp/WEB-INF/views/login/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hms/src/main/webapp/WEB-INF/views/login/login.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,28 +114,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.hms [bootRun].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ssqod/Desktop/git/workspace/mobydick/hms/hms/src/main/webapp/WEB-INF/views/work&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;모듈&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.hms [bootRun].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/ssqod/Desktop/git/workspace/mobydick/hms/hms/src/main/sql",
+    "project.structure.last.edited": "모듈",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ssqod\Desktop\git\workspace\mobydick\hms\hms\src\main\sql" />
       <recent name="C:\Users\ssqod\Desktop\git\workspace\mobydick\hms\hms\src\main\webapp\WEB-INF\views\work" />
       <recent name="C:\Users\ssqod\Desktop\git\workspace\mobydick\hms\hms\src\main\webapp\WEB-INF\views\login" />
       <recent name="C:\Users\ssqod\Desktop\git\workspace\mobydick\hms\hms\src\main\webapp\WEB-INF\views\include" />
       <recent name="C:\Users\ssqod\Desktop\git\workspace\mobydick\hms\hms\src\main\webapp\WEB-INF\views\employee" />
-      <recent name="C:\Users\ssqod\Desktop\git\workspace\mobydick\hms\hms\src\main\webapp\WEB-INF\views\common" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\ssqod\Desktop\git\workspace\mobydick\hms\hms\src\main\webapp\WEB-INF\views\room" />
@@ -204,5 +203,15 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="[add] 소스 리스트 추가 2025/06/10 @0.5h" />
     <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.apache.ibatis.binding.BindingException" package="org.apache.ibatis.binding" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

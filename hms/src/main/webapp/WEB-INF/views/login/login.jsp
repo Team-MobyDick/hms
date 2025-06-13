@@ -8,12 +8,14 @@
 <body>
     <h1>login</h1>
 
-    <form>
+    <form action="/login/login" method="POST">
 
-        <label>ID</label><br>
-        <input type = "text"></input>
-        <button type = "login">로그인</button>
+        <label for="empl_id">ID</label><br>
+        <input type="text" id="empl_id" name="empl_id"><br><br>
+
+        <button type="submit">로그인</button>
 
     </form>
+
 </body>
 </html>
