@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobydick.hms.room.dao.RoomDAO">
+
+    <!-- 전체 객실 정보 -->
+    <select id="selectAllRooms" resultType="com.mobydick.hms.room.vo.RoomVO">
+        <![CDATA[
+        SELECT
+            ROOM_ID,
+            ROOM_NUMBER,
+            ROOM_CLASS,
+            RESERV_DATE,
+            CREATED_DATE,
+            CREATED_ID,
+            UPDATED_DATE,
+            UPDATED_ID
+        FROM TB_ROOM
+        ]]>
+    </select>
+
+</mapper>
