@@ -25,7 +25,7 @@
         FROM TB_EMPL
         ]]>
         <where>
-            <if test="emplId != null and emplId != ''">
+            <if test="empl_id != null and empl_id != ''">
                 EMPL_ID = #{empl_id}
             </if>
         </where>

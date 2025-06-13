@@ -68,7 +68,7 @@
 </head>
 <body>
 
-      <c:if test="${not empty userId}">
+      <c:if test="${not empty sessionScope.loginUser}">
 
         <jsp:include page="include/header.jsp" />
 

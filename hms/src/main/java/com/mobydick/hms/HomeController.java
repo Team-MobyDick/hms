@@ -11,6 +11,7 @@ public class HomeController {
     @GetMapping("/")
     public String main(Model model) {
 
+        model.addAttribute("screenTitle", "대시보드");
         model.addAttribute("bodyPage", "common/common.jsp");
         return "index";
 

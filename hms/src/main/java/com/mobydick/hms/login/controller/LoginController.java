@@ -25,16 +25,16 @@ public class LoginController {
                        HttpSession session) throws Exception {
         System.out.println("emplId = " + empl_id);
 
-        LoginVO loginUser = loginService.selectEmployeeById("'" + empl_id + "'");
+        LoginVO loginUser = loginService.selectEmployeeById(empl_id);
 
         System.out.println("loginUser = " + loginUser);
 
         if (loginUser != null) {
-            System.out.println("test1");
             session.setAttribute("loginUser", loginUser);
-            model.addAttribute("bodyPage", "index");
+            model.addAttribute("screenTitle", "대시보드");
+            model.addAttribute("bodyPage", "common/common.jsp");
+            return "redirect:/";
         } else {
-            System.out.println("test2");
             model.addAttribute("error", "존재하지 않는 사용자입니다.");
             model.addAttribute("bodyPage", "login/login.jsp");
         }
