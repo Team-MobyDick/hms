@@ -3,8 +3,8 @@ package com.mobydick.hms.notice.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-// 서비스 인터페이스 구현 객체
+// 공지사항 서비스 구현 객체
 @Service
 @Transactional
-public class AnnouncementServiceImpl implements AnnouncementService {
+public class NoticeServiceImpl implements NoticeService{
 }
