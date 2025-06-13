@@ -64,6 +64,8 @@ dependencies {
 	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 
 	implementation 'commons-io:commons-io:2.11.0'  // 또는 최신 버전
+
+	runtimeOnly 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
 }
 
 tasks.named('test') {
