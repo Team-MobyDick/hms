@@ -45,7 +45,7 @@ public class EmployeeController {
     // 신규 직원 저장
     @PostMapping("/employee/save")
     public String saveEmployee(@ModelAttribute EmployeeVO employee) {
-        employee.setCreatedId("admin"); // 실제 로그인 사용자 ID로 변경 권장
+        employee.setCreatedId("admin");
         employee.setUpdatedId("admin");
         employeeService.insertEmployee(employee);
         return "redirect:/employee/list";
