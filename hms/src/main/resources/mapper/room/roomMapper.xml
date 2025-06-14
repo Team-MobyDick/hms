@@ -19,7 +19,55 @@
             UPDATED_DATE,
             UPDATED_ID
         FROM TB_ROOM
+         ORDER BY ROOM_NUMBER
         ]]>
     </select>
+
+    <!-- 객실 추가 -->
+    <insert id="insertRoom" parameterType="com.mobydick.hms.room.vo.RoomVO">
+        INSERT INTO TB_ROOM (
+                        ROOM_ID,
+                        ROOM_NUMBER,
+                        ROOM_CLASS,
+                        RESERV_DATE,
+                        CREATED_DATE,
+                        CREATED_ID,
+                        UPDATED_DATE,
+                        UPDATED_ID
+        ) VALUES (
+                    #{roomId},
+                    #{roomNumber},
+                    #{roomClass},
+                    #{reservDate},
+                    SYSDATE,
+                    #{createdId},
+                    SYSDATE,
+                    #{updatedId}
+        )
+    </insert>
+
+    <!-- 객실 타입 조회 -->
+    <select id="getRoomTypeAndName"  resultType="map">
+        SELECT
+            CODE_ID,
+            CODE_NAME
+        FROM
+            TB_CODE
+        WHERE
+            CODE_ID LIKE 'TP%'
+        ORDER BY CODE_ID
+    </select>
+
+    <!-- 객실 정보 수정 -->
+    <update id="updateRoom">
+        UPDATE TB_ROOM
+            SET
+        ROOM_NUMBER = #{roomNumber},
+        ROOM_CLASS = #{roomClass},
+        RESERV_DATE = #{reservDate},
+        UPDATED_DATE = SYSDATE,
+        UPDATED_ID = #{updatedId}
+        WHERE ROOM_ID = #{roomId}
+    </update>
 
 </mapper>
