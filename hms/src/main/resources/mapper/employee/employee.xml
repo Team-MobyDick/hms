@@ -5,7 +5,9 @@
 
 <mapper namespace="com.mobydick.hms.employee.dao.EmployeeDAO">
 
+    <!-- 전체 직원 조회 -->
     <select id="selectAllEmployees" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
+        <![CDATA[
         SELECT
             EMPL_ID,
             EMPL_NAME,
@@ -20,68 +22,7 @@
             UPDATED_DATE,
             UPDATED_ID
         FROM TB_EMPL
+        ]]>
     </select>
-
-    <select id="selectEmployeeById" parameterType="String" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
-        SELECT
-            EMPL_ID,
-            EMPL_NAME,
-            EMPL_PHONE,
-            EMPL_DEPT,
-            EMPL_GRADE,
-            EMPL_NOTES,
-            CREATED_DATE,
-            CREATED_ID,
-            UPDATED_DATE,
-            UPDATED_ID
-        FROM
-            TB_EMPL
-        WHERE
-            EMPL_ID = #{emplId}
-    </select>
-
-    <insert id="insertEmployee" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
-        INSERT INTO TB_EMPL (
-        EMPL_ID,
-        EMPL_NAME,
-        EMPL_PHONE,
-        EMPL_DEPT,
-        EMPL_GRADE,
-        PHOTO_NAME,
-        PHOTO_PATH,
-        EMPL_NOTES,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
-        ) VALUES (
-        #{emplId},
-        #{emplName},
-        #{emplPhone},
-        #{emplDept},
-        #{emplGrade},
-        #{photoName},
-        #{photoPath},
-        #{emplNotes},
-        SYSDATE,
-        #{createdId},
-        SYSDATE,
-        #{updatedId}
-        )
-    </insert>
-
-    <update id="updateEmployee" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
-        UPDATE TB_EMPL
-        SET EMPL_NAME = #{emplName},
-            EMPL_PHONE = #{emplPhone},
-            EMPL_DEPT = #{emplDept},
-            EMPL_GRADE = #{emplGrade},
-            PHOTO_NAME = #{photoName},
-            PHOTO_PATH = #{photoPath},
-            EMPL_NOTES = #{emplNotes},
-            UPDATED_DATE = SYSDATE,
-            UPDATED_ID = #{updatedId}
-        WHERE EMPL_ID = #{emplId}
-    </update>
 
 </mapper>

@@ -8,32 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-// 직원관리 서비스 구현 객체
 @Service
 @Transactional
-public class EmployeeServiceImpl implements  EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
-    EmployeeDAO employeeDAO;
+    private EmployeeDAO employeeDAO;
 
     @Override
-    public List<EmployeeVO> getAllEmployees() {
+    public List<EmployeeVO> selectAllEmployees() throws Exception {
         return employeeDAO.selectAllEmployees();
     }
-
-    @Override
-    public void insertEmployee(EmployeeVO employee) {
-        employeeDAO.insertEmployee(employee);
-    }
-
-    @Override
-    public EmployeeVO getEmployeeById(String emplId) {
-        return employeeDAO.selectEmployeeById(emplId);
-    }
-
-    @Override
-    public void updateEmployee(EmployeeVO employee) {
-        employeeDAO.updateEmployee(employee);
-    }
-
 }

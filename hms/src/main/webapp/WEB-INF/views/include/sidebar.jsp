@@ -17,7 +17,7 @@
             <c:if test="${grade == 'GR_01' || grade == 'GR_02'}">
                 <li onclick="location.href='${pageContext.request.contextPath}/room/list'">객실관리</li>
                 <li onclick="location.href='${pageContext.request.contextPath}/'">업무관리</li>
-                <li onclick="location.href='${pageContext.request.contextPath}/'">직원관리</li>
+                <li onclick="location.href='${pageContext.request.contextPath}/employee/list'">직원관리</li>
             </c:if>
 
             <li onclick="location.href='${pageContext.request.contextPath}/'">스케줄</li>

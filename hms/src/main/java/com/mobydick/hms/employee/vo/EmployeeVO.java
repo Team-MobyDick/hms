@@ -1,16 +1,11 @@
 package com.mobydick.hms.employee.vo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.Data;
+
 import java.sql.Date;
 
-// 직원관리 데이터 저장용 객체
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class EmployeeVO {
-
     private String emplId;
     private String emplName;
     private String emplPhone;
@@ -23,5 +18,4 @@ public class EmployeeVO {
     private String createdId;
     private Date updatedDate;
     private String updatedId;
-
 }
