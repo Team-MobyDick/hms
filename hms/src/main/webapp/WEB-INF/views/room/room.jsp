@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/room.css"/>
     </head>
 
-    <body>
+    <body data-role="${userRole}">
 
         <h2>객실 관리</h2>
 
@@ -36,7 +36,13 @@
                             <tr class="room-row"
                                 data-room="${room.roomNumber}"
                                 data-type="${room.roomClass}"
-                                data-reserve="${room.reservDate}">
+                                data-room-id="${room.roomId}"
+                                data-reserve="${room.reservDate}"
+                                data-createdDate="${room.createdDate}"
+                                data-createdId="${room.createdId}"
+                                data-updatedDate="${room.updatedDate}"
+                                data-updatedId="${room.updatedId}"
+                                >
                                 <td data-label="객실 번호">${room.roomNumber}</td>
                                 <td data-label="객실 종류">
                                    <c:choose>
@@ -83,7 +89,13 @@
                 </tr>
                 <tr>
                     <td><input type="text" name="roomNum" placeholder="번호"></td>
-                    <td><input type="text" name="roomType" placeholder="객실 종류"></td>
+                    <td>
+                        <select name="roomType" id="roomType">
+                            <c:forEach var="entry" items="${roomTypeMap}">
+                                <option value="${entry.key}">${entry.value}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
                     <td><input type="text" name="res" placeholder="예약 상태"></td>
                     <td><input type="text" name="date" placeholder="청소 상태"></td>
                     <td>
