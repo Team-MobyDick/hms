@@ -44,3 +44,29 @@
     font-size: 0.8em;
   }
 }
+
+/* 페이지징 처리 */
+.pagination {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.page-link {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 0 4px;
+  background-color: #eee;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.page-link.active {
+  background-color: #4CAF50;
+  color: #fff;
+  font-weight: bold;
+}
+
+.page-link:hover {
+  background-color: #ddd;
+}
