@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,18 @@ public class RoomController {
         // 페이지 범위 처리 (1페이지 ~ totalPages 페이지까지)
         int startIndex = (page - 1) * pageSize;
         List<RoomVO> roomList = roomService.selectAllRooms().subList(startIndex, Math.min(startIndex + pageSize, totalCount));
+        List<RoomVO> roomWithDetails = roomService.selectRoomsWithWorkDetails(); // 업무 디테일 포함된 객실 리스트
+
+        for (RoomVO room : roomList) {
+            for (RoomVO roomDetail : roomWithDetails) {
+                if (room.getRoomId().equals(roomDetail.getRoomId())) {
+                    room.setEmplId(roomDetail.getEmplId());
+                    room.setCleanState(roomDetail.getCleanState());
+                    room.setExtraInfo(roomDetail.getExtraInfo());
+                    break;
+                }
+            }
+        }
 
         List<RoomVO> roomTypeList = roomService.getRoomTypeAndName();  // 객실 타입 목록
 
@@ -87,14 +100,26 @@ public class RoomController {
     @PutMapping("/update/{roomId}")
     public ResponseEntity<String> updateRoom(@PathVariable String roomId, @RequestBody RoomVO updatedRoom, HttpSession session) {
         try {
+
             String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
-            if (loginUserId == null) loginUserId = "UNKNOWN";
+            if (loginUserId == null) {
+
+                loginUserId = "UNKNOWN";
+
+            }
 
             RoomVO original = roomService.selectRoomById(roomId);
             if (original == null) return ResponseEntity.notFound().build();
 
             updatedRoom.setRoomId(roomId);
             updatedRoom.setUpdatedId(loginUserId);
+
+            if ("Yes".equals(updatedRoom.getReservDate())) {
+                updatedRoom.setReservDate("Yes");
+            } else {
+                updatedRoom.setReservDate("No");
+            }
+
             roomService.updateRoom(updatedRoom);
             return ResponseEntity.ok("success");
 

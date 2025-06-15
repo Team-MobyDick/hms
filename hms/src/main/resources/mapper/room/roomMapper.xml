@@ -8,17 +8,49 @@
     <!-- 전체 객실 조회 -->
     <select id="selectAllRooms" resultType="com.mobydick.hms.room.vo.RoomVO">
         <![CDATA[
-        SELECT
-            ROOM_ID,
-            ROOM_NUMBER,
-            ROOM_CLASS,
-            RESERV_DATE,
-            CREATED_DATE,
-            CREATED_ID,
-            UPDATED_DATE,
-            UPDATED_ID
-        FROM TB_ROOM
-        ORDER BY ROOM_NUMBER
+                SELECT
+                    A.ROOM_ID,
+                    A.ROOM_NUMBER,
+                    A.ROOM_CLASS,
+                    A.RESERV_DATE,
+                    A.CREATED_DATE,
+                    A.CREATED_ID,
+                    A.UPDATED_DATE,
+                    A.UPDATED_ID
+                FROM
+                    TB_ROOM A
+                ORDER BY A.ROOM_NUMBER
+        ]]>
+    </select>
+
+    <!-- 객실 정보와 업무 디테일을 조인 -->
+    <select id="selectRoomsWithWorkDetails" resultType="com.mobydick.hms.room.vo.RoomVO">
+        <![CDATA[
+                SELECT
+                    A.ROOM_ID,
+                    A.ROOM_NUMBER,
+                    A.ROOM_CLASS,
+                    A.RESERV_DATE,
+                    A.CREATED_DATE,
+                    A.CREATED_ID,
+                    A.UPDATED_DATE,
+                    A.UPDATED_ID,
+                    B.EMPL_ID,
+                    B.WORKD_CONTEXT AS CLEAN_STATE,
+                    B.WORKD_EXTRA AS EXTRA_INFO,
+                    C.EMPL_NAME AS EMPL_NAME
+                FROM
+                    TB_ROOM A
+                LEFT JOIN
+                    TB_WORK_D B
+                        ON A.ROOM_ID = B.ROOM_ID
+                LEFT JOIN
+                    TB_EMPL C
+                       ON B.EMPL_ID = C.EMPL_ID
+                WHERE
+                    B.ROOM_ID IS NOT NULL
+                ORDER BY
+                    A.ROOM_NUMBER
         ]]>
     </select>
 
@@ -36,8 +68,8 @@
         ) VALUES (
         #{roomId},
         #{roomNumber},
-        #{roomClass},
-        #{reservDate},
+        #{roomClass, jdbcType=VARCHAR},
+        #{reservDate, jdbcType=VARCHAR},
         SYSDATE,
         #{createdId},
         SYSDATE,
@@ -61,7 +93,7 @@
         SET
         ROOM_NUMBER = #{roomNumber},
         ROOM_CLASS = #{roomClass, jdbcType=VARCHAR},
-        RESERV_DATE = #{reservDate},
+        RESERV_DATE = #{reservDate, jdbcType=VARCHAR},
         UPDATED_DATE = SYSDATE,
         UPDATED_ID = #{updatedId}
         WHERE ROOM_ID = #{roomId}

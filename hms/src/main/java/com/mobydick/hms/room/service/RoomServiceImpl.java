@@ -51,4 +51,10 @@ public class RoomServiceImpl implements RoomService {
     public void deleteRoom(String roomId) {
         roomDAO.deleteRoom(roomId);
     }
+
+    // 청소 상태, 특이 사항, 담당자 조회
+    @Override
+    public List<RoomVO> selectRoomsWithWorkDetails() {
+        return roomDAO.selectRoomsWithWorkDetails();
+    }
 }

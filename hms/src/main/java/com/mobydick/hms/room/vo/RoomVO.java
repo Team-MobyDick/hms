@@ -22,4 +22,11 @@ public class RoomVO {
     // 객실 등급 코드 정보 (조인용)
     private String codeId;         // 객실 타입 코드
     private String codeName;       // 객실 타입 이름
+
+    // 업무 디테일 정보 (업무 관련)
+    private String emplId;         // 담당자 ID
+    private String cleanState;     // 청소 상태
+    private String extraInfo;      // 특이사항
+    private String emplName;      // 담당자 이름
+
 }

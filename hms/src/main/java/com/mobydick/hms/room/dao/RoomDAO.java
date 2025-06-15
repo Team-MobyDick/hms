@@ -26,4 +26,8 @@ public interface RoomDAO {
 
     // 객실 삭제
     void deleteRoom(String roomId) throws DataAccessException;
+    
+    // 청소 상태, 특이 사항, 담당자 조회
+    List<RoomVO> selectRoomsWithWorkDetails() throws DataAccessException;
+    
 }
