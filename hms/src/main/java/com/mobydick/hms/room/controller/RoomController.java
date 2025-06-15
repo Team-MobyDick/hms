@@ -11,10 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
-// 객실관리 컨트롤러
+// 객실 관리 컨트롤러
 @Controller
 @RequestMapping("/room")
 public class RoomController {
@@ -22,79 +22,98 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
+    // 객실 목록 페이지
     @GetMapping("/list")
-    public String room(Model model) throws Exception {
+    public String room(Model model, @RequestParam(defaultValue = "1") int page) throws Exception {
 
-        // DB에서 객실 정보 조회
-        List<RoomVO> roomList = roomService.selectAllRooms();
+        int pageSize = 10; // 페이지당 항목 수
+        int totalCount = roomService.selectAllRooms().size(); // 전체 객실 수
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수 계산
 
-        model.addAttribute("roomList", roomList);
+        // 페이지 범위 처리 (1페이지 ~ totalPages 페이지까지)
+        int startIndex = (page - 1) * pageSize;
+        List<RoomVO> roomList = roomService.selectAllRooms().subList(startIndex, Math.min(startIndex + pageSize, totalCount));
+
+        List<RoomVO> roomTypeList = roomService.getRoomTypeAndName();  // 객실 타입 목록
+
+        // 타입 맵 (코드ID → 코드명) 생성
+        Map<String, String> roomTypeMap = roomTypeList.stream()
+                .collect(Collectors.toMap(RoomVO::getCodeId, RoomVO::getCodeName, (v1, v2) -> v1, LinkedHashMap::new));
+
+        model.addAttribute("screenTitle", "객실 관리");
+        model.addAttribute("currentPage", page);                        // 현재 페이지
+        model.addAttribute("totalPages", totalPages);                   // 전체 페이지 수
+        model.addAttribute("roomTypeMap", roomTypeMap);
+        model.addAttribute("roomTypeList", roomTypeList);
+        model.addAttribute("roomList", roomList);                       // 현재 페이지에 해당하는 객실 목록
         model.addAttribute("bodyPage", "room/room.jsp");
 
         return "index";
-
     }
 
-    // 객실 추가
+    // 객실 등록
     @PostMapping("/add")
     public ResponseEntity<String> addRoom(@RequestBody RoomVO vo, HttpSession session) {
         try {
-
-            // 방 번호 랜덤 생성
-            Random random = new Random();
-            int randomNumber = random.nextInt(100000);
-            String roomId = "001" + String.format("%015d", randomNumber); 
-
-            // 로그인 유저 아이디 정보
+            // 방 ID 생성
+            String roomId = "001" + String.format("%015d", new Random().nextInt(100000));
             String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
 
-            // 객실 vo에 방 번호, 로그인 유저 전달
             vo.setRoomId(roomId);
             vo.setCreatedId(loginUserId);
             vo.setUpdatedId(loginUserId);
 
-            // 객실 추가
             roomService.insertRoom(vo);
-            
             return ResponseEntity.ok("success");
 
         } catch (Exception e) {
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
-
         }
     }
 
-    // 객실 타입을 반환하는 API (AJAX 호출 시 사용)
+    // 객실 타입 목록 (AJAX)
     @GetMapping("/types")
-    @ResponseBody  // 이 어노테이션을 추가하여 JSON 응답으로 반환
-    public Map<String, String> getRoomTypes() {
+    @ResponseBody
+    public List<RoomVO> getRoomTypes() {
         try {
-            // 객실 타입과 이름 조회
-            Map<String, String> roomTypeMap = roomService.getRoomTypeAndName();
-            return roomTypeMap;  // Map 형태로 반환되어 JSON으로 자동 변환됩니다.
+            return roomService.getRoomTypeAndName();
         } catch (Exception e) {
             e.printStackTrace();
-            return Collections.emptyMap();  // 오류 발생 시 빈 Map 반환
+            return Collections.emptyList();
         }
     }
 
     // 객실 정보 수정
     @PutMapping("/update/{roomId}")
-    public ResponseEntity<String> updateRoom(@PathVariable("roomId") String roomId, @RequestBody RoomVO updatedRoom, HttpSession session) {
-
+    public ResponseEntity<String> updateRoom(@PathVariable String roomId, @RequestBody RoomVO updatedRoom, HttpSession session) {
         try {
+            String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
+            if (loginUserId == null) loginUserId = "UNKNOWN";
 
-            System.out.println("updatedRoom = " + updatedRoom);
+            RoomVO original = roomService.selectRoomById(roomId);
+            if (original == null) return ResponseEntity.notFound().build();
 
-            // 서비스로 수정 요청을 전달
-            roomService.updateRoom(roomId, updatedRoom);
-
-            return ResponseEntity.ok("객실 정보 수정 성공");
+            updatedRoom.setRoomId(roomId);
+            updatedRoom.setUpdatedId(loginUserId);
+            roomService.updateRoom(updatedRoom);
+            return ResponseEntity.ok("success");
 
         } catch (Exception e) {
-            return ResponseEntity.status(400).body("수정 실패");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
         }
     }
 
+    // 객실 삭제
+    @DeleteMapping("/delete/{roomId}")
+    @ResponseBody
+    public ResponseEntity<String> deleteRoom(@PathVariable("roomId") String roomId) {
+        try {
+            roomService.deleteRoom(roomId);
+            return ResponseEntity.ok("삭제 완료");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패");
+        }
+    }
 }

@@ -6,16 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-// 객실관리 서비스 인터페이스 구현 객체
+// 객실 관리 서비스 구현체
 @Service
 @Transactional
-public class RoomServiceImpl implements RoomService{
+public class RoomServiceImpl implements RoomService {
 
-    // RoomDAO 주입
     @Autowired
     private RoomDAO roomDAO;
 
@@ -25,32 +22,33 @@ public class RoomServiceImpl implements RoomService{
         return roomDAO.selectAllRooms();
     }
 
-    // 객실 추가
+    // 객실 등록
     @Override
     public void insertRoom(RoomVO room) throws Exception {
         roomDAO.insertRoom(room);
     }
-    
-    // 객실 타입과 이름 조회
+
+    // 객실 타입 목록 조회
     @Override
-    public Map<String, String> getRoomTypeAndName() {
-
-        List<Map<String, String>> roomTypes = roomDAO.getRoomTypeAndName();
-        Map<String, String> roomTypeMap = new HashMap<>();
-
-        // 여러 결과를 Map으로 변환
-        for (Map<String, String> roomType : roomTypes) {
-            roomTypeMap.put(roomType.get("CODE_ID"), roomType.get("CODE_NAME"));
-        }
-        return roomTypeMap;
+    public List<RoomVO> getRoomTypeAndName() {
+        return roomDAO.getRoomTypeAndName();
     }
 
     // 객실 정보 수정
     @Override
-    public void updateRoom(String roomId, RoomVO updatedRoom) throws Exception {
-
-        roomDAO.updateRoom(roomId, updatedRoom);
-
+    public void updateRoom(RoomVO room) throws Exception {
+        roomDAO.updateRoom(room);
     }
 
+    // 객실 ID로 단건 조회
+    @Override
+    public RoomVO selectRoomById(String roomId) throws Exception {
+        return roomDAO.selectRoomById(roomId);
+    }
+
+    // 객실 삭제
+    @Override
+    public void deleteRoom(String roomId) {
+        roomDAO.deleteRoom(roomId);
+    }
 }

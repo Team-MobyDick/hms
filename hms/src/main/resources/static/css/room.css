@@ -1,9 +1,13 @@
-/* 객실 관리 스타일 */
+/* room.css - 객실 관리 전용 스타일 */
 
-h1 {
-  font-size: 28px;
+/* 제목 스타일 */
+h2 {
+  font-size: 24px;
+  margin: 20px 0;
+  text-align: center;
 }
 
+/* 테이블 레이아웃 */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -21,19 +25,13 @@ th {
   background-color: #f3f3f3;
 }
 
+/* 상세 폼 애니메이션 */
 .detail-slide .slide-content {
   padding: 15px;
   background: #f9f9f9;
   border: 1px solid #ccc;
   animation: slideDown 0.3s ease;
   text-align: left;
-}
-
-.action-btn {
-  margin: 5px;
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
 }
 
 @keyframes slideDown {
@@ -47,7 +45,40 @@ th {
   }
 }
 
-/* 반응형 추가 */
+/* 공통 버튼 스타일 */
+button,
+.action-btn,
+.update-btn,
+.delete-btn,
+.close-btn {
+  margin: 5px;
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover,
+.action-btn:hover,
+.update-btn:hover,
+.delete-btn:hover,
+.close-btn:hover {
+  background-color: #45a049;
+}
+
+/* 폼 input, select */
+input[type="text"],
+select {
+  width: 100%;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+/* 반응형 테이블 */
 @media screen and (max-width: 768px) {
   table,
   thead,
@@ -86,6 +117,7 @@ th {
     white-space: nowrap;
   }
 
+  button,
   .action-btn {
     display: block;
     width: 100%;
