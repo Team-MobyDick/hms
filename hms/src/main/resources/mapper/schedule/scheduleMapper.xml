@@ -5,86 +5,22 @@
 
 <mapper namespace="com.mobydick.hms.schedule.dao.ScheduleDAO">
 
-    <!-- 전체 객실 조회 -->
-    <select id="selectAllRooms" resultType="com.mobydick.hms.room.vo.RoomVO">
-        <![CDATA[
+    <!-- 전체 스케줄 조회 -->
+    <select id="selectAllschedule" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         SELECT
-            ROOM_ID,
-            ROOM_NUMBER,
-            ROOM_CLASS,
-            RESERV_DATE,
+            SCHE_ID,
+            SCHE_DATE,
+            EMPL_ID,
+            SCHE_SHIFT,
             CREATED_DATE,
             CREATED_ID,
             UPDATED_DATE,
             UPDATED_ID
-        FROM TB_ROOM
-        ORDER BY ROOM_NUMBER
-        ]]>
+        FROM
+            TB_SCHEDULE
     </select>
 
-    <!-- 객실 등록 -->
-    <insert id="insertRoom" parameterType="com.mobydick.hms.room.vo.RoomVO">
-        INSERT INTO TB_ROOM (
-        ROOM_ID,
-        ROOM_NUMBER,
-        ROOM_CLASS,
-        RESERV_DATE,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
-        ) VALUES (
-        #{roomId},
-        #{roomNumber},
-        #{roomClass},
-        #{reservDate},
-        SYSDATE,
-        #{createdId},
-        SYSDATE,
-        #{updatedId}
-        )
-    </insert>
 
-    <!-- 객실 타입 목록 조회 (TP 코드만) -->
-    <select id="getRoomTypeAndName" resultType="com.mobydick.hms.room.vo.RoomVO">
-        SELECT
-        CODE_ID AS codeId,
-        CODE_NAME AS codeName
-        FROM TB_CODE
-        WHERE CODE_ID LIKE 'TP%'
-        ORDER BY CODE_ID
-    </select>
 
-    <!-- 객실 정보 수정 -->
-    <update id="updateRoom" parameterType="map">
-        UPDATE TB_ROOM
-        SET
-        ROOM_NUMBER = #{roomNumber},
-        ROOM_CLASS = #{roomClass, jdbcType=VARCHAR},
-        RESERV_DATE = #{reservDate},
-        UPDATED_DATE = SYSDATE,
-        UPDATED_ID = #{updatedId}
-        WHERE ROOM_ID = #{roomId}
-    </update>
-
-    <!-- 객실 ID로 단건 조회 -->
-    <select id="selectRoomById" parameterType="string" resultType="com.mobydick.hms.room.vo.RoomVO">
-        SELECT
-        ROOM_ID,
-        ROOM_NUMBER,
-        ROOM_CLASS,
-        RESERV_DATE,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
-        FROM TB_ROOM
-        WHERE ROOM_ID = #{roomId}
-    </select>
-
-    <!-- 객실 삭제 -->
-    <delete id="deleteRoom" parameterType="string">
-        DELETE FROM TB_ROOM WHERE ROOM_ID = #{roomId}
-    </delete>
 
 </mapper>

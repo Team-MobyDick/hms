@@ -20,7 +20,7 @@
                 <li onclick="location.href='${pageContext.request.contextPath}/employee/list'">직원관리</li>
             </c:if>
 
-            <li onclick="location.href='${pageContext.request.contextPath}/'">스케줄</li>
+            <li onclick="location.href='${pageContext.request.contextPath}/schedule/list'">스케줄</li>
             <li onclick="location.href='${pageContext.request.contextPath}/anno/list'">공지사항</li>
 
           </ul>
