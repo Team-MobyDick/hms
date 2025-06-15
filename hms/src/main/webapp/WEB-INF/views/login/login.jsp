@@ -8,6 +8,7 @@
 
     <head>
         <title>로그인</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css" />
     </head>
 
     <body>
