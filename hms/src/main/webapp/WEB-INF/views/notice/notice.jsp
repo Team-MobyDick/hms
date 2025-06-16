@@ -69,12 +69,12 @@
         </thead>
         <tbody>
                 <c:forEach var="notice" items="${noticeList}">
-                    <tr class="ann-row">
+                    <tr class="ann-row"
                             data-title="${notice.noticeTitle}"
                             data-writer="${notice.emplId}"
-                            data-date="${notice.createdDate}"
+                            data-date="${notice.createdDate}">
                             <td>${notice.noticeTitle}</td>
-                            <td>$notice.emplId}</td>
+                            <td>${notice.emplId}</td>
                             <td$${notice.createdDate}</td>
                     </tr>
                 </c:forEach>

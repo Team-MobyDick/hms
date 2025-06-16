@@ -4,6 +4,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <mapper namespace="com.mobydick.hms.notice.dao.NoticeDAO">
 
     <!-- 전체 공지사항 조회 -->
@@ -37,7 +38,7 @@
         ) VALUES (
         #{noticeId},
         #{noticeTitle},
-        #{emplId};
+        #{emplId},
         #{createdDate},
         #{createdId},
         #{updatedDate},
