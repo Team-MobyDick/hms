@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobydick.hms.notice.dao.NoticeDAO">
+
+    <!-- 전체 공지사항 조회 -->
+    <select id="selectAllNotice" resultType="com.mobydick.hms.notice.vo.NoticeVO">
+        <![CDATA[
+                SELECT
+                    NOTICE_ID,
+                    NOTICE_TITLE,
+                    EMPL_ID,
+                    NOTICE_CONTENT,
+                    CREATED_DATE,
+                    CREATED_ID,
+                    UPDATED_DATE,
+                    UPDATED_ID
+                FROM
+                    TB_NOTICE
+                ORDER BY NOTICE_ID
+        ]]>
+    </select>
+
+    <!-- 공지사항 등록 -->
+    <insert id="insertNotice" parameterType="com.mobydick.hms.notice.vo.NoticeVO">
+        INSERT INTO TB_NOTICE (
+        NOTICE_ID,
+        NOTICE_TITLE,
+        EMPL_ID,
+        CREATED_DATE,
+        CREATED_ID,
+        UPDATED_DATE,
+        UPDATED_ID
+        ) VALUES (
+        #{noticeId},
+        #{noticeTitle},
+        #{emplId};
+        #{createdDate},
+        #{createdId},
+        #{updatedDate},
+        #{updatedId}
+        )
+    </insert>
+
+
+    <!-- 공지사항 수정 -->
+    <update id="updateNotice" parameterType="com.mobydick.hms.notice.vo.NoticeVO">
+        UPDATE TB_NOTICE
+        SET
+        NOTICE_TITLE = #{noticeTitle}
+        UPDATED_DATE = #{updatedDate}
+        UPDATED_ID = #{updatedId}
+    </update>
+
+    <!-- 공지사항 삭제 -->
+    <delete id="deleteRoom" parameterType="string">
+        DELETE FROM TB_NOTICE WHERE NOTICE_ID = #{noticeId}
+    </delete>
+
+</mapper>

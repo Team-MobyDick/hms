@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <%
     // 테스트용 로그인 사용자
@@ -56,7 +57,7 @@
     <h1>공지사항</h1>
     <button id = "add_btn">공지사항 등록</button>
 
-    <input type = "text" placeholder="검색어를 입력해 주세요.">
+   <!-- <input type = "text" placeholder="검색어를 입력해 주세요."> -->
 
     <table>
         <thead>
@@ -67,24 +68,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="ann-row" data-title="제목1" data-writer="작성자1" data-date="2005/06/12">
-                <td>제목1</td>
-                <td>작성자1</td>
-                <td>2005/06/12</td>
-            </tr>
-            <tr class="ann-row" data-title="제목2" data-writer="작성자2" data-date="2005/06/12">
-                <td>제목2</td>
-                <td>작성자2</td>
-                <td>2005/06/12</td>
-            </tr>
-            <tr class="ann-row" data-title="제목2" data-writer="작성자3" data-date="2005/06/12">
-                <td>제목3</td>
-                <td>작성자3</td>
-                <td>2005/06/12</td>
-            </tr>
+                <c:forEach var="notice" items="${noticeList}">
+                    <tr class="ann-row">
+                            data-title="${notice.noticeTitle}"
+                            data-writer="${notice.emplId}"
+                            data-date="${notice.createdDate}"
+                            <td>${notice.noticeTitle}</td>
+                            <td>$notice.emplId}</td>
+                            <td$${notice.createdDate}</td>
+                    </tr>
+                </c:forEach>
         </tbody>
     </table>
 
+    <jsp:include page="/WEB-INF/views/include/pagination.jsp" />
+
+    <!-- 공지사항 등록 폼 -->
     <form id="newNoticeForm" hidden>
     <table>
     <tr>
@@ -94,9 +93,9 @@
         <th>버튼</th>
     <tr>
     <tr>
-      <td><input type="text" name="title" placeholder="제목"></td>
-      <td><input type="text" name="writer" placeholder="작성자"></td>
-      <td><input type="text" name="date" placeholder="작성일"></td>
+      <td><input type="text" name="noticeTitle" placeholder="제목"></td>
+      <td><input type="text" name="emplId" placeholder="작성자"></td>
+      <td><input type="text" name="createdDate" placeholder="작성일"></td>
       <td>
         <button type="submit">등록</button>
         <button id = "add_cancle">취소</button>
@@ -104,6 +103,7 @@
      </tr>
       </table>
     </form>
+
 
 <script>
     const userRole = '<%= userRole %>';
@@ -170,6 +170,33 @@
             $("#newNoticeForm").toggle(500);
         });
 
+    </script>
+
+    <script>
+        $("#newNoticeForm").on("submit", function (e) {
+            e.preventDefault();
+
+            const newNotice = {
+                noticeTitle: $('input[name="noticeTitle"]').val(),
+                emplId: $('input[name="emplId"]').val(),
+                createdDate: $('input[name="createdDate"]').val(),
+                noticeContent: "내용 없음"  <!-- 필수 필드 대응 -->
+            };
+
+            $.ajax({
+                url: '/ann/notice',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON,stringify(newNotice),
+                success:  function() {
+                    alert("공지 등록 성공!");
+                    location.reload();
+                },
+                error: function () {
+                    alert("공지 등록 실패");
+                }
+            });
+        });
     </script>
 </body>
 </html>
