@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
+
 <!DOCTYPE html>
 
 <html>
@@ -27,6 +28,7 @@
                     <th>부서</th>
                     <th>직책</th>
                     <th>전화번호</th>
+                    <th>메모</th>
                     <th>사진</th>
                 </tr>
             </thead>
@@ -42,7 +44,14 @@
                                 data-grade="${emp.emplGrade}">
                                 <td data-label="직원 ID">${emp.emplId}</td>
                                 <td data-label="이름">${emp.emplName}</td>
-                                <td data-label="부서">${emp.emplDept}</td>
+                                <td data-label="부서">
+                                    <c:choose>
+                                        <c:when test="${emp.emplDept eq 'DP_01'}">하우스키핑</c:when>
+                                        <c:when test="${emp.emplDept eq 'DP_02'}">시설관리</c:when>
+                                        <c:when test="${emp.emplDept eq 'DP_03'}">프론트</c:when>
+                                        <c:otherwise>미정</c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td data-label="직책">
                                     <c:choose>
                                         <c:when test="${emp.emplGrade eq 'GR_01'}">총지배인</c:when>
@@ -52,6 +61,7 @@
                                     </c:choose>
                                 </td>
                                 <td data-label="전화번호">${emp.emplPhone}</td>
+                                <td data-label="메모">${emp.emplNotes}</td>
                                 <td data-label="사진">
                                     <c:if test="${not empty emp.photoName}">
                                         <img src="${pageContext.request.contextPath}/images/${emp.photoPath}/${emp.photoName}" alt="사진" width="60"/>
@@ -68,7 +78,6 @@
 
         </table>
 
-        <!-- 직원 추가 폼 -->
         <form id="newEmployeeForm" hidden>
             <h3>새 직원 등록</h3>
             <table>
@@ -78,6 +87,7 @@
                     <th>부서</th>
                     <th>직책</th>
                     <th>전화번호</th>
+                    <th>메모</th>
                     <th>동작</th>
                 </tr>
                 <tr>
@@ -100,6 +110,7 @@
                         </select>
                     </td>
                     <td><input type="text" name="emplPhone" placeholder="연락처"></td>
+                    <td><textarea name="emplNotes" placeholder="메모"></textarea></td>
                     <td>
                         <button type="submit">등록</button>
                         <button type="button" id="add_cancel">취소</button>
@@ -108,8 +119,13 @@
             </table>
         </form>
 
-
-
+        <%-- !!! 중요: employee.js 로드 전에 contextPath와 userRole 변수 정의 !!! --%>
+        <script>
+            // JavaScript 변수로 JSP에서 평가된 값을 할당
+            var contextPath = "${pageContext.request.contextPath}";
+            // userRole을 다른 이름으로 명확히 구분
+            var userRoleJs = "${userRole}";
+        </script>
         <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
 
     </body>
