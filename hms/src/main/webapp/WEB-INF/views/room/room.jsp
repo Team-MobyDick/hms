@@ -28,7 +28,7 @@
     <table>
         <thead>
             <tr>
-                <th>객실 번호</th>
+                <th>객실 이름</th>
                 <th>객실 종류</th>
                 <th>예약 상태</th>
                 <th>청소 상태</th>
@@ -41,7 +41,7 @@
                 <c:when test="${not empty roomList}">
                     <c:forEach var="room" items="${roomList}">
                         <tr class="room-row"
-                            data-room="${room.roomNumber}"
+                            data-room="${room.roomName}"
                             data-type="${room.roomClass}"
                             data-room-id="${room.roomId}"
                             data-reserve="${not empty room.reservDate ? 'Yes' : 'No'}"
@@ -49,7 +49,7 @@
                             data-createdId="${room.createdId}"
                             data-updatedDate="${room.updatedDate}"
                             data-updatedId="${room.updatedId}">
-                            <td data-label="객실 번호">${room.roomNumber}</td>
+                            <td data-label="객실 이름">${room.roomName}</td>
                             <td data-label="객실 종류">
                                 <c:out value="${roomTypeMap[room.roomClass]}" default="미정" />
                             </td>
@@ -82,14 +82,13 @@
     <form id="newRoomForm" hidden>
         <table>
             <tr>
-                <th>번호</th>
+                <th>객실 이름</th>
                 <th>객실 종류</th>
                 <th>예약 상태</th>
-                <th>청소 상태</th>
                 <th>동작</th>
             </tr>
             <tr>
-                <td><input type="text" name="roomNum" placeholder="번호"></td>
+                <td><input type="text" name="roomName" placeholder="객실 이름"></td>
                 <td>
                     <select name="roomType" id="roomType"></select>
                 </td>
@@ -99,7 +98,6 @@
                         <option value="No" selected>No</option>
                     </select>
                 </td>
-                <td><input type="text" name="date" placeholder="청소 상태"></td>
                 <td>
                     <button type="submit">등록</button>
                     <button type="button" id="add_cancle">취소</button>

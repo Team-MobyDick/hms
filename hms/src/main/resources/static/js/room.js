@@ -86,8 +86,8 @@ $(document).ready(function () {
                 <td colspan="6">
                     <table style="width:100%; border-collapse: collapse;">
                         <tr>
-                            <th style="padding:8px;">객실 번호</th>
-                            <td><input type="text" value="${room}" name="roomNum"></td>
+                            <th style="padding:8px;">객실 이름</th>
+                            <td><input type="text" value="${room}" name="roomName"></td>
                         </tr>
                         <tr>
                             <th style="padding:8px;">객실 종류</th>
@@ -150,7 +150,7 @@ $(document).ready(function () {
 
         const updatedData = {
             roomId: $(this).data('room-id'),
-            roomNumber: $container.find('input[name="roomNum"]').val(),
+            roomName: $container.find('input[name="roomName"]').val(),
             roomClass: $container.find('select[name="roomType"]').val(),
             reservDate: reservStatus // 'Yes' 또는 'No' 값
         };
@@ -212,14 +212,13 @@ $(document).ready(function () {
             e.preventDefault();
 
             const data = {
-                roomNumber: $('input[name="roomNum"]').val(),
+                roomName: $('input[name="roomName"]').val(),
                 roomClass: $('select[name="roomType"]').val(),
                 reservDate: $('input[name="res"]').val(),
-                cleanState: $('input[name="date"]').val()
             };
 
-            if (!data.roomNumber || !data.roomClass) {
-                alert("객실 번호와 종류는 필수입니다.");
+            if (!data.roomName || !data.roomClass) {
+                alert("객실 이름과 종류는 필수입니다.");
                 return;
             }
 

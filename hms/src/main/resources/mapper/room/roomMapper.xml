@@ -10,7 +10,7 @@
         <![CDATA[
                 SELECT
                     A.ROOM_ID,
-                    A.ROOM_NUMBER,
+                    A.ROOM_NAME,
                     A.ROOM_CLASS,
                     A.RESERV_DATE,
                     A.CREATED_DATE,
@@ -19,7 +19,7 @@
                     A.UPDATED_ID
                 FROM
                     TB_ROOM A
-                ORDER BY A.ROOM_NUMBER
+                ORDER BY A.ROOM_CLASS
         ]]>
     </select>
 
@@ -28,7 +28,7 @@
         <![CDATA[
                 SELECT
                     A.ROOM_ID,
-                    A.ROOM_NUMBER,
+                    A.ROOM_NAME,
                     A.ROOM_CLASS,
                     A.RESERV_DATE,
                     A.CREATED_DATE,
@@ -50,7 +50,7 @@
                 WHERE
                     B.ROOM_ID IS NOT NULL
                 ORDER BY
-                    A.ROOM_NUMBER
+                    A.ROOM_NAME
         ]]>
     </select>
 
@@ -58,7 +58,7 @@
     <insert id="insertRoom" parameterType="com.mobydick.hms.room.vo.RoomVO">
         INSERT INTO TB_ROOM (
         ROOM_ID,
-        ROOM_NUMBER,
+        ROOM_NAME,
         ROOM_CLASS,
         RESERV_DATE,
         CREATED_DATE,
@@ -67,7 +67,7 @@
         UPDATED_ID
         ) VALUES (
         #{roomId},
-        #{roomNumber},
+        #{roomName},
         #{roomClass, jdbcType=VARCHAR},
         #{reservDate, jdbcType=VARCHAR},
         SYSDATE,
@@ -91,7 +91,7 @@
     <update id="updateRoom" parameterType="map">
         UPDATE TB_ROOM
         SET
-        ROOM_NUMBER = #{roomNumber},
+        ROOM_NAME = #{roomName},
         ROOM_CLASS = #{roomClass, jdbcType=VARCHAR},
         RESERV_DATE = #{reservDate, jdbcType=VARCHAR},
         UPDATED_DATE = SYSDATE,
@@ -103,7 +103,7 @@
     <select id="selectRoomById" parameterType="string" resultType="com.mobydick.hms.room.vo.RoomVO">
         SELECT
         ROOM_ID,
-        ROOM_NUMBER,
+        ROOM_NAME,
         ROOM_CLASS,
         RESERV_DATE,
         CREATED_DATE,

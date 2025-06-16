@@ -9,7 +9,7 @@ public class RoomVO {
 
     // 기본 객실 정보
     private String roomId;         // 객실 ID
-    private int roomNumber;        // 객실 번호
+    private String roomName;       // 객실 이름
     private String roomClass;      // 객실 등급 코드 (TP_01 등)
     private String reservDate;     // 예약 일자 (yyyy-MM-dd)
 
