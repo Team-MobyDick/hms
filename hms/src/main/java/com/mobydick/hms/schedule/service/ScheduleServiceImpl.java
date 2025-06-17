@@ -2,14 +2,13 @@ package com.mobydick.hms.schedule.service;
 
 import com.mobydick.hms.schedule.dao.ScheduleDAO;
 import com.mobydick.hms.schedule.vo.EmpVO;
+import com.mobydick.hms.schedule.vo.ScheduleDetailVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 // 스케줄 관리 서비스 구현체
 @Service
@@ -65,5 +64,36 @@ public class ScheduleServiceImpl implements  ScheduleService {
     @Override
     public List<EmpVO> getEmployeesByDept(String deptId) {
         return scheduleDAO.getEmployeesByDept(deptId);
+    }
+
+    @Override
+    public List<ScheduleDetailVO> getScheduleByDate(String date) {
+        return scheduleDAO.getScheduleByDate(date);
+    }
+
+
+    @Override
+    public List<ScheduleVO> getSchedulesForAdminBetween(String startDate, String endDate) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("start", startDate);
+        map.put("end", endDate);
+        return scheduleDAO.getSchedulesForAdminBetween(map);
+    }
+
+    @Override
+    public List<ScheduleVO> getSchedulesByTeamLeaderBetween(String startDate, String endDate) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("start", startDate);
+        map.put("end", endDate);
+        return scheduleDAO.getSchedulesByTeamLeaderBetween(map);
+    }
+
+    @Override
+    public List<ScheduleVO> getSchedulesByEmployeeBetween(String emplId, String startDate, String endDate) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("emplId", emplId);
+        map.put("start", startDate);
+        map.put("end", endDate);
+        return scheduleDAO.getSchedulesByEmployeeBetween(map);
     }
 }

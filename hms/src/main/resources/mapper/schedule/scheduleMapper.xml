@@ -83,7 +83,79 @@
         WHERE E.EMPL_DEPT = #{deptId}
     </select>
 
+    <select id="getScheduleDetail" parameterType="String" resultType="com.mobydick.hms.schedule.vo.ScheduleDetailVO">
+        SELECT
+            s.SCHE_ID,
+            s.SCHE_DATE,
+            c_shift.CODE_NAME AS scheShiftName,
+            e.EMPL_NAME,
+            w.WORKD_NAME,
+            w.WORKD_CONTEXT,
+            c_impo.CODE_NAME AS workdImpoName,
+            c_state.CODE_NAME AS workdStateName,
+            r.ROOM_NAME
+        FROM TB_SCHEDULE s
+                 JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
+                 LEFT JOIN TB_WORK_D w ON s.SCHE_ID = w.WORKD_ID
+                 LEFT JOIN TB_CODE c_shift ON s.SCHE_SHIFT = c_shift.CODE_ID
+                 LEFT JOIN TB_CODE c_impo ON w.WORKD_IMPO = c_impo.CODE_ID
+                 LEFT JOIN TB_CODE c_state ON w.WORKD_STATE = c_state.CODE_ID
+                 LEFT JOIN TB_ROOM r ON w.ROOM_ID = r.ROOM_ID
+        WHERE s.SCHE_ID = #{scheId}
+    </select>
 
+    <select id="getScheduleByDate" parameterType="String" resultType="com.mobydick.hms.schedule.vo.ScheduleDetailVO">
+        SELECT
+            s.SCHE_ID,
+            s.SCHE_DATE,
+            e.EMPL_NAME,
+            w.WORKD_NAME,
+            c_state.CODE_NAME AS workdStateName
+        FROM TB_SCHEDULE s
+                 JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
+                 LEFT JOIN TB_WORK_D w ON s.EMPL_ID = w.EMPL_ID AND s.SCHE_DATE = w.WORKD_DATE
+                 LEFT JOIN TB_CODE c_state ON w.WORKD_STATE = c_state.CODE_ID
+        WHERE TO_DATE(s.SCHE_DATE, 'RR/MM/DD HH24:MI:SS')
+                  BETWEEN TO_DATE(#{start}, 'YYYY-MM-DD"T"HH24:MI:SS')
+                  AND TO_DATE(#{end}, 'YYYY-MM-DD"T"HH24:MI:SS')
+    </select>
+
+    <select id="getSchedulesForAdminBetween" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
+        SELECT
+            s.SCHE_ID,
+            s.SCHE_DATE,
+            s.EMPL_ID,
+            s.SCHE_SHIFT,
+            c_dept.CODE_NAME AS DEPT_NAME,
+            c_shift.CODE_NAME AS scheShiftName
+        FROM TB_SCHEDULE s
+                 JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
+                 LEFT JOIN TB_CODE c_dept ON e.EMPL_DEPT = c_dept.CODE_ID
+                 LEFT JOIN TB_CODE c_shift ON s.SCHE_SHIFT = c_shift.CODE_ID
+        WHERE TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="getSchedulesByTeamLeaderBetween" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
+        SELECT
+            s.SCHE_ID,
+            s.SCHE_DATE,
+            s.EMPL_ID,
+            s.SCHE_SHIFT
+        FROM TB_SCHEDULE s
+                 JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
+        WHERE TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="getSchedulesByEmployeeBetween" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
+        SELECT
+            s.SCHE_ID,
+            s.SCHE_DATE,
+            s.EMPL_ID,
+            s.SCHE_SHIFT
+        FROM TB_SCHEDULE s
+        WHERE s.EMPL_ID = #{emplId}
+          AND TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
+    </select>
 
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.mobydick.hms.schedule.service;
 
 import com.mobydick.hms.schedule.vo.EmpVO;
+import com.mobydick.hms.schedule.vo.ScheduleDetailVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
 
 import java.util.List;
@@ -19,4 +20,16 @@ public interface ScheduleService {
 
     List<EmpVO> getAllEmployees();
     List<EmpVO> getEmployeesByDept(String deptId);
+
+    // ScheduleService.java
+    List<ScheduleDetailVO> getScheduleByDate(String date);
+
+    // 관리자용
+    List<ScheduleVO> getSchedulesForAdminBetween(String startDate, String endDate);
+
+    // 팀장용
+    List<ScheduleVO> getSchedulesByTeamLeaderBetween(String startDate, String endDate);
+
+    // 직원용
+    List<ScheduleVO> getSchedulesByEmployeeBetween(String emplId, String startDate, String endDate);
 }

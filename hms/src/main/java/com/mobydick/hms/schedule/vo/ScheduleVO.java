@@ -1,15 +1,19 @@
 package com.mobydick.hms.schedule.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 
 // 스케줄 정보를 담는 VO
 @Data
 public class ScheduleVO {
 
     private String scheId;      // 근무일정 ID
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date scheDate;      // 근무 날짜
+
     private String emplId;      // 직원 ID
     private String scheShift;   // 근무조
     private Date createdDate;   // 작성일자
@@ -23,5 +27,7 @@ public class ScheduleVO {
 
     // 부서명 (GR_01 출력용)
     private String deptName;
+
+    private String scheShiftName;
 
 }

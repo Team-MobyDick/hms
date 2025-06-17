@@ -2,6 +2,7 @@ package com.mobydick.hms.schedule.controller;
 
 import com.mobydick.hms.schedule.service.ScheduleService;
 import com.mobydick.hms.schedule.vo.EmpVO;
+import com.mobydick.hms.schedule.vo.ScheduleDetailVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
 import com.mobydick.hms.login.vo.LoginVO;
 import com.mobydick.hms.employee.service.EmployeeService;
@@ -12,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,7 +39,11 @@ public class ScheduleController {
 
     @GetMapping("/display")
     @ResponseBody
-    public List<Map<String, Object>> getScheduleList(HttpSession session) {
+    public List<Map<String, Object>> getScheduleList(
+            @RequestParam String start,
+            @RequestParam String end,
+            HttpSession session
+    ) {
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
         if (loginUser == null) return Collections.emptyList();
 
@@ -42,30 +51,26 @@ public class ScheduleController {
         String emplId = loginUser.getEmplId();
         String deptId = loginUser.getEmplDept();
 
-        List<ScheduleVO> scheduleList;
-        switch (grade) {
-            case "GR_01":
-                scheduleList = scheduleService.getSchedulesForAdmin(deptId);
-                break;
-            case "GR_02":
-                scheduleList = scheduleService.getSchedulesByTeamLeader(emplId);
-                break;
-            case "GR_03":
-            default:
-                scheduleList = scheduleService.getSchedulesByEmployee(emplId);
-                break;
-        }
+        // 날짜 파라미터 포맷 자르기 (ISO → yyyyMMdd)
+        String startDate = start.substring(0, 10).replace("-", "");
+        String endDate = end.substring(0, 10).replace("-", "");
 
-        List<Map<String, Object>> result = new ArrayList<>();
-        for (ScheduleVO s : scheduleList) {
+        List<ScheduleVO> scheduleList = switch (grade) {
+            case "GR_01" -> scheduleService.getSchedulesForAdminBetween(startDate, endDate);
+            case "GR_02" -> scheduleService.getSchedulesByTeamLeaderBetween(startDate, endDate);
+            default       -> scheduleService.getSchedulesByEmployeeBetween(emplId, startDate, endDate);
+        };
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        return scheduleList.stream().map(s -> {
             Map<String, Object> map = new HashMap<>();
             map.put("title", "GR_01".equals(grade)
-                    ? s.getDeptName() + " - " + s.getScheShift()
-                    : s.getScheShift());
-            map.put("start", s.getScheDate().toString());
-            result.add(map);
-        }
-        return result;
+                    ? s.getDeptName() + " - " + convertShiftName(s.getScheShift())
+                    : convertShiftName(s.getScheShift()));
+            map.put("start", sdf.format(s.getScheDate()));
+            return map;
+        }).toList();
     }
 
     @PostMapping("/insert")
@@ -103,4 +108,26 @@ public class ScheduleController {
                 ))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/detailByDate")
+    @ResponseBody
+    public List<ScheduleDetailVO> getScheduleByDate(@RequestParam String date) {
+
+        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter dbFormat = DateTimeFormatter.ofPattern("yy/MM/dd");
+
+        LocalDate parsedDate = LocalDate.parse(date, inputFormat);
+        String formatted = parsedDate.format(dbFormat) + "%";
+
+        return scheduleService.getScheduleByDate(formatted);
+    }
+
+    private String convertShiftName(String code) {
+        return switch (code) {
+            case "SH_01" -> "주간";
+            case "SH_02" -> "야간";
+            default -> code;
+        };
+    }
+
 }
