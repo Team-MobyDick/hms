@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
 
 <!DOCTYPE html>
@@ -41,7 +42,9 @@
                                 data-id="${emp.emplId}"
                                 data-name="${emp.emplName}"
                                 data-dept="${emp.emplDept}"
-                                data-grade="${emp.emplGrade}">
+                                data-grade="${emp.emplGrade}"
+                                data-phone="${emp.emplPhone}"
+                                data-note="${emp.emplNotes}">
                                 <td data-label="직원 ID">${emp.emplId}</td>
                                 <td data-label="이름">${emp.emplName}</td>
                                 <td data-label="부서">
