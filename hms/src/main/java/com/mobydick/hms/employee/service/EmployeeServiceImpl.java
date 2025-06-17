@@ -49,4 +49,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeVO selectEmployeeById(String emplId) throws Exception {
         return employeeDAO.selectEmployeeById(emplId);
     }
+
+    // 직원 사진 정보 업데이트 메서드 구현
+    @Override
+    public void updateEmployeePhoto(EmployeeVO employeeVO) throws Exception {
+        employeeDAO.updateEmployeePhoto(employeeVO);
+    }
 }

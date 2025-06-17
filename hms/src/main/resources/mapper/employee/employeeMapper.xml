@@ -95,6 +95,19 @@
         ]]>
     </update>
 
+    <update id="updateEmployeePhoto" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
+        <![CDATA[
+        UPDATE TB_EMPL
+        SET
+            PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
+            PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
+            UPDATED_DATE = SYSDATE,
+            UPDATED_ID = #{updatedId}
+        WHERE
+            EMPL_ID = #{emplId}
+        ]]>
+    </update>
+
     <delete id="deleteEmployee" parameterType="string">
         <![CDATA[
         DELETE FROM TB_EMPL

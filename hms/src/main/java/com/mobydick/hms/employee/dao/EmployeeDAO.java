@@ -25,4 +25,7 @@ public interface EmployeeDAO {
 
     // 직원 ID로 특정 직원 정보 조회
     EmployeeVO selectEmployeeById(String emplId) throws Exception;
+
+    // 직원 사진 정보만 업데이트하는 메서드 추가
+    void updateEmployeePhoto(EmployeeVO employeeVO) throws Exception;
 }

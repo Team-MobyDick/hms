@@ -23,7 +23,6 @@
         <button id="add_btn">직원 등록</button>
 
         <table>
-
             <thead>
                 <tr>
                     <th>직원 ID</th>
@@ -35,7 +34,6 @@
                     <th>사진</th>
                 </tr>
             </thead>
-
             <tbody>
                 <c:choose>
                     <c:when test="${not empty employeeList}">
@@ -46,7 +44,9 @@
                                 data-dept="${emp.emplDept}"
                                 data-grade="${emp.emplGrade}"
                                 data-phone="${emp.emplPhone}"
-                                data-note="${emp.emplNotes}">
+                                data-note="${emp.emplNotes}"
+                                data-photo-name="${emp.photoName}"
+                                data-photo-path="${emp.photoPath}">
                                 <td data-label="직원 ID">${emp.emplId}</td>
                                 <td data-label="이름">${emp.emplName}</td>
                                 <td data-label="부서">
@@ -68,19 +68,20 @@
                                 <td data-label="전화번호">${emp.emplPhone}</td>
                                 <td data-label="메모">${emp.emplNotes}</td>
                                 <td data-label="사진">
-                                    <c:if test="${not empty emp.photoName}">
-                                        <img src="${pageContext.request.contextPath}/images/${emp.photoPath}/${emp.photoName}" alt="사진" width="60"/>
-                                    </c:if>
+                                    <div class="photo-container">
+                                        <c:if test="${not empty emp.photoName}">
+                                            <img src="${pageContext.request.contextPath}/${emp.photoPath}/${emp.photoName}" alt="사진" />
+                                        </c:if>
+                                    </div>
                                 </td>
                             </tr>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <tr><td colspan="6">직원 목록이 비어 있습니다.</td></tr>
+                        <tr><td colspan="7">직원 목록이 비어 있습니다.</td></tr>
                     </c:otherwise>
                 </c:choose>
             </tbody>
-
         </table>
 
         <form id="newEmployeeForm" hidden>
@@ -124,16 +125,14 @@
             </table>
         </form>
 
-        <%-- !!! 중요: employee.js 로드 전에 contextPath와 userRole 변수 정의 !!! --%>
+        <%-- !!! 중요: employee.js 로드 전에 contextPath, userRole, userDept 변수 정의 !!! --%>
         <script>
-            // JavaScript 변수로 JSP에서 평가된 값을 할당
-
-            var contextPath = "${pageContext.request.contextPath}"; // 웹앱의 루트 경로
-            var userRoleJs = "${userRole}"; // 현재 로그인한 사용자의 직급 코드
-            var userDeptJs = "${userDept}"; // 현재 로그인한 사용자의 부서 코드
+            var contextPath = "${pageContext.request.contextPath}";
+            var userRoleJs = "${userRole}";
+            var userDeptJs = "${userDept}";
         </script>
-
         <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
 
     </body>
+
 </html>
