@@ -110,7 +110,7 @@ public class NoticeController {
             }
 
             updateNoticeVO.setNoticeId(noticeId);
-            updateNoticeVO.setUpdatedId(loginUserId);
+            updateNoticeVO.setUpdateId(loginUserId);
 
             noticeService.updateNotice(updateNoticeVO);
             return ResponseEntity.ok("공지사항 수정 성공");
