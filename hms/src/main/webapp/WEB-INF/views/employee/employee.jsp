@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<%-- 세션에서 로그인한 사용자 정보(직급, 부서) 추출 --%>
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
 <c:set var="userDept" value="${sessionScope.loginUser.emplDept}" />
 
@@ -126,10 +127,12 @@
         <%-- !!! 중요: employee.js 로드 전에 contextPath와 userRole 변수 정의 !!! --%>
         <script>
             // JavaScript 변수로 JSP에서 평가된 값을 할당
-            var contextPath = "${pageContext.request.contextPath}";
-            var userRoleJs = "${userRole}";
-            var userDeptJs = "${userDept}";
+
+            var contextPath = "${pageContext.request.contextPath}"; // 웹앱의 루트 경로
+            var userRoleJs = "${userRole}"; // 현재 로그인한 사용자의 직급 코드
+            var userDeptJs = "${userDept}"; // 현재 로그인한 사용자의 부서 코드
         </script>
+
         <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
 
     </body>

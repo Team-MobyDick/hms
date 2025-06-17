@@ -27,6 +27,7 @@ public class EmployeeController {
         model.addAttribute("employeeList", employeeList);
 
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
         if (loginUser != null) {
             model.addAttribute("userRole", loginUser.getEmplGrade());
         } else {
@@ -139,7 +140,8 @@ public class EmployeeController {
                 return ResponseEntity.badRequest().body("삭제할 직원 ID가 필요합니다.");
             }
 
-            employeeService.deleteEmployee(emplId); // 서비스 호출
+            // 서비스 호출
+            employeeService.deleteEmployee(emplId);
             return ResponseEntity.ok("직원이 성공적으로 삭제되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();

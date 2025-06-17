@@ -1,6 +1,11 @@
+// 세션에서 JSP로 전달받은 사용자 정보 변수
+// 사용자 직책 (GR_01: 총지배인, GR_02: 팀장, GR_03: 일반)
 const userRole = userRoleJs;
+
+// 사용자 부서 (DP_01, DP_02, DP_03)
 const userDept = userDeptJs;
 
+// 코드 값을 한글로 매핑
 const gradeMap = {
     'GR_01': '총지배인',
     'GR_02': '팀장',
@@ -26,10 +31,10 @@ $(document).ready(function () {
             return;
         }
 
-        // 다른 상세 폼 닫기
+        // 다른 상세 폼 닫기 (1개만 열리도록)
         $('.detail-slide').remove();
 
-        // 직원 데이터 가져오기
+        // 클릭한 행 직원 데이터 가져오기
         const empId = $clickedRow.data('id');
         const name = $clickedRow.data('name');
         const dept = $clickedRow.data('dept');
@@ -37,6 +42,7 @@ $(document).ready(function () {
         const phone = $clickedRow.find('td[data-label="전화번호"]').text().trim();
         const note = $clickedRow.data('note');
 
+        // 코드 -> 라벨 변환하기
         const gradeLabel = gradeMap[grade] || grade;
         const deptLabel = deptMap[dept] || dept;
 
@@ -83,8 +89,10 @@ $(document).ready(function () {
                 $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
             }
         }
+        // 닫기 버튼은 누구나 사용 가능
         $buttonArea.append('<button class="action-btn btn-close">닫기</button>');
 
+        // 상세 폼을 해당 행 아래에 추가
         $clickedRow.after($detailRow);
     });
 
@@ -104,9 +112,14 @@ $(document).ready(function () {
     $('#newEmployeeForm').on('submit', function (e) {
         e.preventDefault();
 
+        // 폼 데이터 직렬화
         const formData = $(this).serialize();
 
         $.ajax({
+            // contextPath를 동적으로 앞에 붙여줌으로써 안정성 확보
+            // 로컬 개발 환경에서는 http://localhost:8080/myapp/employee/delete
+            // 운영 서버에서는 http://yourserver.com/hotelSystem/employee/delete
+            // contextPath 없이 /employee/delete로 고정하면 배포된 위치가 /hotelSystem 같은 하위 경로일 경우 404 오류 발생 가능성이 큼
             url: contextPath + '/employee/register',
             type: 'POST',
             data: formData,
