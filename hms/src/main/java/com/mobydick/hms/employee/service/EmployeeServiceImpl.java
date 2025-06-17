@@ -44,4 +44,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeDAO.deleteEmployee(emplId);
     }
 
+    // 직원 ID로 특정 직원 정보 조회
+    @Override
+    public EmployeeVO selectEmployeeById(String emplId) throws Exception {
+        return employeeDAO.selectEmployeeById(emplId);
+    }
 }

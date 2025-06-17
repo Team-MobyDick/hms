@@ -23,4 +23,6 @@ public interface EmployeeDAO {
     // 직원 삭제
     void deleteEmployee(String emplId) throws Exception;
 
+    // 직원 ID로 특정 직원 정보 조회
+    EmployeeVO selectEmployeeById(String emplId) throws Exception;
 }

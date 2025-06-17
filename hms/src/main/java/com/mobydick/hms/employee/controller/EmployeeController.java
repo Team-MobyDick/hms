@@ -81,11 +81,27 @@ public class EmployeeController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다. 다시 로그인 해주세요.");
             }
 
-            // GR_01 (총지배인) 또는 GR_02 (팀장)만 수정 가능
             String userRole = loginUser.getEmplGrade();
+            String userDept = loginUser.getEmplDept(); // 로그인한 사용자의 부서 정보
+
+            // GR_01 (총지배인) 또는 GR_02 (팀장)만 수정 가능
             if (!"GR_01".equals(userRole) && !"GR_02".equals(userRole)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("직원 정보를 수정할 권한이 없습니다.");
             }
+
+            // 수정 대상 직원의 현재 정보 조회
+            EmployeeVO targetEmployee = employeeService.selectEmployeeById(employeeVO.getEmplId());
+            if (targetEmployee == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정하려는 직원을 찾을 수 없습니다.");
+            }
+
+            // 팀장(GR_02)인 경우, 같은 부서의 직원만 수정 가능하도록 제한
+            if ("GR_02".equals(userRole)) {
+                if (!userDept.equals(targetEmployee.getEmplDept())) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("팀장은 같은 부서의 직원 정보만 수정할 수 있습니다.");
+                }
+            }
+
 
             // 필수 입력 항목 검증 (ID는 수정 불가하므로 제외)
             if (employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() ||
@@ -130,5 +146,4 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 삭제 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
-
 }

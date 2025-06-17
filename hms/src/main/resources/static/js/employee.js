@@ -1,4 +1,5 @@
 const userRole = userRoleJs;
+const userDept = userDeptJs;
 
 const gradeMap = {
     'GR_01': '총지배인',
@@ -78,7 +79,9 @@ $(document).ready(function () {
             $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
             $buttonArea.append('<button class="action-btn btn-delete">삭제</button> ');
         } else if (userRole === 'GR_02') {
-            $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
+            if (typeof userDept !== 'undefined' && userDept === dept) { // 로그인한 팀장의 부서와 클릭된 직원의 부서가 같으면
+                $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
+            }
         }
         $buttonArea.append('<button class="action-btn btn-close">닫기</button>');
 
@@ -165,7 +168,7 @@ $(document).ready(function () {
                 data: { emplId: emplIdToDelete },
                 success: (response) => {
                     alert(response);
-                    location.reload(); // 페이지 새로고침하여 삭제된 정보 반영
+                    location.reload();
                 },
                 error: (xhr, status, error) => {
                     let errorMessage = '직원 삭제 중 오류가 발생했습니다.';
