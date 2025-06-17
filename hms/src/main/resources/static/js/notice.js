@@ -6,12 +6,13 @@ $(document).ready(function () {
     $('#noticeCancelBtn').click(() => $('#noticeForm').hide(300));
 
     // 공지 등록 처리
-    $('#noticeForm').on('submit', function (e) {
+    $('#newNoticeForm').on('submit', function (e) {
         e.preventDefault();
 
         const newNotice = {
             noticeTitle: $('input[name="noticeTitle"]').val(),
             emplId: $('input[name="emplId"]').val(),
+            createdDate: $('input[name="createdDate"]').val(),
             noticeContent: $('textarea[name="noticeContent"]').val()
         };
 
@@ -27,13 +28,17 @@ $(document).ready(function () {
             data: JSON.stringify(newNotice),
             success: function () {
                 alert("공지 등록 완료");
+                alert("공지 등록 성공!");
                 location.reload();
             },
-            error: function () {
+            error: function (xhr, status, error) {
+                console.error("xhr:", xhr.responseText);
                 alert("등록 실패. 다시 시도해주세요.");
             }
         });
     });
+
+
 
     // 수정 버튼 클릭 시
     $(document).on('click', '.notice-edit-btn', function () {

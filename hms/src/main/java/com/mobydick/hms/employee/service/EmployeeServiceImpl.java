@@ -15,6 +15,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeDAO employeeDAO;
 
+    // 직원 조회
     @Override
     public List<EmployeeVO> selectAllEmployees() throws Exception {
         return employeeDAO.selectAllEmployees();
@@ -31,7 +32,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeDAO.insertEmployee(employeeVO);
     }
 
+    // 직원 정보 수정
+    @Override
+    public void updateEmployee(EmployeeVO employeeVO) throws Exception {
+        employeeDAO.updateEmployee(employeeVO);
+    }
 
+    // 직원 삭제
+    @Override
+    public void deleteEmployee(String emplId) throws Exception {
+        employeeDAO.deleteEmployee(emplId);
+    }
 
-
+    // 직원 ID로 특정 직원 정보 조회
+    @Override
+    public EmployeeVO selectEmployeeById(String emplId) throws Exception {
+        return employeeDAO.selectEmployeeById(emplId);
+    }
 }

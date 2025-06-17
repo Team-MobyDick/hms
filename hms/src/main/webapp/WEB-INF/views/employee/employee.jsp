@@ -1,7 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
+<c:set var="userDept" value="${sessionScope.loginUser.emplDept}" />
 
 <!DOCTYPE html>
 
@@ -41,7 +43,9 @@
                                 data-id="${emp.emplId}"
                                 data-name="${emp.emplName}"
                                 data-dept="${emp.emplDept}"
-                                data-grade="${emp.emplGrade}">
+                                data-grade="${emp.emplGrade}"
+                                data-phone="${emp.emplPhone}"
+                                data-note="${emp.emplNotes}">
                                 <td data-label="직원 ID">${emp.emplId}</td>
                                 <td data-label="이름">${emp.emplName}</td>
                                 <td data-label="부서">
@@ -123,8 +127,8 @@
         <script>
             // JavaScript 변수로 JSP에서 평가된 값을 할당
             var contextPath = "${pageContext.request.contextPath}";
-            // userRole을 다른 이름으로 명확히 구분
             var userRoleJs = "${userRole}";
+            var userDeptJs = "${userDept}";
         </script>
         <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
 

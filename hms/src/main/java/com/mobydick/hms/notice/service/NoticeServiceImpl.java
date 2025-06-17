@@ -42,5 +42,5 @@ public class NoticeServiceImpl implements NoticeService{
 
     }
 
-    // 전체 공지사항 조회
+
 }
