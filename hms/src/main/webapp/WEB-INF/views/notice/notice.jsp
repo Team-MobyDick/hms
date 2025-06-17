@@ -46,6 +46,23 @@
                 cursor: pointer;
             }
 
+            .content-textarea {
+                width: 100%;
+                padding: 10px;
+                height: 300px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                resize: none;
+                box-sizing: border-box;
+                background-color: #fff;
+                font-family: inherit;
+                line-height: 1.4;
+                display: block;
+            }
+
+
+
             @keyframes slideDown {
                 from { opacity: 0; transform: translateY(-10px); }
                 to { opacity: 1; transform: translateY(0); }
@@ -72,10 +89,11 @@
                     <tr class="ann-row"
                             data-title="${notice.noticeTitle}"
                             data-writer="${notice.emplId}"
+                            data-content="${notice.noticeContent}"
                             data-date="${notice.createdDate}">
                             <td>${notice.noticeTitle}</td>
                             <td>${notice.emplId}</td>
-                            <td$${notice.createdDate}</td>
+                            <td>${notice.createdDate}</td>
                     </tr>
                 </c:forEach>
         </tbody>
@@ -89,12 +107,13 @@
     <tr>
         <th>제목</th>
         <th>작성자</th>
+        <th>내용</th>
         <th>작성일</th>
-        <th>버튼</th>
     <tr>
     <tr>
       <td><input type="text" name="noticeTitle" placeholder="제목"></td>
       <td><input type="text" name="emplId" placeholder="작성자"></td>
+      <td><input type="text" name="noticeContent" placeholder="내용"></td>
       <td><input type="text" name="createdDate" placeholder="작성일"></td>
       <td>
         <button type="submit">등록</button>
@@ -137,14 +156,16 @@
                 $('.detail-slide').remove();
 
                 const title = $clickedRow.data('title');
-                const writer = $clickedRow.data('writer');
+                const write = $clickedRow.data('writer');
+                const content = $clickedRow.data('content');
                 const date = $clickedRow.data('date');
 
                 const $detailRow = $('<tr class="detail-slide"><td colspan="4"></td></tr>');
                 const $slideContent = $('<div class="slide-content"></div>');
 
                 $slideContent.append('<strong>제목: <input type="text" value="' + title + '"></strong><br>');
-                $slideContent.append('작성자: <input type="text" value="' + writer + '"><br>');
+                $slideContent.append('작성자: <input type="text" value="' + write + '"><br>');
+                $slideContent.append('내용:<br><textarea class="content-textarea" readonly>' + content + '</textarea><br>');
                 $slideContent.append('작성일: <input type="text" value="' + date + '"><br>');
                 $slideContent.append(getButtonsByRole(userRole));
                 $slideContent.append('<button class="action-btn close-btn">닫기</button>');
@@ -187,7 +208,7 @@
                 url: '/ann/notice',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON,stringify(newNotice),
+                data: JSON.stringify(newNotice),
                 success:  function() {
                     alert("공지 등록 성공!");
                     location.reload();
