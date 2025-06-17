@@ -6,7 +6,7 @@
 <mapper namespace="com.mobydick.hms.schedule.dao.ScheduleDAO">
 
     <!-- 전체 스케줄 조회 -->
-    <select id="selectAllschedule" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
+    <select id="getAllSchedules" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         SELECT
             SCHE_ID,
             SCHE_DATE,
@@ -18,6 +18,69 @@
             UPDATED_ID
         FROM
             TB_SCHEDULE
+    </select>
+
+    <!-- GR_01: 자기 부서 전체 일정 (부서명 포함) -->
+    <select id="getSchedulesForAdmin" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
+        SELECT
+            S.SCHE_ID,
+            S.SCHE_DATE,
+            S.EMPL_ID,
+            S.SCHE_SHIFT,
+            C.CODE_NAME AS DEPT_NAME,
+            S.CREATED_DATE,
+            S.CREATED_ID,
+            S.UPDATED_DATE,
+            S.UPDATED_ID
+        FROM TB_SCHEDULE S
+                 JOIN TB_EMPL E ON S.EMPL_ID = E.EMPL_ID
+                 JOIN TB_CODE C ON E.EMPL_DEPT = C.CODE_ID
+        WHERE E.EMPL_DEPT = #{deptId}
+    </select>
+
+    <!-- GR_02: 팀장 - 본인 팀 팀원 일정 -->
+    <select id="getSchedulesByTeamLeader" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
+        SELECT S.*
+        FROM TB_SCHEDULE S
+        WHERE S.EMPL_ID IN (
+            SELECT E.EMPL_ID
+            FROM TB_EMPL E
+            WHERE E.EMPL_DEPT = (
+                SELECT EMPL_DEPT FROM TB_EMPL WHERE EMPL_ID = #{emplId}
+            )
+        )
+    </select>
+
+    <!-- GR_03: 본인 일정 -->
+    <select id="getSchedulesByEmployee" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
+        SELECT * FROM TB_SCHEDULE
+        WHERE EMPL_ID = #{emplId}
+    </select>
+
+    <insert id="insertSchedule" parameterType="com.mobydick.hms.schedule.vo.ScheduleVO">
+        INSERT INTO TB_SCHEDULE (
+            SCHE_ID, SCHE_DATE, EMPL_ID, SCHE_SHIFT,
+            CREATED_DATE, CREATED_ID, UPDATED_DATE, UPDATED_ID
+        )
+        VALUES (
+                   #{scheId}, #{scheDate}, #{emplId}, #{scheShift},
+                   SYSDATE, #{createdId}, SYSDATE, #{updatedId}
+               )
+    </insert>
+
+    <!-- 등급: GR_01 전체 직원 -->
+    <select id="getAllEmployees" resultType="com.mobydick.hms.schedule.vo.EmpVO">
+        SELECT E.EMPL_ID, E.EMPL_NAME, C.CODE_NAME AS DEPT_NAME
+        FROM TB_EMPL E
+                 JOIN TB_CODE C ON E.EMPL_DEPT = C.CODE_ID
+    </select>
+
+    <!-- 등급: GR_02 팀장 - 자기 부서 직원만 -->
+    <select id="getEmployeesByDept" resultType="com.mobydick.hms.schedule.vo.EmpVO">
+        SELECT E.EMPL_ID, E.EMPL_NAME, C.CODE_NAME AS DEPT_NAME
+        FROM TB_EMPL E
+                 JOIN TB_CODE C ON E.EMPL_DEPT = C.CODE_ID
+        WHERE E.EMPL_DEPT = #{deptId}
     </select>
 
 

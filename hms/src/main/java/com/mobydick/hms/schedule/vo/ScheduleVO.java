@@ -8,13 +8,20 @@ import java.sql.Date;
 @Data
 public class ScheduleVO {
 
-    private String scheId;
-    private String scheDate;
-    private String emplId;
-    private String scheShift;
-    private Date createdDate;
-    private String createdId;
-    private Date updatedDate;
-    private String updatedId;
+    private String scheId;      // 근무일정 ID
+    private Date scheDate;      // 근무 날짜
+    private String emplId;      // 직원 ID
+    private String scheShift;   // 근무조
+    private Date createdDate;   // 작성일자
+    private String createdId;   // 작성자 ID
+    private Date updatedDate;   // 수정일자
+    private String updatedId;   // 수정자 ID
+
+    // 세션 정보용
+    private String emplGrade;
+    private String emplDept;
+
+    // 부서명 (GR_01 출력용)
+    private String deptName;
 
 }
