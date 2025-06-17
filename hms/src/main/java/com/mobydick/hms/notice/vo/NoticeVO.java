@@ -18,7 +18,7 @@ public class NoticeVO {
     private Date createdDate;   // 작성일자
     private String createdId;   // 작성자 ID
     private Date updatedDate;   // 수정일자
-    private String updateId;    // 수정자 ID
+    private String updatedId;    // 수정자 ID
 
 
 }

@@ -21,28 +21,39 @@
                     UPDATED_ID
                 FROM
                     TB_NOTICE
-                ORDER BY NOTICE_ID
+                ORDER BY CREATED_DATE DESC
         ]]>
     </select>
 
+    <!-- 공지사항 상세 조회 -->
+    <select id="selectNoticeById" parameterType="int" resultType="com.mobydick.hms.notice.vo.NoticeVO">
+        SELECT
+            NOTICE_ID,
+            NOTICE_TITLE,
+            EMPL_ID,
+            NOTICE_CONTENT,
+            CREATED_DATE,
+            CREATED_ID,
+            UPDATED_DATE,
+            UPDATED_ID
+        FROM
+            TB_NOTICE
+        WHERE NOTICE_ID = #{noticeId}
+    </select>
+
     <!-- 공지사항 등록 -->
-    <insert id="insertNotice" parameterType="com.mobydick.hms.notice.vo.NoticeVO">
+    <insert id="insertNotice" parameterType="com.mobydick.hms.notice.vo.NoticeVO"
+            useGeneratedKeys="true" keyProperty="noticeId">
         INSERT INTO TB_NOTICE (
-        NOTICE_ID,
-        NOTICE_TITLE,
-        EMPL_ID,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
-        ) VALUES (
-        #{noticeId},
-        #{noticeTitle},
-        #{emplId},
-        #{createdDate},
-        #{createdId},
-        #{updatedDate},
-        #{updatedId}
+            NOTICE_TITLE,
+            EMPL_ID,
+            NOTICE_CONTENT,
+            CREATED_ID
+            ) VALUES (
+            #{noticeTitle},
+            #{emplId},
+            #{noticeContent},
+            #{createdId}
         )
     </insert>
 
@@ -51,13 +62,16 @@
     <update id="updateNotice" parameterType="com.mobydick.hms.notice.vo.NoticeVO">
         UPDATE TB_NOTICE
         SET
-        NOTICE_TITLE = #{noticeTitle}
-        UPDATED_DATE = #{updatedDate}
-        UPDATED_ID = #{updatedId}
+            NOTICE_TITLE = #{noticeTitle},
+            NOTICE_CONTENT = #{noticeContent},
+            UPDATED_DATE = SYSDATE,
+            UPDATED_ID = #{updatedId}
+        WHERE
+            NOTICE_ID = #{noticeId}
     </update>
 
     <!-- 공지사항 삭제 -->
-    <delete id="deleteRoom" parameterType="string">
+    <delete id="deleteNotice" parameterType="int">
         DELETE FROM TB_NOTICE WHERE NOTICE_ID = #{noticeId}
     </delete>
 

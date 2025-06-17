@@ -1,6 +1,6 @@
 package com.mobydick.hms.notice.dao;
 
-import com.mobydick.hms.notice.vo.NoticeVO;
+import com.mobydick.hms.notice.vo.NoticeVO; //NoticeVO 임포트
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
 
@@ -10,8 +10,11 @@ import java.util.List;
 @Mapper
 public interface NoticeDAO {
 
-        // 공지사항 조회
+        // 공지사항 목록 조회
         List<NoticeVO> selectAllNotice() throws DataAccessException;
+
+        // 공지사항 상세 조회
+        NoticeVO selectNoticeById(int noticeId);
 
         // 공지사항 등록
         void insertNotice(NoticeVO notice) throws DataAccessException;
