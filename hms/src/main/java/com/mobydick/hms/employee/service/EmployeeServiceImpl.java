@@ -19,4 +19,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeVO> selectAllEmployees() throws Exception {
         return employeeDAO.selectAllEmployees();
     }
+
+    // 직원 등록
+    @Override
+    public void insertEmployee(EmployeeVO employeeVO) throws Exception {
+
+        if (employeeDAO.countEmployeeById(employeeVO.getEmplId()) > 0) {
+            throw new IllegalArgumentException("이미 존재하는 직원 ID입니다.");
+        }
+
+        employeeDAO.insertEmployee(employeeVO);
+    }
+
+
+
+
 }
