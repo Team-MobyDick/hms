@@ -1,4 +1,46 @@
 
+document.addEventListener("DOMContentLoaded", function () {
+    // 서버에서 넘긴 날짜
+    const dateStr = document.getElementById("serverDate").value;
+    let currentDate = new Date(dateStr);
+
+    function updateDateDisplay() {
+        const yyyy = currentDate.getFullYear();
+        const mm = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(currentDate.getDate()).padStart(2, '0');
+        const formatted = `${yyyy}-${mm}-${dd}`;
+        document.getElementById("dateText").textContent = formatted;
+        document.getElementById("datePicker").value = formatted;
+    }
+
+    // 날짜 클릭 시 input[type=date] 보이기
+    $('#dateText').on('click', function () {
+        $('#dateText').addClass('hidden');
+        $('#datePicker').removeClass('hidden').focus();
+    });
+
+    // input에서 날짜 선택 시 반영
+    $('#datePicker').on('change', function () {
+        currentDate = new Date($(this).val());
+        updateDateDisplay();
+        $('#datePicker').addClass('hidden');
+        $('#dateText').removeClass('hidden');
+    });
+
+    // 하루씩 이동
+    $('#prevBtn').on('click', function () {
+        currentDate.setDate(currentDate.getDate() - 1);
+        updateDateDisplay();
+    });
+
+    $('#nextBtn').on('click', function () {
+        currentDate.setDate(currentDate.getDate() + 1);
+        updateDateDisplay();
+    });
+
+    // 초기 화면 표시
+    updateDateDisplay();
+});
 
 $(document).ready(function () {
 
