@@ -1,4 +1,5 @@
 const userRole = userRoleJs;
+const userDept = userDeptJs;
 
 const gradeMap = {
     'GR_01': '총지배인',
@@ -78,7 +79,9 @@ $(document).ready(function () {
             $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
             $buttonArea.append('<button class="action-btn btn-delete">삭제</button> ');
         } else if (userRole === 'GR_02') {
-            $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
+            if (typeof userDept !== 'undefined' && userDept === dept) { // 로그인한 팀장의 부서와 클릭된 직원의 부서가 같으면
+                $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
+            }
         }
         $buttonArea.append('<button class="action-btn btn-close">닫기</button>');
 
@@ -93,7 +96,7 @@ $(document).ready(function () {
     // 신규 등록 폼 열기/닫기
     $('#add_btn').click(() => $('#newEmployeeForm').toggle(300));
     $('#add_cancel').click(() => {
-        $('#newEmployeeForm')[0].reset(); // Reset form fields
+        $('#newEmployeeForm')[0].reset();
         $('#newEmployeeForm').hide(300);
     });
 
@@ -101,20 +104,20 @@ $(document).ready(function () {
     $('#newEmployeeForm').on('submit', function (e) {
         e.preventDefault();
 
-        const formData = $(this).serialize(); // Serialize form data
+        const formData = $(this).serialize();
 
         $.ajax({
-            url: contextPath + '/employee/register', // 전역 contextPath 변수 사용
+            url: contextPath + '/employee/register',
             type: 'POST',
             data: formData,
-            success: (response) => { // response는 ResponseEntity의 body
-                alert(response); // 서버로부터 받은 성공 메시지 표시
-                location.reload(); // 페이지 새로고침하여 새 직원 표시
+            success: (response) => {
+                alert(response);
+                location.reload();
             },
             error: (xhr, status, error) => {
                 let errorMessage = '등록 중 오류가 발생했습니다.';
                 if (xhr.responseText) {
-                    errorMessage += ': ' + xhr.responseText; // 서버 오류 메시지 표시
+                    errorMessage += ': ' + xhr.responseText;
                 } else if (error) {
                     errorMessage += ': ' + error;
                 }
@@ -122,5 +125,62 @@ $(document).ready(function () {
                 console.error("AJAX Error:", status, error, xhr.responseText);
             }
         });
+    });
+
+    // 상세 폼 수정 버튼 제출 (AJAX)
+    $(document).on('click', '.btn-update', function () {
+        const $detailTable = $(this).closest('table');
+        const formData = {};
+        $detailTable.find('input, select, textarea').each(function() {
+            formData[$(this).attr('name')] = $(this).val();
+        });
+
+        $.ajax({
+            url: contextPath + '/employee/update',
+            type: 'POST',
+            data: formData,
+            success: (response) => {
+                alert(response);
+                location.reload();
+            },
+            error: (xhr, status, error) => {
+                let errorMessage = '직원 정보 수정 중 오류가 발생했습니다.';
+                if (xhr.responseText) {
+                    errorMessage += ': ' + xhr.responseText;
+                } else if (error) {
+                    errorMessage += ': ' + error;
+                }
+                alert(errorMessage);
+                console.error("AJAX Error:", status, error, xhr.responseText);
+            }
+        });
+    });
+
+    // 상세 폼 삭제 버튼 제출 (AJAX)
+    $(document).on('click', '.btn-delete', function () {
+        const $detailTable = $(this).closest('table');
+        const emplIdToDelete = $detailTable.find('input[name="emplId"]').val();
+
+        if (confirm(`직원 ID: ${emplIdToDelete} 을(를) 정말 삭제하시겠습니까?`)) {
+            $.ajax({
+                url: contextPath + '/employee/delete',
+                type: 'POST',
+                data: { emplId: emplIdToDelete },
+                success: (response) => {
+                    alert(response);
+                    location.reload();
+                },
+                error: (xhr, status, error) => {
+                    let errorMessage = '직원 삭제 중 오류가 발생했습니다.';
+                    if (xhr.responseText) {
+                        errorMessage += ': ' + xhr.responseText;
+                    } else if (error) {
+                        errorMessage += ': ' + error;
+                    }
+                    alert(errorMessage);
+                    console.error("AJAX Error:", status, error, xhr.responseText);
+                }
+            });
+        }
     });
 });
