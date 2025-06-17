@@ -6,14 +6,51 @@
 
 <jsp:useBean id="now" class="java.util.Date" />
 <c:set var="setDate" value="${now}" />
+<fmt:formatDate value="${setDate}" pattern="yyyy/MM/dd" var="formattedDate" />
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>업무</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        .date-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            margin: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        #dateText {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+
 </head>
 <body data-role="${userRole}">
+<input type="hidden" id="serverDate" value="${formattedDate}" />
     <h2>업무 목록</h2>
+
+    <div class="date-container">
+        <button id="prevBtn">←</button>
+
+        <div>
+            <span id="dateText">${formattedDate}</span>
+            <input type="date" id="datePicker" class="hidden">
+        </div>
+
+        <button id="nextBtn">→</button>
+    </div>
+
     <button id="add_btn">업무 등록</button>
 
     <table>
@@ -55,4 +92,5 @@
         </tbody>
     </table>
 </body>
+<script src="/js/work.js"></script>
 </html>

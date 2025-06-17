@@ -115,9 +115,7 @@
                  JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
                  LEFT JOIN TB_WORK_D w ON s.EMPL_ID = w.EMPL_ID AND s.SCHE_DATE = w.WORKD_DATE
                  LEFT JOIN TB_CODE c_state ON w.WORKD_STATE = c_state.CODE_ID
-        WHERE TO_DATE(s.SCHE_DATE, 'RR/MM/DD HH24:MI:SS')
-                  BETWEEN TO_DATE(#{start}, 'YYYY-MM-DD"T"HH24:MI:SS')
-                  AND TO_DATE(#{end}, 'YYYY-MM-DD"T"HH24:MI:SS')
+        WHERE s.SCHE_DATE LIKE #{start}
     </select>
 
     <select id="getSchedulesForAdminBetween" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
