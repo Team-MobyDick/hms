@@ -3,6 +3,7 @@ package com.mobydick.hms.employee.controller;
 import com.mobydick.hms.employee.service.EmployeeService;
 import com.mobydick.hms.employee.vo.EmployeeVO;
 import com.mobydick.hms.login.vo.LoginVO;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,7 @@ public class EmployeeController {
             model.addAttribute("userRole", "");
             model.addAttribute("userDept", "");
         }
+        model.addAttribute("screenTitle", "직원 관리");
         model.addAttribute("bodyPage", "employee/employee.jsp");
         return "index";
     }
@@ -142,7 +144,8 @@ public class EmployeeController {
     public ResponseEntity<?> uploadEmployeePhoto(
             @RequestParam("emplId") String emplId,
             @RequestParam("photo") MultipartFile file,
-            HttpSession session) {
+            HttpSession session
+            ) {
         try {
             LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
             if (loginUser == null || loginUser.getEmplId() == null) {

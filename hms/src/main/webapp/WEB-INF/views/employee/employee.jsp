@@ -70,7 +70,7 @@
                                 <td data-label="사진">
                                     <div class="photo-container">
                                         <c:if test="${not empty emp.photoName}">
-                                            <img src="${pageContext.request.contextPath}/${emp.photoPath}/${emp.photoName}" alt="사진" />
+                                            <img src="/employee_photos/${emp.photoName}" alt="사진"/>
                                         </c:if>
                                     </div>
                                 </td>
