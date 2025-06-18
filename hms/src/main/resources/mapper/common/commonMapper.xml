@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobydick.hms.common.dao.CommonDAO">
+
+    <select id="selectRandomEmployeesGR03" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
+        <![CDATA[
+        SELECT
+            EMPL_ID,
+            EMPL_NAME,
+            EMPL_DEPT,
+            EMPL_GRADE,
+            PHOTO_NAME,
+            PHOTO_PATH
+        FROM (
+            SELECT
+                EMPL_ID,
+                EMPL_NAME,
+                EMPL_DEPT,
+                EMPL_GRADE,
+                PHOTO_NAME,
+                PHOTO_PATH
+            FROM TB_EMPL
+            WHERE EMPL_GRADE = 'GR_03'
+            ORDER BY DBMS_RANDOM.VALUE -- Oracle에서 랜덤 정렬
+        )
+        WHERE ROWNUM <= 3
+        ]]>
+    </select>
+
+    <select id="selectWeeklySchedules" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
+        <![CDATA[
+    SELECT
+        SCHE_ID,
+        SCHE_DATE,
+        EMPL_ID,
+        SCHE_SHIFT,
+        CREATED_DATE
+    FROM TB_SCHEDULE
+    WHERE TO_DATE(TRIM(SCHE_DATE), 'YYYY/MM/DD HH24:MI:SS') BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+    ORDER BY SCHE_DATE ASC
+    ]]>
+    </select>
+
+    <select id="selectLatestNotices" resultType="com.mobydick.hms.notice.vo.NoticeVO">
+        <![CDATA[
+        SELECT
+            NOTICE_ID,
+            NOTICE_TITLE,
+            EMPL_ID,
+            CREATED_DATE
+        FROM (
+            SELECT
+                NOTICE_ID,
+                NOTICE_TITLE,
+                EMPL_ID,
+                CREATED_DATE
+            FROM TB_NOTICE
+            ORDER BY CREATED_DATE DESC, NOTICE_ID DESC
+        )
+        WHERE ROWNUM <= 3
+        ]]>
+    </select>
+
+</mapper>
