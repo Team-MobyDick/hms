@@ -189,7 +189,7 @@
                     <c:when test="${not empty latestNotices}">
                         <c:forEach var="notice" items="${latestNotices}">
                             <li>
-                                <a href="${pageContext.request.contextPath}/notice/list">
+                                <a href="${pageContext.request.contextPath}/anno/list">
                                     <span class="list-item-title">${notice.noticeTitle}</span>
                                     <span class="list-item-date"><fmt:formatDate value="${notice.createdDate}" pattern="yyyy.MM.dd" /></span>
                                 </a>
