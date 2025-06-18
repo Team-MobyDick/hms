@@ -88,7 +88,7 @@
                 <th>동작</th>
             </tr>
             <tr>
-                <td><input type="text" name="roomName" placeholder="객실 이름"></td>
+                <td><input id="roomName" type="text" name="roomName" placeholder="객실 이름" maxlength="100"></td>
                 <td>
                     <select name="roomType" id="roomType"></select>
                 </td>

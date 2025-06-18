@@ -84,6 +84,8 @@
             </tbody>
         </table>
 
+        <jsp:include page="/WEB-INF/views/include/pagination.jsp" />
+
         <form id="newEmployeeForm" hidden>
             <h3>새 직원 등록</h3>
             <table>

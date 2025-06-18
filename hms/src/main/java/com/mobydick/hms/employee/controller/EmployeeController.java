@@ -46,11 +46,23 @@ public class EmployeeController {
 
     // 직원 목록 조회
     @GetMapping("/list")
-    public String employeeList(Model model, HttpSession session) throws Exception {
-        List<EmployeeVO> employeeList = employeeService.selectAllEmployees();
-        model.addAttribute("employeeList", employeeList);
+    public String employeeList(Model model, @RequestParam(defaultValue = "1") int page, HttpSession session) throws Exception {
+
+        int pageSize = 10; // 페이지당 항목 수
+        int totalCount =  employeeService.selectAllEmployees().size();
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+        int startIndex = (page - 1) * pageSize;
+
+        List<EmployeeVO> employeeList = employeeService.selectAllEmployees().subList(startIndex, Math.min(startIndex + pageSize, totalCount));
+
+        System.out.println("test = " + employeeList.toString());
 
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+        model.addAttribute("currentPage", page);                        // 현재 페이지
+        model.addAttribute("totalPages", totalPages);                   // 전체 페이지 수
+
+
         if (loginUser != null) {
             model.addAttribute("userRole", loginUser.getEmplGrade());
             model.addAttribute("userDept", loginUser.getEmplDept()); // userDept도 JSP로 전달
@@ -58,8 +70,11 @@ public class EmployeeController {
             model.addAttribute("userRole", "");
             model.addAttribute("userDept", "");
         }
+
         model.addAttribute("screenTitle", "직원 관리");
+        model.addAttribute("employeeList", employeeList);
         model.addAttribute("bodyPage", "employee/employee.jsp");
+
         return "index";
     }
 
