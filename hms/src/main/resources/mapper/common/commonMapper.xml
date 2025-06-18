@@ -32,16 +32,16 @@
 
     <select id="selectWeeklySchedules" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         <![CDATA[
-    SELECT
-        SCHE_ID,
-        SCHE_DATE,
-        EMPL_ID,
-        SCHE_SHIFT,
-        CREATED_DATE
-    FROM TB_SCHEDULE
-    WHERE TO_DATE(TRIM(SCHE_DATE), 'YYYY/MM/DD HH24:MI:SS') BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
-    ORDER BY SCHE_DATE ASC
-    ]]>
+        SELECT
+            SCHE_ID,
+            SCHE_DATE,
+            EMPL_ID,
+            SCHE_SHIFT,
+            CREATED_DATE
+        FROM TB_SCHEDULE
+        WHERE SCHE_DATE BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+        ORDER BY SCHE_DATE ASC
+        ]]>
     </select>
 
     <select id="selectLatestNotices" resultType="com.mobydick.hms.notice.vo.NoticeVO">
