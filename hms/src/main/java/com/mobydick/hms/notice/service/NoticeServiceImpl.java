@@ -20,7 +20,7 @@ public class NoticeServiceImpl implements NoticeService{
     @Override
     @Transactional(readOnly = true) // 조회 전용 트랜잭션 설정
     public List<NoticeVO> selectAllNotices() throws Exception {
-        return noticeDAO.selectAllNotice(); //DAO 메서드 이름과 일치하는지 확인 (DAO에서는 selectAllNotice())
+        return noticeDAO.selectAllNotices(); //DAO 메서드 이름과 일치하는지 확인 (DAO에서는 selectAllNotice())
     }
 
     // 공지사항 상세

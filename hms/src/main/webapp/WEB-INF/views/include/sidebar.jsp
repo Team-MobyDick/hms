@@ -22,7 +22,7 @@
 
             <li onclick="location.href='${pageContext.request.contextPath}/work/list'">업무관리</li>
             <li onclick="location.href='${pageContext.request.contextPath}/schedule/list'">스케줄</li>
-            <li onclick="location.href='${pageContext.request.contextPath}/anno/list'">공지사항</li>
+            <li onclick="location.href='${pageContext.request.contextPath}/notice/list'">공지사항</li>
 
           </ul>
 
