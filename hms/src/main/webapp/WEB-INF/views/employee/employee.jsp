@@ -75,7 +75,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            <button onclick="alertImagePath('${emp.photoPath}', '${emp.photoName}')">경로 확인</button>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
@@ -139,7 +138,6 @@
             }
             
         </script>
-        <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
 
     </body>
 
