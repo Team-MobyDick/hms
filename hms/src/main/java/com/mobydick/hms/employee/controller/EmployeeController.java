@@ -58,6 +58,7 @@ public class EmployeeController {
             model.addAttribute("userRole", "");
             model.addAttribute("userDept", "");
         }
+        model.addAttribute("screenTitle", "직원 관리");
         model.addAttribute("bodyPage", "employee/employee.jsp");
         return "index";
     }
