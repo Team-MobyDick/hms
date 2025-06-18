@@ -76,12 +76,31 @@
                             data-createdId="${workM.createdId}"
                             data-updatedDate="${workM.updatedDate}"
                             data-updatedId="${workM.updatedId}">
-                            <td data-label="level">"주 업무"</td>
+                            <td data-label="level">주 업무</td>
                             <td data-label="업무명">${workM.workMName}</td>
-                            <td data-label="부서">${workM.workMDept}</td>
+                            <td data-label="부서">${codeMap[workM.workMDept]}</td>
                             <td data-label="담당자"></td>
-                            <td data-label="중요도">${workM.workMImpo}</td>
+                            <td data-label="중요도">${codeMap[workM.workMImpo]}</td>
                             <td data-label="업무배분"><button>업무배분</button></td>
+                        </tr>
+                    </c:forEach>
+                </c:when>
+                <c:when test="${not empty workDList}">
+                    <c:forEach var="workD" items="${workDList}">
+                        <tr class="workD-row"
+                            data-workM="${workD.workDName}"
+                            data-dept="${workM.workMDept}"
+                            data-workM-id="${workM.workMId}"
+                            data-createdDate="${workM.createdDate}"
+                            data-createdId="${workM.createdId}"
+                            data-updatedDate="${workM.updatedDate}"
+                            data-updatedId="${workM.updatedId}">
+                            <td data-label="level"></td>
+                            <td data-label="업무명">${workD.workDName}</td>
+                            <td data-label="부서"></td>
+                            <td data-label="담당자">${workD.emplName}</td>
+                            <td data-label="중요도">${codeMap[workD.workDImpo]}</td>
+                            <td data-label="업무일자">${workD.workDDate}</td>
                         </tr>
                     </c:forEach>
                 </c:when>
