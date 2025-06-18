@@ -3,6 +3,7 @@ package com.mobydick.hms.employee.controller;
 import com.mobydick.hms.employee.service.EmployeeService;
 import com.mobydick.hms.employee.vo.EmployeeVO;
 import com.mobydick.hms.login.vo.LoginVO;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -142,7 +143,9 @@ public class EmployeeController {
     public ResponseEntity<?> uploadEmployeePhoto(
             @RequestParam("emplId") String emplId,
             @RequestParam("photo") MultipartFile file,
-            HttpSession session) {
+            HttpSession session,
+            HttpServletRequest request
+            ) {
         try {
             LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
             if (loginUser == null || loginUser.getEmplId() == null) {
@@ -151,6 +154,9 @@ public class EmployeeController {
 
             String userRole = loginUser.getEmplGrade();
             String userDept = loginUser.getEmplDept();
+
+            String uploadPath = request.getSession().getServletContext().getRealPath("/").concat("images");
+            String imgUploadPath = uploadPath + File.separator + "empImages";
 
             // GR_01 (총지배인) 또는 GR_02 (팀장)만 사진 업로드/수정 가능
             if (!"GR_01".equals(userRole) && !"GR_02".equals(userRole)) {
@@ -182,8 +188,11 @@ public class EmployeeController {
             String uniqueFilename = UUID.randomUUID().toString() + fileExtension; // 고유한 파일명 생성
             Path filePath = Paths.get(uploadDir, uniqueFilename);
 
+            Path filePath2 = Paths.get(imgUploadPath, uniqueFilename);
+
             // 파일을 서버에 저장
             Files.copy(file.getInputStream(), filePath);
+            Files.copy(file.getInputStream(), filePath2);
 
             // DB 업데이트
             EmployeeVO employeeVO = new EmployeeVO();
