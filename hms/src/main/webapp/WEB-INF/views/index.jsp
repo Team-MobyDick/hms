@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>호텔 관리 시스템</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- 공통 CSS (순서 중요: reset → layout → header/sidebar/footer → 개별 페이지) -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css"/>
