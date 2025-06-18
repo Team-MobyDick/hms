@@ -99,8 +99,8 @@
                     <th>동작</th>
                 </tr>
                 <tr>
-                    <td><input type="text" name="emplId" placeholder="ID" required></td>
-                    <td><input type="text" name="emplName" placeholder="이름" required></td>
+                    <td><input type="text" name="emplId" placeholder="ID" maxlength="30" required></td>
+                    <td><input type="text" name="emplName" placeholder="이름" maxlength="50" required></td>
                     <td>
                         <select name="emplDept" required>
                             <option value="">부서 선택</option>
@@ -117,8 +117,8 @@
                             <option value="GR_03">일반</option>
                         </select>
                     </td>
-                    <td><input type="text" name="emplPhone" placeholder="연락처"></td>
-                    <td><textarea name="emplNotes" placeholder="메모"></textarea></td>
+                    <td><input type="text" name="emplPhone" placeholder="연락처" maxlength="14"></td>
+                    <td><textarea name="emplNotes" placeholder="메모" maxlength="2000"></textarea></td>
                     <td>
                         <button type="submit">등록</button>
                         <button type="button" id="add_cancel">취소</button>
