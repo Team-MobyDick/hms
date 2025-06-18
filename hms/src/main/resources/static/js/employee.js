@@ -160,8 +160,14 @@ $(document).ready(function () {
         // emplId는 readonly input에서 직접 가져옵니다.
         const emplId = $detailTable.find('input[name="emplId"]').val();
 
+        const $employeeRow = $detailSlide.prev('.employee-row');
+        const photoName = $employeeRow.data("photo-name") || "";
+        const photoPath = $employeeRow.data("photo-path") || "employee_photos";
+
         const formData = {
-            emplId: emplId // ID는 수정 불가이므로 명시적으로 추가
+            emplId: emplId, // ID는 수정 불가이므로 명시적으로 추가
+            photoName: photoName,
+            photoPath: photoPath,
         };
         $detailTable.find('input:not([name="emplId"]), select, textarea').each(function() {
             formData[$(this).attr('name')] = $(this).val();

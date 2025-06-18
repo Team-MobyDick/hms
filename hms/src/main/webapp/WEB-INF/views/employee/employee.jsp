@@ -130,14 +130,8 @@
             var contextPath = "${pageContext.request.contextPath}";
             var userRoleJs = "${userRole}";
             var userDeptJs = "${userDept}";
-            
-            
-            function alertImagePath(path, name) {
-                const fullPath = "/" + path + "/" + name;
-                alert("이미지 경로: " + fullPath);
-            }
-            
         </script>
+        <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
 
     </body>
 
