@@ -70,11 +70,12 @@
                                 <td data-label="사진">
                                     <div class="photo-container">
                                         <c:if test="${not empty emp.photoName}">
-                                            <img src="${pageContext.request.contextPath}/${emp.photoPath}/${emp.photoName}" alt="사진" />
+                                            <img src="/employee_photos/${emp.photoName}" alt="사진"/>
                                         </c:if>
                                     </div>
                                 </td>
                             </tr>
+                            <button onclick="alertImagePath('${emp.photoPath}', '${emp.photoName}')">경로 확인</button>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
@@ -130,6 +131,13 @@
             var contextPath = "${pageContext.request.contextPath}";
             var userRoleJs = "${userRole}";
             var userDeptJs = "${userDept}";
+            
+            
+            function alertImagePath(path, name) {
+                const fullPath = "/" + path + "/" + name;
+                alert("이미지 경로: " + fullPath);
+            }
+            
         </script>
         <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
 

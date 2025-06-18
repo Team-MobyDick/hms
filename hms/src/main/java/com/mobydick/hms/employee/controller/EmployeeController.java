@@ -144,8 +144,7 @@ public class EmployeeController {
     public ResponseEntity<?> uploadEmployeePhoto(
             @RequestParam("emplId") String emplId,
             @RequestParam("photo") MultipartFile file,
-            HttpSession session,
-            HttpServletRequest request
+            HttpSession session
             ) {
         try {
             LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
@@ -155,9 +154,6 @@ public class EmployeeController {
 
             String userRole = loginUser.getEmplGrade();
             String userDept = loginUser.getEmplDept();
-
-            String uploadPath = request.getSession().getServletContext().getRealPath("/").concat("images");
-            String imgUploadPath = uploadPath + File.separator + "empImages";
 
             // GR_01 (총지배인) 또는 GR_02 (팀장)만 사진 업로드/수정 가능
             if (!"GR_01".equals(userRole) && !"GR_02".equals(userRole)) {
@@ -189,11 +185,8 @@ public class EmployeeController {
             String uniqueFilename = UUID.randomUUID().toString() + fileExtension; // 고유한 파일명 생성
             Path filePath = Paths.get(uploadDir, uniqueFilename);
 
-            Path filePath2 = Paths.get(imgUploadPath, uniqueFilename);
-
             // 파일을 서버에 저장
             Files.copy(file.getInputStream(), filePath);
-            Files.copy(file.getInputStream(), filePath2);
 
             // DB 업데이트
             EmployeeVO employeeVO = new EmployeeVO();
