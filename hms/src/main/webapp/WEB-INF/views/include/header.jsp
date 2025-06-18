@@ -7,7 +7,7 @@
     <!-- 좌측: 메뉴 아이콘 -->
     <div class="header-left">
         <div class="menu-icon" id="menuToggle">☰</div>
-        <img src="../../images/sample.jpg" onclick="goMain('/');"></img>
+        <img src="../../images/sample.jpg" onclick="goMain();"></img>
         <div class="screen-title">${screenTitle}</div>
     </div>
 

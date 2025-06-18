@@ -1,24 +1,6 @@
-function goMain(url) {
+// header.js(메인 메뉴 이동용)
+function goMain() {
 
-  if(url == '/'){
-    location.reload(true);
-    return;
-  }
-
-  $.ajax({
-    type: 'POST',
-    url: url,
-    async:false,
-    data: "",
-    contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-    success: function(data) {
-      $('#Container').html(data);
-
-      if(isMenuHide) menuOff();
-    },
-    error: function(request, status, error) {
-      alert(error);
-    }
-  });
+    location.href = "/";
 
 }
