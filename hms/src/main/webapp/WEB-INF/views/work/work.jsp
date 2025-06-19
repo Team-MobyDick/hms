@@ -102,7 +102,7 @@
                         <tr class="workM-row"
                             data-workm-name="${workM.workMName}"
                             data-workm-dept="${workM.workMDept}"
-                            data-workd-impo="${workM.workDImpo}"
+                            data-workm-impo="${workM.workMImpo}"
                             data-workm-id="${workM.workMId}"
                             data-date="${formattedDate}"
                             data-workm-context="${workM.workMContext}"

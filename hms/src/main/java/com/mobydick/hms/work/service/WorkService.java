@@ -28,6 +28,7 @@ public interface WorkService {
     List<WorkVO> getDetailWorkList(String workMId, String date);
 
     // 상세 업무 등록 (최고관리자, 중간관리자)
+    void insertWorkD(WorkVO vo) throws Exception;
 
     // 상세 업무 수정 (최고관리자, 중간관리자, 직원)
 
@@ -35,8 +36,10 @@ public interface WorkService {
 
 
 
-    // 부서,중요도 목록 가져오기
+    // 부서,중요도,방,직원 목록 가져오기
     List<WorkVO> getDept();
     List<WorkVO> getImpo();
+    List<WorkVO> getRoom();
+    List<WorkVO> getEmpl();
 
 }

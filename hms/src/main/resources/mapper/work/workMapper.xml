@@ -76,6 +76,35 @@
         )
     </insert>
 
+    <!-- 상세 업무 등록 -->
+    <insert id="insertWorkD" parameterType="com.mobydick.hms.work.vo.WorkVO">
+        INSERT INTO TB_WORK_D (
+        WORKD_ID,
+        WORKM_ID,
+        WORKD_NAME,
+        EMPL_ID,
+        WORKD_DATE,
+        ROOM_ID,
+        WORKD_DEPT,
+        WORKD_CONTEXT,
+        WORKD_IMPO,
+        CREATED_DATE,
+        CREATED_ID
+        ) VALUES (
+        #{workDId},
+        #{workMId},
+        #{workDName},
+        #{workDEmplId},
+        #{workDDate},
+        #{workDRoomId},
+        #{workDDept},
+        #{workDContext},
+        #{workDImpo},
+        SYSDATE,
+        #{createdId}
+        )
+    </insert>
+
     <!-- 주 업무 클릭시 해당 일자 상세업무 리스트 조회 -->
     <select id="getDetailWorkList" resultType="com.mobydick.hms.work.vo.WorkVO">
         SELECT  a.workd_id,
@@ -102,6 +131,7 @@
         LEFT JOIN TB_ROOM c on a.room_id = c.room_id
         WHERE a.workm_id = #{workMId}
         AND TO_CHAR(a.workd_date, 'YYYYMMDD') = #{date}
+        ORDER BY a.workd_name
     </select>
 
     <!-- 부서 목록 조회 (TP 코드만) -->
@@ -122,6 +152,24 @@
         FROM TB_CODE
         WHERE CODE_ID LIKE 'IM%'
         ORDER BY CODE_ID
+    </select>
+
+    <!-- 방 목록 조회 (TP 코드만) -->
+    <select id="getRoom" resultType="com.mobydick.hms.work.vo.WorkVO">
+        SELECT
+        ROOM_ID AS codeId,
+        ROOM_NAME AS codeName
+        FROM TB_ROOM
+        ORDER BY ROOM_NAME
+    </select>
+
+    <!-- 직원 목록 조회 (TP 코드만) -->
+    <select id="getEmpl" resultType="com.mobydick.hms.work.vo.WorkVO">
+        SELECT
+        EMPL_ID AS codeId,
+        EMPL_NAME AS codeName
+        FROM TB_EMPL
+        ORDER BY EMPL_NAME
     </select>
 
 </mapper>

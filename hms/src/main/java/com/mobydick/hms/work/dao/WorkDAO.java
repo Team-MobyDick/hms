@@ -23,5 +23,11 @@ public interface WorkDAO {
 
     List<WorkVO> getImpo() throws DataAccessException;
 
+    List<WorkVO> getRoom() throws DataAccessException;
+
+    List<WorkVO> getEmpl() throws DataAccessException;
+
     void insertWorkM(WorkVO workM) throws DataAccessException;
+
+    void insertWorkD(WorkVO workD) throws DataAccessException;
 }

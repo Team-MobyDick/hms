@@ -1,8 +1,12 @@
 
 let deptMap = [];
 let impoMap = [];
+let roomMap = [];
+let emplMap = [];
 let deptList = [];
 let impoList = [];
+let roomList = [];
+let emplList = [];
 
 document.addEventListener("DOMContentLoaded", function () {
     // 서버에서 넘긴 날짜
@@ -51,7 +55,7 @@ $(document).ready(function () {
 
     // 부서 목록 조회 (서버에서 가져오기)
     $.ajax({
-        url: '/work/deptTypes', // 서버에서 방 타입 목록을 가져옵니다.
+        url: '/work/deptTypes', // 서버에서 부서 타입 목록을 가져옵니다.
         type: 'GET',
         success: function(data) {
             deptList = data;
@@ -59,7 +63,7 @@ $(document).ready(function () {
                 deptMap[rt.codeId] = rt.codeName; // map에 추가
             });
 
-            // 방 타입을 등록 폼의 셀렉트 박스에 추가
+            // 부서 타입을 등록 폼의 셀렉트 박스에 추가
             populateDept();
         },
         error: function() {
@@ -69,7 +73,7 @@ $(document).ready(function () {
 
     // 중요도 목록 조회 (서버에서 가져오기)
     $.ajax({
-        url: '/work/impoTypes', // 서버에서 방 타입 목록을 가져옵니다.
+        url: '/work/impoTypes', // 서버에서 중요도 타입 목록을 가져옵니다.
         type: 'GET',
         success: function(data) {
             impoList = data;
@@ -77,8 +81,38 @@ $(document).ready(function () {
                 impoMap[rt.codeId] = rt.codeName; // map에 추가
             });
 
-            // 방 타입을 등록 폼의 셀렉트 박스에 추가
+            // 중요도 타입을 등록 폼의 셀렉트 박스에 추가
             populateImpo();
+        },
+        error: function() {
+            console.error("중요도 목록을 불러오는 데 실패했습니다.");
+        }
+    });
+
+    // 방 목록 전체 조회 (서버에서 가져오기)
+    $.ajax({
+        url: '/work/roomTypes', // 서버에서 방 타입 목록을 가져옵니다.
+        type: 'GET',
+        success: function(data) {
+            roomList = data;
+            roomList.forEach(rt => {
+                roomMap[rt.codeId] = rt.codeName; // map에 추가
+            });
+        },
+        error: function() {
+            console.error("중요도 목록을 불러오는 데 실패했습니다.");
+        }
+    });
+
+    // 부서별 사원 목록 조회 (서버에서 가져오기)
+    $.ajax({
+        url: '/work/emplTypes', // 서버에서 방 타입 목록을 가져옵니다.
+        type: 'GET',
+        success: function(data) {
+            emplList = data;
+            emplList.forEach(rt => {
+                emplMap[rt.codeId] = rt.codeName; // map에 추가
+            });
         },
         error: function() {
             console.error("중요도 목록을 불러오는 데 실패했습니다.");
@@ -132,7 +166,7 @@ $(document).ready(function () {
                                 style="display:none; background:#f0f0f0;">
                                 <td data-label="level"></td>
                                 <td data-label="업무명">${detail.workDName}</td>
-                                <td data-label="부서">${detail.workDDeptN}</td>
+                                <td data-label="부서"></td>
                                 <td data-label="담당자">${detail.emplName}</td>
                                 <td data-label="중요도">${detail.workDImpoN}</td>
                                 <td data-label="일자">${detail.workDDate}</td>
@@ -231,6 +265,7 @@ $(document).on('click', '#add_btn_D', function (e) {
     const workMId = $row.data('workm-id');
     const workMName = $row.data('workm-name');
     const workMDept = $row.data('workm-dept');
+    const workMImpo = $row.data('workm-impo');
     const workMContext = $row.data('workm-context');
 
 
@@ -247,32 +282,21 @@ $(document).on('click', '#add_btn_D', function (e) {
             <td colspan="6" style="background:#eef; padding:10px;">
                 <form class="workDForm">
                     <input type="hidden" name="workMId" value="${workMId}" />
+                    <input type="hidden" name="workDDept" value="${workMDept}" />
                     <label>업무명
                         <input type="text" name="workDName" value="${workMName}" />
                     </label>
                     <label>담당자
-                        <select name="workDEmplId">
-                            <option value="BAB">밥</option>
-                            <option value="asdf">asdf</option>
-                            <option value="ADMIN">최영범</option>
-                        </select>
+                        <select name="workDEmplId"></select>
                     </label>
                     <label>업무일자
                         <input type="date" name="workDDate" />
                     </label>
                     <label>객실
-                        <select name="workDRoomId">
-                            <option value="001000000000067157">103</option>
-                            <option value="001000000000024906">104</option>
-                            <option value="001000000000046356">105</option>
-                        </select>
+                        <select name="workDRoomId"></select>
                     </label>
                     <label>중요도
-                        <select name="workDImpo">
-                            <option value="IM_01">낮음</option>
-                            <option value="IM_02">보통</option>
-                            <option value="IM_03">높음</option>
-                        </select>
+                        <select name="workDImpo" value="${workMImpo}"></select>
                     </label>
                     <label>업무내용
                         <textarea name="workDContext">${workMContext}</textarea>
@@ -286,10 +310,70 @@ $(document).on('click', '#add_btn_D', function (e) {
 
     $row.after(formRow);
     formRow.hide().slideDown(200);
+
+    // 중요도 옵션 추가
+    const $impoSelect = formRow.find('select[name="workDImpo"]');
+    impoList.forEach(i => {
+        $impoSelect.append(`<option value="${i.codeId}">${i.codeName}</option>`);
+    });
+    // 중요도 기본값 설정
+    if (workMImpo) {
+        $impoSelect.val(workMImpo);
+    }
+
+    // 방 목록 추가
+    const $roomSelect = formRow.find('select[name="workDRoomId"]');
+    roomList.forEach(i => {
+        $roomSelect.append(`<option value="${i.codeId}">${i.codeName}</option>`);
+    });
+
+    // 직원 목록 추가
+    const $emplSelect = formRow.find('select[name="workDEmplId"]');
+    emplList.forEach(i => {
+        $emplSelect.append(`<option value="${i.codeId}">${i.codeName}</option>`);
+    });
 });
 $(document).on('click', '.add_cancle_D', function () {
     $(this).closest('tr.newWorkDForm').slideUp(200, function () {
         $(this).remove();
+    });
+});
+// workDForm 등록 폼 제출
+$(document).on('submit', '.workDForm', function (e) {
+    e.preventDefault();
+    const $form = $(this);
+
+    const data = {
+     workMId: $('input[name="workMId"]').val(),
+     workDDept: $('input[name="workDDept"]').val(),
+     workDName: $('input[name="workDName"]').val(),
+     workDEmplId: $('select[name="workDEmplId"]').val(),
+     workDDate: $('input[name="workDDate"]').val(),
+     workDRoomId: $('select[name="workDRoomId"]').val(),
+     workDImpo: $('select[name="workDImpo"]').val(),
+     workDContext: $('textarea[name="workDContext"]').val(),
+    };
+
+    if (!data.workDName || !data.workDDate || !data.workDImpo) {
+     alert("업무 이름과 날짜, 중요도는 필수입니다.");
+     return;
+    }
+
+    $.ajax({
+        url: '/work/addWorkD', // 실제 저장하는 URL로 변경
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function (response) {
+            alert('상세 업무가 등록되었습니다.');
+            // 성공 후 필요한 작업
+            $form.closest('tr.newWorkDForm').slideUp(200, function() {
+                $(this).remove();
+            });
+        },
+        error: function (xhr) {
+            alert('등록 실패: ' + xhr.responseText);
+        }
     });
 });
 

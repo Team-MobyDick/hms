@@ -80,6 +80,26 @@ public class WorkController {
         }
     }
 
+    // 업무 배분 등록
+    @PostMapping("/addWorkD")
+    public ResponseEntity<String> addWorkD(@RequestBody WorkVO vo, HttpSession session) {
+        try {
+            // 상세 업무 ID 생성
+            String workDId = "008" + String.format("%015d", new Random().nextInt(100000));
+            String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
+
+            vo.setWorkDId(workDId);
+            vo.setCreatedId(loginUserId);
+
+            workService.insertWorkD(vo);
+            return ResponseEntity.ok("success");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
+        }
+    }
+
     // 주 업무 클릭시 해당 일자 상세업무 리스트
     @GetMapping("/detailWorkList")
     @ResponseBody
@@ -105,6 +125,30 @@ public class WorkController {
     public List<WorkVO> getImpoTypes() {
         try {
             return workService.getImpo();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    // 방 목록 (AJAX)
+    @GetMapping("/roomTypes")
+    @ResponseBody
+    public List<WorkVO> getroom() {
+        try {
+            return workService.getRoom();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    // 직원 목록 (AJAX)
+    @GetMapping("/emplTypes")
+    @ResponseBody
+    public List<WorkVO> getempl() {
+        try {
+            return workService.getEmpl();
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList();
