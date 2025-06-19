@@ -1,17 +1,8 @@
 package com.mobydick.hms.common.service;
 
-import com.mobydick.hms.notice.vo.NoticeVO;
-import com.mobydick.hms.schedule.vo.ScheduleVO;
-import com.mobydick.hms.employee.vo.EmployeeVO;
-
-import java.util.List;
+import com.mobydick.hms.common.vo.CommonVO;
 
 public interface CommonService {
-
-    List<EmployeeVO> getEmployeesOfTheDay() throws Exception;
-
-    List<ScheduleVO> getWeeklySchedules() throws Exception;
-
-    List<NoticeVO> getLatestNotices() throws Exception;
-
+    // 대시보드에 필요한 모든 데이터를 한번에 조회하는 메서드
+    CommonVO getDashboardData() throws Exception;
 }

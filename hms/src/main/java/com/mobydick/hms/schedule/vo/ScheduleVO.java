@@ -30,4 +30,7 @@ public class ScheduleVO {
 
     private String scheShiftName;
 
+    // 작성자 이름 (JOIN을 통해 가져올 필드)
+    private String emplName;
+
 }

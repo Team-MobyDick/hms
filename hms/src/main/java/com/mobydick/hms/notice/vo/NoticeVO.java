@@ -20,5 +20,6 @@ public class NoticeVO {
     private Date updatedDate;   // 수정일자
     private String updatedId;    // 수정자 ID
 
-
+    // 작성자 이름 (JOIN을 통해 가져올 필드)
+    private String emplName;
 }
