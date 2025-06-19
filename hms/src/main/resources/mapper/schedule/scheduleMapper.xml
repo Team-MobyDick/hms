@@ -99,7 +99,7 @@
                  LEFT JOIN TB_WORK_D w ON s.SCHE_ID = w.WORKD_ID
                  LEFT JOIN TB_CODE c_shift ON s.SCHE_SHIFT = c_shift.CODE_ID
                  LEFT JOIN TB_CODE c_impo ON w.WORKD_IMPO = c_impo.CODE_ID
-                 LEFT JOIN TB_CODE c_state ON w.WORKD_STATE = c_state.CODE_ID
+                 LEFT JOIN TB_CODE c_state ON w.WORKD_DEPT = c_state.CODE_ID
                  LEFT JOIN TB_ROOM r ON w.ROOM_ID = r.ROOM_ID
         WHERE s.SCHE_ID = #{scheId}
     </select>
@@ -114,7 +114,7 @@
         FROM TB_SCHEDULE s
                  JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
                  LEFT JOIN TB_WORK_D w ON s.EMPL_ID = w.EMPL_ID AND s.SCHE_DATE = w.WORKD_DATE
-                 LEFT JOIN TB_CODE c_state ON w.WORKD_STATE = c_state.CODE_ID
+                 LEFT JOIN TB_CODE c_state ON w.WORKD_DEPT = c_state.CODE_ID
         WHERE s.SCHE_DATE LIKE #{start}
     </select>
 

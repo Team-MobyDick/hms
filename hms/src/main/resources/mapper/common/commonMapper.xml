@@ -8,12 +8,13 @@
     <select id="selectRandomEmployeesGR03" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
         <![CDATA[
         SELECT
-            EMPL_ID,
-            EMPL_NAME,
-            EMPL_DEPT,
-            EMPL_GRADE,
-            PHOTO_NAME,
-            PHOTO_PATH
+            A.EMPL_ID,
+            A.EMPL_NAME,
+            A.EMPL_DEPT,
+            A.EMPL_GRADE,
+            B.CODE_NAME AS EMPL_GRADE_NAME,
+            A.PHOTO_NAME,
+            A.PHOTO_PATH
         FROM (
             SELECT
                 EMPL_ID,
@@ -24,8 +25,9 @@
                 PHOTO_PATH
             FROM TB_EMPL
             WHERE EMPL_GRADE = 'GR_03'
-            ORDER BY DBMS_RANDOM.VALUE -- Oracle에서 랜덤 정렬
-        )
+            ORDER BY DBMS_RANDOM.VALUE
+        ) A
+        JOIN TB_CODE B ON A.EMPL_GRADE = B.CODE_ID
         WHERE ROWNUM <= 3
         ]]>
     </select>
@@ -33,14 +35,16 @@
     <select id="selectWeeklySchedules" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         <![CDATA[
         SELECT
-            SCHE_ID,
-            SCHE_DATE,
-            EMPL_ID,
-            SCHE_SHIFT,
-            CREATED_DATE
-        FROM TB_SCHEDULE
-        WHERE SCHE_DATE BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
-        ORDER BY SCHE_DATE ASC
+            A.SCHE_ID,
+            A.SCHE_DATE,
+            A.EMPL_ID,
+            B.EMPL_NAME,
+            A.SCHE_SHIFT,
+            A.CREATED_DATE
+        FROM TB_SCHEDULE A
+        JOIN TB_EMPL B ON A.EMPL_ID = B.EMPL_ID
+        WHERE A.SCHE_DATE BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+        ORDER BY A.SCHE_DATE ASC
         ]]>
     </select>
 
@@ -49,8 +53,9 @@
         SELECT
             NOTICE_ID,
             NOTICE_TITLE,
-            EMPL_ID,
-            CREATED_DATE
+            A.EMPL_ID,
+            B.EMPL_NAME,
+            A.CREATED_DATE
         FROM (
             SELECT
                 NOTICE_ID,
@@ -59,7 +64,8 @@
                 CREATED_DATE
             FROM TB_NOTICE
             ORDER BY CREATED_DATE DESC, NOTICE_ID DESC
-        )
+        ) A
+        JOIN TB_EMPL B ON A.EMPL_ID = B.EMPL_ID
         WHERE ROWNUM <= 3
         ]]>
     </select>

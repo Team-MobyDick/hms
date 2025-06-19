@@ -36,7 +36,7 @@
                     A.UPDATED_DATE,
                     A.UPDATED_ID,
                     B.EMPL_ID,
-                    B.WORKD_CONTEXT AS CLEAN_STATE,
+                    B.WORKD_CONTEXT AS WORK_DETAIL,
                     B.WORKD_EXTRA AS EXTRA_INFO,
                     C.EMPL_NAME AS EMPL_NAME
                 FROM

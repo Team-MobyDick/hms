@@ -40,8 +40,9 @@ public class RoomController {
             for (RoomVO roomDetail : roomWithDetails) {
                 if (room.getRoomId().equals(roomDetail.getRoomId())) {
                     room.setEmplId(roomDetail.getEmplId());
-                    room.setCleanState(roomDetail.getCleanState());
+                    room.setWorkDetail(roomDetail.getWorkDetail());
                     room.setExtraInfo(roomDetail.getExtraInfo());
+                    room.setEmplName(roomDetail.getEmplName());
                     break;
                 }
             }

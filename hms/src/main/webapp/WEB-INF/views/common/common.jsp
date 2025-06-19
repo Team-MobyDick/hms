@@ -17,8 +17,9 @@
                 <h2>오늘의 사원</h2>
                 <div class="employee-of-day-list">
                     <c:choose>
-                        <c:when test="${not empty employeesOfTheDay}">
-                            <c:forEach var="emp" items="${employeesOfTheDay}">
+                        <%-- dashboardData에서 오늘의 사원 리스트를 가져옴 --%>
+                        <c:when test="${not empty dashboardData.employeesOfTheDay}">
+                            <c:forEach var="emp" items="${dashboardData.employeesOfTheDay}">
                                 <div class="employee-item" onclick="location.href='${pageContext.request.contextPath}/employee/list';">
                                     <c:set var="photoSrc">
                                         <c:choose>
@@ -33,7 +34,8 @@
                                     <img src="${photoSrc}" alt="${emp.emplName} 사진">
                                     <div class="employee-info">
                                         <div class="name">${emp.emplName}</div>
-                                        <div class="grade">(${emp.emplGrade})</div>
+                                        <%-- emplGrade 대신 emplGradeName(직책명)을 표시 --%>
+                                        <div class="grade">(${emp.emplGradeName})</div>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -49,12 +51,14 @@
                 <h2>주간 스케줄</h2>
                 <ul>
                     <c:choose>
-                        <c:when test="${not empty weeklySchedules}">
-                            <c:forEach var="schedule" items="${weeklySchedules}">
+                        <%-- dashboardData에서 주간 스케줄 리스트를 가져옴 --%>
+                        <c:when test="${not empty dashboardData.weeklySchedules}">
+                            <c:forEach var="schedule" items="${dashboardData.weeklySchedules}">
                                 <li class="schedule-item"> <a href="${pageContext.request.contextPath}/schedule/list">
                                         <div class="schedule-content">
                                             <span class="schedule-date"><fmt:formatDate value="${schedule.scheDate}" pattern="MM/dd (E)" /></span>
-                                            <span class="schedule-info">[${schedule.emplId}] ${schedule.scheShift}</span>
+                                            <%-- emplId 대신 emplName(사원명)을 표시 --%>
+                                            <span class="schedule-info">[${schedule.emplName}] ${schedule.scheShift}</span>
                                         </div>
                                     </a>
                                 </li>
@@ -71,10 +75,11 @@
                 <h2>공지사항</h2>
                 <ul>
                     <c:choose>
-                        <c:when test="${not empty latestNotices}">
-                            <c:forEach var="notice" items="${latestNotices}">
+                        <%-- dashboardData에서 공지사항 리스트를 가져옴 --%>
+                        <c:when test="${not empty dashboardData.latestNotices}">
+                            <c:forEach var="notice" items="${dashboardData.latestNotices}">
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/anno/list">
+                                    <a href="${pageContext.request.contextPath}/notice/list">
                                         <span class="list-item-title">${notice.noticeTitle}</span>
                                         <span class="list-item-date"><fmt:formatDate value="${notice.createdDate}" pattern="yyyy.MM.dd" /></span>
                                     </a>
@@ -88,7 +93,6 @@
                 </ul>
             </div>
         </div>
-
     </body>
 
 </html>

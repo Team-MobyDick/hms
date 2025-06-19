@@ -31,7 +31,7 @@
                 <th>객실 이름</th>
                 <th>객실 종류</th>
                 <th>예약 상태</th>
-                <th>청소 상태</th>
+                <th>업무 내용</th>
                 <th>특이 사항</th>
                 <th>담당자</th>
             </tr>
@@ -63,7 +63,7 @@
                                     </c:otherwise>
                                 </c:choose>
                             </td>
-                            <td>${room.cleanState}</td>
+                            <td>${room.workDetail}</td>
                             <td>${room.extraInfo}</td>
                             <td>${room.emplName}</td>
                         </tr>
