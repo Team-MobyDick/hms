@@ -9,17 +9,17 @@
     <select id="selectAllNotices" resultType="com.mobydick.hms.notice.vo.NoticeVO">
         <![CDATA[
         SELECT
-            NOTICE_ID,
-            NOTICE_TITLE,
-            EMPL_ID,
-            NOTICE_CONTENT,
-            CREATED_DATE,
-            CREATED_ID,
-            UPDATED_DATE,
-            UPDATED_ID
+            ROW_NUMBER() OVER(ORDER BY A.CREATED_DATE DESC) AS NOTICE_ID,
+            A.NOTICE_TITLE,
+            A.EMPL_ID,
+            A.NOTICE_CONTENT,
+            A.CREATED_DATE,
+            A.CREATED_ID,
+            A.UPDATED_DATE,
+            A.UPDATED_ID
         FROM
-            TB_NOTICE
-        ORDER BY CREATED_DATE DESC
+            TB_NOTICE A
+        ORDER BY A.CREATED_DATE DESC
         ]]>
     </select>
 
