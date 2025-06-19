@@ -51,6 +51,31 @@
         AND     a.empl_id = #{emplId}
     </select>
 
+    <!-- 주 업무 등록 -->
+    <insert id="insertWorkM" parameterType="com.mobydick.hms.work.vo.WorkVO">
+        INSERT INTO TB_WORK_M (
+        WORKM_ID,
+        WORKM_NAME,
+        WORKM_DEPT,
+        WORKM_CONTEXT,
+        WORKM_IMPO,
+        CREATED_DATE,
+        CREATED_ID,
+        UPDATED_DATE,
+        UPDATED_ID
+        ) VALUES (
+        #{workMId},
+        #{workMName},
+        #{workMDept},
+        #{workMContext},
+        #{workMImpo},
+        SYSDATE,
+        #{createdId},
+        null,
+        null
+        )
+    </insert>
+
     <!-- 주 업무 클릭시 해당 일자 상세업무 리스트 조회 -->
     <select id="getDetailWorkList" resultType="com.mobydick.hms.work.vo.WorkVO">
         SELECT  a.workd_id,

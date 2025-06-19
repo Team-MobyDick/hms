@@ -6,19 +6,15 @@ import com.mobydick.hms.work.service.WorkService;
 import com.mobydick.hms.work.vo.WorkVO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // 할일 관리 컨트롤러
@@ -63,6 +59,25 @@ public class WorkController {
         model.addAttribute("bodyPage", "work/work.jsp");
 
         return "index";
+    }
+
+    // 주 업무 등록
+    @PostMapping("/addWorkM")
+    public ResponseEntity<String> addWorkM(@RequestBody WorkVO vo, HttpSession session) {
+        try {
+            // 주 업무 ID 생성
+            String workMId = "007" + String.format("%015d", new Random().nextInt(100000));
+            String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
+
+            vo.setWorkMId(workMId);
+            vo.setCreatedId(loginUserId);
+
+            workService.insertWorkM(vo);
+            return ResponseEntity.ok("success");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
+        }
     }
 
     // 주 업무 클릭시 해당 일자 상세업무 리스트

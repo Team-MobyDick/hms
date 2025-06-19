@@ -18,6 +18,7 @@ public interface WorkService {
     List<WorkVO> selectWorkDByEmplByDate(String emplId, String date);
 
     // 주 업무 등록 (최고관리자)
+    void insertWorkM(WorkVO vo) throws Exception;
 
     // 주 업무 수정 (최고관리자)
 

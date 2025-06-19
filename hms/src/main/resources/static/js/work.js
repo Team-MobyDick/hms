@@ -175,7 +175,7 @@ $(document).ready(function () {
 
     // 주 업무 등록 폼의 셀렉트 박스 채우기
     function populateDept() {
-        const $deptSelect = $('select[name="dept"]');
+        const $deptSelect = $('select[name="workMDept"]');
         $deptSelect.empty(); // 기존 옵션을 지움
 
         deptList.forEach(rt => {
@@ -183,13 +183,43 @@ $(document).ready(function () {
         });
     }
     function populateImpo() {
-        const $impoSelect = $('select[name="impo"]');
+        const $impoSelect = $('select[name="workMImpo"]');
         $impoSelect.empty(); // 기존 옵션을 지움
 
         impoList.forEach(rt => {
             $impoSelect.append(`<option value="${rt.codeId}">${rt.codeName}</option>`);
         });
-    }
+
+    }// 등록 폼 제출
+        $('#newWorkMForm').on('submit', function (e) {
+         e.preventDefault();
+
+         const data = {
+             workMName: $('input[name="workMName"]').val(),
+             workMDept: $('select[name="workMDept"]').val(),
+             workMImpo: $('select[name="workMImpo"]').val(),
+             workMContext: $('textarea[name="workMContext"]').val(),
+         };
+
+         if (!data.workMName || !data.workMDept || !data.workMImpo) {
+             alert("업무 이름과 부서, 중요도는 필수입니다.");
+             return;
+         }
+
+         $.ajax({
+             type: 'POST',
+             url: '/work/addWorkM',
+             contentType: 'application/json',
+             data: JSON.stringify(data),
+             success: function () {
+                 alert('주 업무가 등록되었습니다.');
+                 location.reload();
+             },
+             error: function () {
+                 alert('등록 실패. 입력 값을 확인해주세요.');
+             }
+         });
+        });
 });
 
 // #add_btn_D 클릭시 업무 배분 등록폼 열기

@@ -64,17 +64,17 @@
                 <th>동작</th>
             </tr>
             <tr>
-                <td><input id="roomName" type="text" name="roomName" placeholder="업무명" maxlength="100"></td>
+                <td><input id="workMName" type="text" name="workMName" placeholder="업무명" maxlength="50"></td>
                 <td>
-                    <select name="dept" id="workMDept">
+                    <select name="workMDept" id="workMDept">
                     </select>
                 </td>
                 <td>
-                    <select name="impo" id="workMImpo">
+                    <select name="workMImpo" id="workMImpo">
                     </select>
                 </td>
                 <td>
-                    <textarea></textarea>
+                    <textarea name="workMContext" id="workMContext"></textarea>
                 </td>
                 <td>
                     <button type="submit">등록</button>

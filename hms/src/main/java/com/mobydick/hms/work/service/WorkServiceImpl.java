@@ -38,6 +38,11 @@ public class WorkServiceImpl implements WorkService{
     };
 
     @Override
+    public void insertWorkM(WorkVO workM) throws Exception {
+        workDAO.insertWorkM(workM);
+    };
+
+    @Override
     public List<WorkVO> getDept() {
         return workDAO.getDept();
     };

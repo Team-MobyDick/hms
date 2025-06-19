@@ -15,12 +15,13 @@ public interface WorkDAO {
 
     List<WorkVO> selectAllWorkM() throws DataAccessException;
 
-    List<WorkVO> selectWorkDByEmplByDate(String emplId, String date);
+    List<WorkVO> selectWorkDByEmplByDate(String emplId, String date) throws DataAccessException;
 
-    List<WorkVO> getDetailWorkList(String workMId, String date);
+    List<WorkVO> getDetailWorkList(String workMId, String date) throws DataAccessException;
 
-    List<WorkVO> getDept();
+    List<WorkVO> getDept() throws DataAccessException;
 
-    List<WorkVO> getImpo();
+    List<WorkVO> getImpo() throws DataAccessException;
 
+    void insertWorkM(WorkVO workM) throws DataAccessException;
 }
