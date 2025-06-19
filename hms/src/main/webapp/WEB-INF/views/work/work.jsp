@@ -51,7 +51,38 @@
         <button id="nextBtn">→</button>
     </div>
 
-    <button id="add_btn">업무 등록</button>
+    <button id="add_btn_M">업무 등록</button>
+
+    <!-- 주 업무 등록 폼 -->
+    <form id="newWorkMForm" hidden>
+        <table>
+            <tr>
+                <th>업무명</th>
+                <th>부서</th>
+                <th>중요도</th>
+                <th>업무내용</th>
+                <th>동작</th>
+            </tr>
+            <tr>
+                <td><input id="roomName" type="text" name="roomName" placeholder="업무명" maxlength="100"></td>
+                <td>
+                    <select name="dept" id="workMDept">
+                    </select>
+                </td>
+                <td>
+                    <select name="impo" id="workMImpo">
+                    </select>
+                </td>
+                <td>
+                    <textarea></textarea>
+                </td>
+                <td>
+                    <button type="submit">등록</button>
+                    <button type="button" id="add_cancle_M">취소</button>
+                </td>
+            </tr>
+        </table>
+    </form>
 
     <table>
         <thead>
@@ -69,9 +100,12 @@
                 <c:when test="${not empty workMList}">
                     <c:forEach var="workM" items="${workMList}">
                         <tr class="workM-row"
-                            data-workM="${workM.workMName}"
-                            data-dept="${workM.workMDept}"
-                            data-workM-id="${workM.workMId}"
+                            data-workm-name="${workM.workMName}"
+                            data-workm-dept="${workM.workMDept}"
+                            data-workd-impo="${workM.workDImpo}"
+                            data-workm-id="${workM.workMId}"
+                            data-date="${formattedDate}"
+                            data-workm-context="${workM.workMContext}"
                             data-createdDate="${workM.createdDate}"
                             data-createdId="${workM.createdId}"
                             data-updatedDate="${workM.updatedDate}"
@@ -81,7 +115,7 @@
                             <td data-label="부서">${codeMap[workM.workMDept]}</td>
                             <td data-label="담당자"></td>
                             <td data-label="중요도">${codeMap[workM.workMImpo]}</td>
-                            <td data-label="업무배분"><button>업무배분</button></td>
+                            <td data-label="업무배분"><button id="add_btn_D">업무 배분</button></td>
                         </tr>
                     </c:forEach>
                 </c:when>

@@ -41,6 +41,10 @@ public class WorkVO {
     private String updatedId;      // 수정자 ID
 
     // 코드 정보 (조인용)
-    private String codeId;         // 객실 타입 코드
-    private String codeName;       // 객실 타입 이름
+    private String codeId;         // 코드
+    private String codeName;       // 이름
+
+    // 코드테이블 조인해온 코드명(임시)
+    private String workDDeptN;         // 부서명
+    private String workDImpoN;       // 중요도
 }

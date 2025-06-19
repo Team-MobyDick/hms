@@ -28,7 +28,21 @@ public class WorkServiceImpl implements WorkService{
     };
 
     @Override
+    public List<WorkVO> getDetailWorkList(String workMId, String date) {
+        return workDAO.getDetailWorkList(workMId, date);
+    };
+
+    @Override
     public List<WorkVO> selectWorkDByEmplByDate(String emplId, String date) {
         return workDAO.selectWorkDByEmplByDate(emplId, date);
+    };
+
+    @Override
+    public List<WorkVO> getDept() {
+        return workDAO.getDept();
+    };
+    @Override
+    public List<WorkVO> getImpo() {
+        return workDAO.getImpo();
     };
 }

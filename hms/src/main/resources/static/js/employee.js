@@ -42,7 +42,7 @@ $(document).ready(function () {
         // 상세 폼 HTML 생성 (수정 가능 input/select 포함 및 사진 업로드 섹션 추가)
         let detailHTML = `
             <tr class="detail-slide">
-                <td colspan="7">
+                <td colspan="8">
                     <div class="detail-content-wrapper">
                         <div class="detail-photo-area">
                             <div class="photo-container" id="detailPhotoContainer">
@@ -299,4 +299,59 @@ $(document).ready(function () {
             });
         }
     });
+});
+
+const modal = document.querySelector('.modal');
+const modalClose = document.querySelector('.close_btn');
+
+modalClose.addEventListener('click', function () {
+    modal.classList.remove('on');
+    document.getElementById("qrcode").innerHTML = "";
+});
+
+document.querySelectorAll('.printQR').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+        const row = e.target.closest('tr');
+        const emplId = row.getAttribute('data-id');
+
+        const qrContainer = document.getElementById("qrcode");
+        qrContainer.innerHTML = "";
+        new QRCode(qrContainer, {
+            text: emplId,
+            width: 300,
+            height: 300
+        });
+
+        modal.classList.add('on');
+    });
+});
+
+const printBtn = document.querySelector('.print_btn');
+
+printBtn.addEventListener('click', function () {
+    const qrContainer = document.getElementById("qrcode");
+    const qrHtml = qrContainer.innerHTML;
+
+    const printWindow = window.open('', '', 'width=400,height=500');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>QR 코드 출력</title>
+            <style>
+                body { text-align: center; margin-top: 50px; }
+                canvas, img { width: 300px; height: 300px; }
+            </style>
+        </head>
+        <body>
+            ${qrHtml}
+            <script>
+                window.onload = function () {
+                    window.print();
+                    window.onafterprint = function () { window.close(); };
+                }
+            <\/script>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
 });
