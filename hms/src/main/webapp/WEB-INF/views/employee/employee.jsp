@@ -117,7 +117,13 @@
                             <option value="GR_03">일반</option>
                         </select>
                     </td>
-                    <td><input type="text" name="emplPhone" placeholder="연락처" maxlength="14"></td>
+                    <td><input
+                            type="tel"
+                            name="emplPhone"
+                            placeholder="연락처(- 없이 적어주세요)"
+                            maxlength="11"
+                            pattern="[0-9]{2,3}[0-9]{3,4}[0-9]{4}"
+                    ></td>
                     <td><textarea name="emplNotes" placeholder="메모" maxlength="2000"></textarea></td>
                     <td>
                         <button type="submit">등록</button>
@@ -134,7 +140,6 @@
             var userDeptJs = "${userDept}";
         </script>
         <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
-
     </body>
 
 </html>
