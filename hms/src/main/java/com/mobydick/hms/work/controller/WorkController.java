@@ -10,9 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,5 +63,36 @@ public class WorkController {
         model.addAttribute("bodyPage", "work/work.jsp");
 
         return "index";
+    }
+
+    // 주 업무 클릭시 해당 일자 상세업무 리스트
+    @GetMapping("/detailWorkList")
+    @ResponseBody
+    public List<WorkVO> getDetailWorkList(@RequestParam("workMId") String workMId, @RequestParam("date") String date) {
+        return workService.getDetailWorkList(workMId, date);
+    };
+
+    // 부서 목록 (AJAX)
+    @GetMapping("/deptTypes")
+    @ResponseBody
+    public List<WorkVO> getDeptTypes() {
+        try {
+            return workService.getDept();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    // 중요도 목록 (AJAX)
+    @GetMapping("/impoTypes")
+    @ResponseBody
+    public List<WorkVO> getImpoTypes() {
+        try {
+            return workService.getImpo();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 }

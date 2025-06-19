@@ -28,27 +28,75 @@
 
     <select id="selectWorkDByEmplByDate" parameterType="String" resultType="com.mobydick.hms.work.vo.WorkVO">
         SELECT  a.workd_id,
-                a.workd_name,
-                a.empl_id        AS workDEmplId,
-                a.workd_dept,
-                a.workd_date,
-                a.workd_context,
-                a.workd_extra,
-                a.room_id        AS workDRoomId,
-                a.workd_impo,
-                a.start_name     AS workDStartName,
-                a.start_path     AS workDStartPath,
-                a.start_time     AS workDStartTime,
-                a.end_name       AS workDEndName,
-                a.end_path       AS workDEndPath,
-                a.end_time       AS workDEndTime,
-                b.empl_name,
-                c.room_name
+        a.workd_name,
+        a.empl_id        AS workDEmplId,
+        a.workd_dept,
+        a.workd_date,
+        a.workd_context,
+        a.workd_extra,
+        a.room_id        AS workDRoomId,
+        a.workd_impo,
+        a.start_name     AS workDStartName,
+        a.start_path     AS workDStartPath,
+        a.start_time     AS workDStartTime,
+        a.end_name       AS workDEndName,
+        a.end_path       AS workDEndPath,
+        a.end_time       AS workDEndTime,
+        b.empl_name,
+        c.room_name
         FROM    TB_WORK_D a
         LEFT JOIN TB_EMPL b on a.empl_id = b.empl_id
         LEFT JOIN TB_ROOM c on a.room_id = c.room_id
         WHERE   TO_CHAR(a.workd_date, 'YYYYMMDD') = #{date}
         AND     a.empl_id = #{emplId}
+    </select>
+
+    <!-- 주 업무 클릭시 해당 일자 상세업무 리스트 조회 -->
+    <select id="getDetailWorkList" resultType="com.mobydick.hms.work.vo.WorkVO">
+        SELECT  a.workd_id,
+        a.workd_name,
+        a.empl_id        AS workDEmplId,
+        a.workd_dept,
+        (select code_name from TB_CODE where code_id = a.workd_dept) AS workd_deptN,
+        TO_CHAR(a.workd_date, 'YYYY-MM-DD') AS workd_date,
+        a.workd_context,
+        a.workd_extra,
+        a.room_id        AS workDRoomId,
+        a.workd_impo,
+        (select code_name from TB_CODE where code_id = a.workd_impo) AS workd_impoN,
+        a.start_name     AS workDStartName,
+        a.start_path     AS workDStartPath,
+        a.start_time     AS workDStartTime,
+        a.end_name       AS workDEndName,
+        a.end_path       AS workDEndPath,
+        a.end_time       AS workDEndTime,
+        b.empl_name,
+        c.room_name
+        FROM    TB_WORK_D a
+        LEFT JOIN TB_EMPL b on a.empl_id = b.empl_id
+        LEFT JOIN TB_ROOM c on a.room_id = c.room_id
+        WHERE a.workm_id = #{workMId}
+        AND TO_CHAR(a.workd_date, 'YYYYMMDD') = #{date}
+    </select>
+
+    <!-- 부서 목록 조회 (TP 코드만) -->
+    <select id="getDept" resultType="com.mobydick.hms.work.vo.WorkVO">
+        SELECT
+        CODE_ID AS codeId,
+        CODE_NAME AS codeName
+        FROM TB_CODE
+        WHERE CODE_ID LIKE 'DP%'
+        ORDER BY CODE_ID
+    </select>
+
+    <!-- 중요도 목록 조회 (TP 코드만) -->
+    <select id="getImpo" resultType="com.mobydick.hms.work.vo.WorkVO">
+        SELECT
+        CODE_ID AS codeId,
+        CODE_NAME AS codeName
+        FROM TB_CODE
+        WHERE CODE_ID LIKE 'IM%'
+        ORDER BY CODE_ID
     </select>
 
 </mapper>

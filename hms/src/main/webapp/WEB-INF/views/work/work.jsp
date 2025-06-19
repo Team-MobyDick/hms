@@ -71,7 +71,8 @@
                         <tr class="workM-row"
                             data-workM="${workM.workMName}"
                             data-dept="${workM.workMDept}"
-                            data-workM-id="${workM.workMId}"
+                            data-workm-id="${workM.workMId}"
+                            data-date="${formattedDate}"
                             data-createdDate="${workM.createdDate}"
                             data-createdId="${workM.createdId}"
                             data-updatedDate="${workM.updatedDate}"
@@ -110,6 +111,37 @@
             </c:choose>
         </tbody>
     </table>
+
+    <!-- 주 업무 등록 폼 -->
+    <form id="newWorkMForm" hidden>
+        <table>
+            <tr>
+                <th>업무명</th>
+                <th>부서</th>
+                <th>중요도</th>
+                <th>업무내용</th>
+                <th>동작</th>
+            </tr>
+            <tr>
+                <td><input id="roomName" type="text" name="roomName" placeholder="업무명" maxlength="100"></td>
+                <td>
+                    <select name="dept" id="workMDept">
+                    </select>
+                </td>
+                <td>
+                    <select name="impo" id="workMImpo">
+                    </select>
+                </td>
+                <td>
+                    <textarea></textarea>
+                </td>
+                <td>
+                    <button type="submit">등록</button>
+                    <button type="button" id="add_cancle">취소</button>
+                </td>
+            </tr>
+        </table>
+    </form>
 </body>
 <script src="/js/work.js"></script>
 </html>

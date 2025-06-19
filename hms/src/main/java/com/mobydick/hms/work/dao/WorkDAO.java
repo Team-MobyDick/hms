@@ -16,4 +16,11 @@ public interface WorkDAO {
     List<WorkVO> selectAllWorkM() throws DataAccessException;
 
     List<WorkVO> selectWorkDByEmplByDate(String emplId, String date);
+
+    List<WorkVO> getDetailWorkList(String workMId, String date);
+
+    List<WorkVO> getDept();
+
+    List<WorkVO> getImpo();
+
 }

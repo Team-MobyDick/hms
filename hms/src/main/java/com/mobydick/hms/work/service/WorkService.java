@@ -24,11 +24,18 @@ public interface WorkService {
     // 주 업무 삭제 (최고관리자)
 
     // 주 업무별 상세 업무 배분 목록 조회
+    List<WorkVO> getDetailWorkList(String workMId, String date);
 
     // 상세 업무 등록 (최고관리자, 중간관리자)
 
     // 상세 업무 수정 (최고관리자, 중간관리자, 직원)
 
     // 상세 업무 삭제 (최고관리자, 중간관리자)
+
+
+
+    // 부서,중요도 목록 가져오기
+    List<WorkVO> getDept();
+    List<WorkVO> getImpo();
 
 }
