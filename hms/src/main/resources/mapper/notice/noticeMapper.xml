@@ -9,7 +9,7 @@
     <select id="selectAllNotices" resultType="com.mobydick.hms.notice.vo.NoticeVO">
         <![CDATA[
         SELECT
-            ROW_NUMBER() OVER(ORDER BY A.CREATED_DATE DESC) AS NOTICE_ID,
+            ROW_NUMBER() OVER(ORDER BY A.CREATED_DATE DESC) NOTICE_ID,
             A.NOTICE_TITLE,
             A.EMPL_ID,
             A.NOTICE_CONTENT,
@@ -43,7 +43,7 @@
     <insert id="insertNotice" parameterType="com.mobydick.hms.notice.vo.NoticeVO">
         <!-- NOTICE_ID_SEQ는 실제 존재하는 시퀀스 이름으로 교체하세요 -->
         <selectKey keyProperty="noticeId" resultType="int" order="BEFORE">
-            SELECT NOTICE_ID_SEQ.NEXTVAL FROM DUAL
+            SELECT SEQ_NOTICE_ID.NEXTVAL FROM DUAL
         </selectKey>
 
         INSERT INTO TB_NOTICE (
