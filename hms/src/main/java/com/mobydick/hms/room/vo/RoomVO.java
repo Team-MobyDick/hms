@@ -25,8 +25,8 @@ public class RoomVO {
 
     // 업무 디테일 정보 (업무 관련)
     private String emplId;         // 담당자 ID
-    private String cleanState;     // 청소 상태
+    private String workDetail;     // 업무 내용
     private String extraInfo;      // 특이사항
-    private String emplName;      // 담당자 이름
+    private String emplName;       // 담당자 이름
 
 }
