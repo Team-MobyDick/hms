@@ -49,7 +49,7 @@ public class EmployeeController {
     public String employeeList(Model model, @RequestParam(defaultValue = "1") int page, HttpSession session) throws Exception {
 
         int pageSize = 10; // 페이지당 항목 수
-        int totalCount =  employeeService.selectAllEmployees().size();
+        int totalCount = employeeService.selectAllEmployees().size();
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
         int startIndex = (page - 1) * pageSize;
@@ -84,16 +84,19 @@ public class EmployeeController {
     public ResponseEntity<?> registerEmployee(@ModelAttribute EmployeeVO employeeVO, HttpSession session) {
         try {
             LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
+            String uuid = UUID.randomUUID().toString().replace("-", "");
+            employeeVO.setEmplId(uuid.substring(0, 20));
+
             if (loginUser == null || loginUser.getEmplId() == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다. 다시 로그인 해주세요.");
             }
             employeeVO.setCreatedId(loginUser.getEmplId());
 
-            if (employeeVO.getEmplId() == null || employeeVO.getEmplId().trim().isEmpty() ||
-                    employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() ||
+            if (employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() ||
                     employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() ||
                     employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()) {
-                return ResponseEntity.badRequest().body("필수 입력 항목(ID, 이름, 부서, 직책)을 모두 채워주세요.");
+                return ResponseEntity.badRequest().body("필수 입력 항목(이름, 부서, 직책)을 모두 채워주세요.");
             }
 
             // 등록 시에는 사진 관련 필드를 null로 설정
@@ -160,7 +163,7 @@ public class EmployeeController {
             @RequestParam("emplId") String emplId,
             @RequestParam("photo") MultipartFile file,
             HttpSession session
-            ) {
+    ) {
         try {
             LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
             if (loginUser == null || loginUser.getEmplId() == null) {
