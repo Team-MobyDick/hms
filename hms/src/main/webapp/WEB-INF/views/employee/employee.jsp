@@ -2,144 +2,142 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%-- 세션에서 로그인한 사용자 정보(직급, 부서) 추출 --%>
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
 <c:set var="userDept" value="${sessionScope.loginUser.emplDept}" />
 
 <!DOCTYPE html>
-
 <html>
+<head>
+    <title>직원 관리</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/employee.css"/>
+</head>
+<body>
 
-    <head>
-        <title>직원 관리</title>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/employee.css"/>
-    </head>
+<h2>직원 관리</h2>
+<button id="add_btn">직원 등록</button>
 
-    <body>
-
-        <h2>직원 관리</h2>
-
-        <button id="add_btn">직원 등록</button>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>직원 ID</th>
-                    <th>이름</th>
-                    <th>부서</th>
-                    <th>직책</th>
-                    <th>전화번호</th>
-                    <th>메모</th>
-                    <th>사진</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:choose>
-                    <c:when test="${not empty employeeList}">
-                        <c:forEach var="emp" items="${employeeList}">
-                            <tr class="employee-row"
-                                data-id="${emp.emplId}"
-                                data-name="${emp.emplName}"
-                                data-dept="${emp.emplDept}"
-                                data-grade="${emp.emplGrade}"
-                                data-phone="${emp.emplPhone}"
-                                data-note="${emp.emplNotes}"
-                                data-photo-name="${emp.photoName}"
-                                data-photo-path="${emp.photoPath}">
-                                <td data-label="직원 ID">${emp.emplId}</td>
-                                <td data-label="이름">${emp.emplName}</td>
-                                <td data-label="부서">
-                                    <c:choose>
-                                        <c:when test="${emp.emplDept eq 'DP_01'}">하우스키핑</c:when>
-                                        <c:when test="${emp.emplDept eq 'DP_02'}">시설관리</c:when>
-                                        <c:when test="${emp.emplDept eq 'DP_03'}">프론트</c:when>
-                                        <c:otherwise>미정</c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td data-label="직책">
-                                    <c:choose>
-                                        <c:when test="${emp.emplGrade eq 'GR_01'}">총지배인</c:when>
-                                        <c:when test="${emp.emplGrade eq 'GR_02'}">팀장</c:when>
-                                        <c:when test="${emp.emplGrade eq 'GR_03'}">일반</c:when>
-                                        <c:otherwise>미정</c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td data-label="전화번호">${emp.emplPhone}</td>
-                                <td data-label="메모">${emp.emplNotes}</td>
-                                <td data-label="사진">
-                                    <div class="photo-container">
-                                        <c:if test="${not empty emp.photoName}">
-                                            <img src="/employee_photos/${emp.photoName}" alt="사진"/>
-                                        </c:if>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <tr><td colspan="7">직원 목록이 비어 있습니다.</td></tr>
-                    </c:otherwise>
-                </c:choose>
-            </tbody>
-        </table>
-
-        <jsp:include page="/WEB-INF/views/include/pagination.jsp" />
-
-        <form id="newEmployeeForm" hidden>
-            <h3>새 직원 등록</h3>
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>이름</th>
-                    <th>부서</th>
-                    <th>직책</th>
-                    <th>전화번호</th>
-                    <th>메모</th>
-                    <th>동작</th>
-                </tr>
-                <tr>
-                    <td><input type="text" name="emplId" placeholder="ID" maxlength="30" required></td>
-                    <td><input type="text" name="emplName" placeholder="이름" maxlength="50" required></td>
+<table>
+    <thead>
+    <tr>
+        <th>직원 ID</th>
+        <th>이름</th>
+        <th>부서</th>
+        <th>직책</th>
+        <th>전화번호</th>
+        <th>메모</th>
+        <th>사진</th>
+        <th>QR 출력</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:choose>
+        <c:when test="${not empty employeeList}">
+            <c:forEach var="emp" items="${employeeList}">
+                <tr class="employee-row"
+                    data-id="${emp.emplId}"
+                    data-name="${emp.emplName}"
+                    data-dept="${emp.emplDept}"
+                    data-grade="${emp.emplGrade}"
+                    data-phone="${emp.emplPhone}"
+                    data-note="${emp.emplNotes}"
+                    data-photo-name="${emp.photoName}"
+                    data-photo-path="${emp.photoPath}">
+                    <td>${emp.emplId}</td>
+                    <td>${emp.emplName}</td>
                     <td>
-                        <select name="emplDept" required>
-                            <option value="">부서 선택</option>
-                            <option value="DP_01">하우스키핑</option>
-                            <option value="DP_02">시설관리</option>
-                            <option value="DP_03">프론트</option>
-                        </select>
+                        <c:choose>
+                            <c:when test="${emp.emplDept eq 'DP_01'}">하우스키핑</c:when>
+                            <c:when test="${emp.emplDept eq 'DP_02'}">시설관리</c:when>
+                            <c:when test="${emp.emplDept eq 'DP_03'}">프론트</c:when>
+                            <c:otherwise>미정</c:otherwise>
+                        </c:choose>
                     </td>
                     <td>
-                        <select name="emplGrade" required>
-                            <option value="">직책 선택</option>
-                            <option value="GR_01">총지배인</option>
-                            <option value="GR_02">팀장</option>
-                            <option value="GR_03">일반</option>
-                        </select>
+                        <c:choose>
+                            <c:when test="${emp.emplGrade eq 'GR_01'}">총지배인</c:when>
+                            <c:when test="${emp.emplGrade eq 'GR_02'}">팀장</c:when>
+                            <c:when test="${emp.emplGrade eq 'GR_03'}">일반</c:when>
+                            <c:otherwise>미정</c:otherwise>
+                        </c:choose>
                     </td>
-                    <td><input
-                            type="tel"
-                            name="emplPhone"
-                            placeholder="연락처(- 없이 적어주세요)"
-                            maxlength="11"
-                            pattern="[0-9]{2,3}[0-9]{3,4}[0-9]{4}"
-                    ></td>
-                    <td><textarea name="emplNotes" placeholder="메모" maxlength="2000"></textarea></td>
+                    <td>${emp.emplPhone}</td>
+                    <td>${emp.emplNotes}</td>
                     <td>
-                        <button type="submit">등록</button>
-                        <button type="button" id="add_cancel">취소</button>
+                        <div class="photo-container">
+                            <c:if test="${not empty emp.photoName}">
+                                <img src="/employee_photos/${emp.photoName}" alt="사진"/>
+                            </c:if>
+                        </div>
                     </td>
+                    <td><button class="printQR">출력하기</button></td>
                 </tr>
-            </table>
-        </form>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <tr><td colspan="8">직원 목록이 비어 있습니다.</td></tr>
+        </c:otherwise>
+    </c:choose>
+    </tbody>
+</table>
 
-        <%-- !!! 중요: employee.js 로드 전에 contextPath, userRole, userDept 변수 정의 !!! --%>
-        <script>
-            var contextPath = "${pageContext.request.contextPath}";
-            var userRoleJs = "${userRole}";
-            var userDeptJs = "${userDept}";
-        </script>
-        <script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
-    </body>
+<jsp:include page="/WEB-INF/views/include/pagination.jsp" />
 
+<form id="newEmployeeForm" hidden>
+    <h3>새 직원 등록</h3>
+    <table>
+        <tr>
+            <th>이름</th>
+            <th>부서</th>
+            <th>직책</th>
+            <th>전화번호</th>
+            <th>메모</th>
+            <th>동작</th>
+        </tr>
+        <tr>
+            <td><input type="text" name="emplName" placeholder="이름" maxlength="50" required></td>
+            <td>
+                <select name="emplDept" required>
+                    <option value="">부서 선택</option>
+                    <option value="DP_01">하우스키핑</option>
+                    <option value="DP_02">시설관리</option>
+                    <option value="DP_03">프론트</option>
+                </select>
+            </td>
+            <td>
+                <select name="emplGrade" required>
+                    <option value="">직책 선택</option>
+                    <option value="GR_01">총지배인</option>
+                    <option value="GR_02">팀장</option>
+                    <option value="GR_03">일반</option>
+                </select>
+            </td>
+            <td><input type="tel" name="emplPhone" placeholder="연락처(- 없이 적어주세요)" maxlength="11" pattern="[0-9]{2,3}[0-9]{3,4}[0-9]{4}"></td>
+            <td><textarea name="emplNotes" placeholder="메모" maxlength="2000"></textarea></td>
+            <td>
+                <button type="submit">등록</button>
+                <button type="button" id="add_cancel">취소</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<div class="modal">
+    <div class="modal_popup">
+        <h3>직원 QR 코드</h3>
+        <div id="qrcode"></div>
+        <button type="button" class="print_btn">인쇄하기</button>
+        <button type="button" class="close_btn">닫기</button>
+    </div>
+</div>
+
+<script>
+    var contextPath = "${pageContext.request.contextPath}";
+    var userRoleJs = "${userRole}";
+    var userDeptJs = "${userDept}";
+</script>
+<script src="${pageContext.request.contextPath}/js/employee.js" defer></script>
+
+</body>
 </html>
