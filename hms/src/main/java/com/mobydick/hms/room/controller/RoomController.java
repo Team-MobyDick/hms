@@ -1,145 +1,135 @@
 package com.mobydick.hms.room.controller;
 
+
+import com.mobydick.hms.code.service.CodeService;
+import com.mobydick.hms.code.vo.CodeVO;
 import com.mobydick.hms.login.vo.LoginVO;
 import com.mobydick.hms.room.service.RoomService;
 import com.mobydick.hms.room.vo.RoomVO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.UUID;
 
 // 객실 관리 컨트롤러
 @Controller
 @RequestMapping("/room")
 public class RoomController {
 
+    // 의존성 주입
     @Autowired
     private RoomService roomService;
 
+    @Autowired
+    private CodeService codeService;
+
     // 객실 목록 페이지
     @GetMapping("/list")
-    public String room(Model model, @RequestParam(defaultValue = "1") int page) throws Exception {
+    public String room(Model model, HttpSession session) throws Exception {
 
-        int pageSize = 10; // 페이지당 항목 수
-        int totalCount = roomService.selectAllRooms().size(); // 전체 객실 수
-        int totalPages = (int) Math.ceil((double) totalCount / pageSize); // 전체 페이지 수 계산
+        // 전체 객실 조회
+        List<RoomVO> roomList =  roomService.selectAllRooms();
 
-        // 페이지 범위 처리 (1페이지 ~ totalPages 페이지까지)
-        int startIndex = (page - 1) * pageSize;
-        List<RoomVO> roomList = roomService.selectAllRooms().subList(startIndex, Math.min(startIndex + pageSize, totalCount));
-        List<RoomVO> roomWithDetails = roomService.selectRoomsWithWorkDetails(); // 업무 디테일 포함된 객실 리스트
+        // 객실 관련 코드 조회
+        List<CodeVO> codeList =  codeService.getRoomCode();
 
-        for (RoomVO room : roomList) {
-            for (RoomVO roomDetail : roomWithDetails) {
-                if (room.getRoomId().equals(roomDetail.getRoomId())) {
-                    room.setEmplId(roomDetail.getEmplId());
-                    room.setWorkDetail(roomDetail.getWorkDetail());
-                    room.setExtraInfo(roomDetail.getExtraInfo());
-                    room.setEmplName(roomDetail.getEmplName());
-                    break;
-                }
-            }
-        }
-
-        List<RoomVO> roomTypeList = roomService.getRoomTypeAndName();  // 객실 타입 목록
-
-        // 타입 맵 (코드ID → 코드명) 생성
-        Map<String, String> roomTypeMap = roomTypeList.stream()
-                .collect(Collectors.toMap(RoomVO::getCodeId, RoomVO::getCodeName, (v1, v2) -> v1, LinkedHashMap::new));
-
+        // view에 전달할 값
         model.addAttribute("screenTitle", "객실 관리");
-        model.addAttribute("currentPage", page);                        // 현재 페이지
-        model.addAttribute("totalPages", totalPages);                   // 전체 페이지 수
-        model.addAttribute("roomTypeMap", roomTypeMap);
-        model.addAttribute("roomTypeList", roomTypeList);
-        model.addAttribute("roomList", roomList);                       // 현재 페이지에 해당하는 객실 목록
+        model.addAttribute("roomList", roomList);
+        model.addAttribute("codeList", codeList);
         model.addAttribute("bodyPage", "room/room.jsp");
-
+        
         return "index";
+        
+    }
+
+    // 객실 세부 조회
+    @GetMapping("/detail")
+    public String roomDetail(Model model,
+                             @RequestParam String roomId) throws Exception {
+
+        // 선택한 객실 한 개만 조회
+        RoomVO vo = roomService.selectRoomById(roomId);
+
+        // 객실 관련 코드 조회
+        List<CodeVO> codeList =  codeService.getRoomCode();
+        System.out.println("codeList: " + codeList);
+
+        // view에 전달할 값
+        model.addAttribute("codeList", codeList);
+        model.addAttribute("roomDetail", vo);
+
+        return "room/detailRoom";
+
     }
 
     // 객실 등록
     @PostMapping("/add")
-    public ResponseEntity<String> addRoom(@RequestBody RoomVO vo, HttpSession session) {
-        try {
-            // 방 ID 생성
-            String roomId = "001" + String.format("%015d", new Random().nextInt(100000));
-            String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
-
-            vo.setRoomId(roomId);
-            vo.setCreatedId(loginUserId);
-            vo.setUpdatedId(loginUserId);
-
-            roomService.insertRoom(vo);
-            return ResponseEntity.ok("success");
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
-        }
-    }
-
-    // 객실 타입 목록 (AJAX)
-    @GetMapping("/types")
     @ResponseBody
-    public List<RoomVO> getRoomTypes() {
-        try {
-            return roomService.getRoomTypeAndName();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
+    public String addRoom(RoomVO roomVO, HttpSession session) throws Exception {
+
+        // 로그인 유저 정보
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+        String user = loginUser.getEmplId();
+
+        // 객실 번호 생성
+        String roomId = UUID.randomUUID().toString().replace("-", "").substring(0, 20);
+
+        // vo에 값 세팅
+        roomVO.setRoomId(roomId);
+        roomVO.setCreatedId(user);
+        roomVO.setUpdatedId(user);
+
+        // 등록 처리
+        roomService.insertRoom(roomVO);
+        
+        return "success";
+
     }
 
-    // 객실 정보 수정
-    @PutMapping("/update/{roomId}")
-    public ResponseEntity<String> updateRoom(@PathVariable String roomId, @RequestBody RoomVO updatedRoom, HttpSession session) {
-        try {
+    // 객실 수정
+    @PostMapping("/upd")
+    @ResponseBody
+    public String updateRoom(RoomVO roomVO,
+                             @RequestParam String roomId,
+                             @RequestParam String roomName,
+                             @RequestParam String roomClass,
+                             @RequestParam String roomClassName,
+                             HttpSession session) throws Exception {
 
-            String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
-            if (loginUserId == null) {
+        // 로그인 유저 정보
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+        String user = loginUser.getEmplId();
 
-                loginUserId = "UNKNOWN";
+        // 수정할 객실 정보 조회
+        RoomVO vo = roomService.selectRoomById(roomId);
 
-            }
+        // 수정할 데이터 세팅
+        vo.setUpdatedId(user);
+        vo.setRoomName(roomName);
+        vo.setRoomClass(roomClass);
+        vo.setRoomClassName(roomClassName);
 
-            RoomVO original = roomService.selectRoomById(roomId);
-            if (original == null) return ResponseEntity.notFound().build();
+        // 객실 수정
+        roomService.roomUpdate(vo);
 
-            updatedRoom.setRoomId(roomId);
-            updatedRoom.setUpdatedId(loginUserId);
+        return "success";
 
-            if ("Yes".equals(updatedRoom.getReservDate())) {
-                updatedRoom.setReservDate("Yes");
-            } else {
-                updatedRoom.setReservDate("No");
-            }
-
-            roomService.updateRoom(updatedRoom);
-            return ResponseEntity.ok("success");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
-        }
     }
 
     // 객실 삭제
-    @DeleteMapping("/delete/{roomId}")
+    @PostMapping("/delete")
     @ResponseBody
-    public ResponseEntity<String> deleteRoom(@PathVariable("roomId") String roomId) {
-        try {
-            roomService.deleteRoom(roomId);
-            return ResponseEntity.ok("삭제 완료");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패");
-        }
+    public String deleteRoom(@RequestParam String roomId) throws Exception {
+
+        // 삭제 처리
+        roomService.roomDelete(roomId);
+        return "success";
+
     }
+
 }

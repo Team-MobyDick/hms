@@ -7,116 +7,139 @@
 
     <!-- 전체 객실 조회 -->
     <select id="selectAllRooms" resultType="com.mobydick.hms.room.vo.RoomVO">
-        <![CDATA[
                 SELECT
                     A.ROOM_ID,
                     A.ROOM_NAME,
                     A.ROOM_CLASS,
-                    A.RESERV_DATE,
-                    A.CREATED_DATE,
-                    A.CREATED_ID,
-                    A.UPDATED_DATE,
-                    A.UPDATED_ID
-                FROM
-                    TB_ROOM A
-                ORDER BY A.ROOM_CLASS
-        ]]>
-    </select>
-
-    <!-- 객실 정보와 업무 디테일을 조인 -->
-    <select id="selectRoomsWithWorkDetails" resultType="com.mobydick.hms.room.vo.RoomVO">
-        <![CDATA[
-                SELECT
-                    A.ROOM_ID,
-                    A.ROOM_NAME,
-                    A.ROOM_CLASS,
-                    A.RESERV_DATE,
+                    A.ROOM_CLASSNAME,
                     A.CREATED_DATE,
                     A.CREATED_ID,
                     A.UPDATED_DATE,
                     A.UPDATED_ID,
-                    B.EMPL_ID,
-                    B.WORKD_CONTEXT AS WORK_DETAIL,
-                    B.WORKD_EXTRA AS EXTRA_INFO,
-                    C.EMPL_NAME AS EMPL_NAME
+                    CASE
+                        WHEN COUNT(B.WORKD_NAME) > 3 THEN
+                            -- 첫 3개만 출력하고 나머지는 '...'
+                            SUBSTR(LISTAGG(CASE WHEN B.WORKD_NAME IS NULL THEN '' ELSE B.WORKD_NAME END, ', ') WITHIN GROUP (ORDER BY B.WORKD_NAME), 1,
+                                   INSTR(LISTAGG(CASE WHEN B.WORKD_NAME IS NULL THEN '' ELSE B.WORKD_NAME END, ', ')
+                                             WITHIN GROUP (ORDER BY B.WORKD_NAME), ',', 3) - 1) || '...'
+                        ELSE
+                            LISTAGG(CASE WHEN B.WORKD_NAME IS NULL THEN '' ELSE B.WORKD_NAME END, ', ') WITHIN GROUP (ORDER BY B.WORKD_NAME)
+                END AS WORKD_NAME,
+
+            CASE
+                WHEN COUNT(C.EMPL_NAME) > 3 THEN
+                    -- 첫 3개만 출력하고 나머지는 '...'
+                    SUBSTR(LISTAGG(CASE WHEN C.EMPL_NAME IS NULL THEN '' ELSE C.EMPL_NAME || '(' || C.EMPL_ID || ')' END, ', ') WITHIN GROUP (ORDER BY C.EMPL_NAME), 1,
+                           INSTR(LISTAGG(CASE WHEN C.EMPL_NAME IS NULL THEN '' ELSE C.EMPL_NAME || '(' || C.EMPL_ID || ')' END, ', ')
+                           WITHIN GROUP (ORDER BY C.EMPL_NAME), ',', 3) - 1) || '...'
+                ELSE
+                    LISTAGG(CASE WHEN C.EMPL_NAME IS NULL THEN '' ELSE C.EMPL_NAME || '(' || C.EMPL_ID || ')' END, ', ') WITHIN GROUP (ORDER BY C.EMPL_NAME)
+                END AS EMPL_NAME
+        FROM
+            TB_ROOM A
+            LEFT JOIN TB_WORK_D B
+                ON A.ROOM_ID = B.ROOM_ID
+            LEFT JOIN TB_EMPL C
+                ON B.EMPL_ID = C.EMPL_ID
+        GROUP BY
+            A.ROOM_ID,
+            A.ROOM_NAME,
+            A.ROOM_CLASS,
+            A.ROOM_CLASSNAME,
+            A.CREATED_DATE,
+            A.CREATED_ID,
+            A.UPDATED_DATE,
+            A.UPDATED_ID
+        ORDER BY
+            A.ROOM_CLASS
+
+    </select>
+
+    <!-- 객실 세부 조회 -->
+    <select id="selectRoomById" resultType="com.mobydick.hms.room.vo.RoomVO">
+                SELECT
+                    A.ROOM_ID,
+                    A.ROOM_NAME,
+                    A.ROOM_CLASS,
+                    A.ROOM_CLASSNAME,
+                    A.CREATED_DATE,
+                    A.CREATED_ID,
+                    A.UPDATED_DATE,
+                    A.UPDATED_ID,
+                    LISTAGG(
+                        CASE WHEN
+                            B.WORKD_NAME IS NULL THEN ''
+                            ELSE B.WORKD_NAME
+                            END, ', ')
+                        WITHIN
+                        GROUP (ORDER BY B.WORKD_NAME) AS WORKD_NAME,
+                    LISTAGG(
+                        CASE WHEN
+                        C.EMPL_NAME IS NULL THEN ''
+                        ELSE C.EMPL_NAME || '(' || C.EMPL_ID || ')' END, ', ')
+                        WITHIN GROUP (ORDER BY C.EMPL_NAME) AS EMPL_NAME
                 FROM
                     TB_ROOM A
-                LEFT JOIN
-                    TB_WORK_D B
+                    LEFT JOIN TB_WORK_D B
                         ON A.ROOM_ID = B.ROOM_ID
-                LEFT JOIN
-                    TB_EMPL C
-                       ON B.EMPL_ID = C.EMPL_ID
-                WHERE
-                    B.ROOM_ID IS NOT NULL
-                ORDER BY
-                    A.ROOM_NAME
-        ]]>
+                    LEFT JOIN TB_EMPL C
+                        ON B.EMPL_ID = C.EMPL_ID
+                <where>
+                     <if test="roomId != null and roomId != ''">
+                        A.ROOM_ID = #{roomId}
+                     </if>
+                </where>
+                GROUP BY
+                    A.ROOM_ID,
+                    A.ROOM_NAME,
+                    A.ROOM_CLASS,
+                    A.ROOM_CLASSNAME,
+                    A.CREATED_DATE,
+                    A.CREATED_ID,
+                    A.UPDATED_DATE,
+                    A.UPDATED_ID
+                ORDER BY A.ROOM_CLASS
     </select>
 
     <!-- 객실 등록 -->
     <insert id="insertRoom" parameterType="com.mobydick.hms.room.vo.RoomVO">
         INSERT INTO TB_ROOM (
-        ROOM_ID,
-        ROOM_NAME,
-        ROOM_CLASS,
-        RESERV_DATE,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
+            ROOM_ID,
+            ROOM_NAME,
+            ROOM_CLASS,
+            ROOM_CLASSNAME,
+            CREATED_DATE,
+            CREATED_ID,
+            UPDATED_DATE,
+            UPDATED_ID
         ) VALUES (
-        #{roomId},
-        #{roomName},
-        #{roomClass, jdbcType=VARCHAR},
-        #{reservDate, jdbcType=VARCHAR},
-        SYSDATE,
-        #{createdId},
-        SYSDATE,
-        #{updatedId}
-        )
+             #{roomId},
+             #{roomName},
+             #{roomClass},
+             #{roomClassName},
+             SYSDATE,
+             #{createdId},
+             SYSDATE,
+             #{updatedId}
+                 )
     </insert>
 
-    <!-- 객실 타입 목록 조회 (TP 코드만) -->
-    <select id="getRoomTypeAndName" resultType="com.mobydick.hms.room.vo.RoomVO">
-        SELECT
-        CODE_ID AS codeId,
-        CODE_NAME AS codeName
-        FROM TB_CODE
-        WHERE CODE_ID LIKE 'TP%'
-        ORDER BY CODE_ID
-    </select>
-
-    <!-- 객실 정보 수정 -->
-    <update id="updateRoom" parameterType="map">
-        UPDATE TB_ROOM
-        SET
-        ROOM_NAME = #{roomName},
-        ROOM_CLASS = #{roomClass, jdbcType=VARCHAR},
-        RESERV_DATE = #{reservDate, jdbcType=VARCHAR},
-        UPDATED_DATE = SYSDATE,
-        UPDATED_ID = #{updatedId}
+    <!-- 객실 수정 -->
+    <update id="roomUpdate">
+        UPDATE TB_ROOM SET
+                           ROOM_NAME = #{roomName},
+                           ROOM_CLASS = #{roomClass},
+                           ROOM_CLASSNAME = #{roomClassName},
+                           UPDATED_DATE = SYSDATE,
+                           UPDATED_ID = #{updatedId}
         WHERE ROOM_ID = #{roomId}
     </update>
 
-    <!-- 객실 ID로 단건 조회 -->
-    <select id="selectRoomById" parameterType="string" resultType="com.mobydick.hms.room.vo.RoomVO">
-        SELECT
-        ROOM_ID,
-        ROOM_NAME,
-        ROOM_CLASS,
-        RESERV_DATE,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
-        FROM TB_ROOM
-        WHERE ROOM_ID = #{roomId}
-    </select>
-
     <!-- 객실 삭제 -->
-    <delete id="deleteRoom" parameterType="string">
-        DELETE FROM TB_ROOM WHERE ROOM_ID = #{roomId}
+    <delete id="roomDelete">
+        DELETE
+            FROM TB_ROOM
+        WHERE ROOM_ID = #{roomId}
     </delete>
 
 </mapper>

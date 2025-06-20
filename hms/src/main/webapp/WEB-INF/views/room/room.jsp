@@ -1,111 +1,65 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
+<c:set var="userRole" value="${sessionScope.loginUser.emplGrade}"/>
+
+<%-- room.jsp --%>
 
 <!DOCTYPE html>
 <html>
-<head>
-    <title>객실 관리</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
 
-<body data-role="${userRole}">
+    <head>
+        <title>객실 관리</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <%-- 객실 관리 처리용 js --%>
+        <script src="${pageContext.request.contextPath}/js/room.js"></script>
+    </head>
+
+    <body>
 
     <h2>객실 관리</h2>
-    <button id="add_btn">객실 등록</button>
 
-    <div style="margin-bottom: 10px;">
-      <label for="roomTypeFilter">객실 종류 필터:</label>
-      <select id="roomTypeFilter">
-        <option value="ALL">전체</option>
-        <c:forEach var="entry" items="${roomTypeMap}">
-          <option value="${entry.key}">${entry.value}</option>
-        </c:forEach>
-      </select>
-    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>객실 이름</th>
-                <th>객실 종류</th>
-                <th>예약 상태</th>
-                <th>업무 내용</th>
-                <th>특이 사항</th>
-                <th>담당자</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:choose>
-                <c:when test="${not empty roomList}">
-                    <c:forEach var="room" items="${roomList}">
-                        <tr class="room-row"
-                            data-room="${room.roomName}"
-                            data-type="${room.roomClass}"
-                            data-room-id="${room.roomId}"
-                            data-reserve="${not empty room.reservDate ? 'Yes' : 'No'}"
-                            data-createdDate="${room.createdDate}"
-                            data-createdId="${room.createdId}"
-                            data-updatedDate="${room.updatedDate}"
-                            data-updatedId="${room.updatedId}">
-                            <td data-label="객실 이름">${room.roomName}</td>
-                            <td data-label="객실 종류">
-                                <c:out value="${roomTypeMap[room.roomClass]}" default="미정" />
-                            </td>
-                            <td data-label="예약 상태">
-                                <c:choose>
-                                    <c:when test="${room.reservDate == 'Yes'}">
-                                        예약되어 있습니다.
-                                    </c:when>
-                                    <c:otherwise>
-                                        예약되지 않았습니다.
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td>${room.workDetail}</td>
-                            <td>${room.extraInfo}</td>
-                            <td>${room.emplName}</td>
-                        </tr>
-                    </c:forEach>
-                </c:when>
-                <c:otherwise>
-                    <tr><td colspan="4">객실 목록이 비어 있습니다.</td></tr>
-                </c:otherwise>
-            </c:choose>
-        </tbody>
-    </table>
+        <button id="add_btn" onclick="toggleAddRoom();">객실 등록</button>
 
-    <jsp:include page="/WEB-INF/views/include/pagination.jsp" />
+        <%-- 객실 등록 폼 --%>
+        <div id="addRoomContainer" style="display: none;">
+            <jsp:include page="addRoom.jsp" />
+        </div>
 
-    <!-- 객실 등록 폼 -->
-    <form id="newRoomForm" hidden>
-        <table>
-            <tr>
-                <th>객실 이름</th>
-                <th>객실 종류</th>
-                <th>예약 상태</th>
-                <th>동작</th>
-            </tr>
-            <tr>
-                <td><input id="roomName" type="text" name="roomName" placeholder="객실 이름" maxlength="100"></td>
-                <td>
-                    <select name="roomType" id="roomType"></select>
-                </td>
-                <td>
-                    <select name="res">
-                        <option value="Yes">Yes</option>
-                        <option value="No" selected>No</option>
-                    </select>
-                </td>
-                <td>
-                    <button type="submit">등록</button>
-                    <button type="button" id="add_cancle">취소</button>
-                </td>
-            </tr>
+        <%-- 객실 목록 --%>
+        <table id="room_table">
+
+            <thead>
+                <tr>
+                    <th>객실 이름</th>
+                    <th>객실 종류</th>
+                    <th>업무 내용</th>
+                    <th >담당자</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <c:forEach var="room" items="${roomList}">
+
+                    <%-- 행 하나를 클릭 시 상세 정보 조회--%>
+                    <tr onclick="loadDetail('${room.roomId}')">
+                        <td>${room.roomName}</td>
+                        <td>${room.roomClassName}</td>
+                        <td>${room.workdName}</td>
+                        <td>${room.emplName}</td>
+                    </tr>
+
+                </c:forEach>
+
+            </tbody>
+
         </table>
-    </form>
 
-    <script src="${pageContext.request.contextPath}/js/room.js" defer></script>
-</body>
+        <%-- 객실 상세 정보 페이지 --%>
+        <div id="roomDetailContainer" style="display: none; margin-top: 20px;"></div>
+
+    </body>
+
 </html>

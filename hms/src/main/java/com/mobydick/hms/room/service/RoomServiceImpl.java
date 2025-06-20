@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 // 객실 관리 서비스 구현체
 @Service
@@ -22,39 +23,30 @@ public class RoomServiceImpl implements RoomService {
         return roomDAO.selectAllRooms();
     }
 
-    // 객실 등록
-    @Override
-    public void insertRoom(RoomVO room) throws Exception {
-        roomDAO.insertRoom(room);
-    }
+    // 객실 세부 조회
 
-    // 객실 타입 목록 조회
-    @Override
-    public List<RoomVO> getRoomTypeAndName() {
-        return roomDAO.getRoomTypeAndName();
-    }
 
-    // 객실 정보 수정
-    @Override
-    public void updateRoom(RoomVO room) throws Exception {
-        roomDAO.updateRoom(room);
-    }
-
-    // 객실 ID로 단건 조회
     @Override
     public RoomVO selectRoomById(String roomId) throws Exception {
         return roomDAO.selectRoomById(roomId);
     }
 
-    // 객실 삭제
+    // 객실 등록
     @Override
-    public void deleteRoom(String roomId) {
-        roomDAO.deleteRoom(roomId);
+    public void insertRoom(RoomVO roomVO) throws Exception {
+        roomDAO.insertRoom(roomVO);
     }
 
-    // 청소 상태, 특이 사항, 담당자 조회
+    // 객실 수정
     @Override
-    public List<RoomVO> selectRoomsWithWorkDetails() {
-        return roomDAO.selectRoomsWithWorkDetails();
+    public void roomUpdate(RoomVO roomVO) throws Exception {
+        roomDAO.roomUpdate(roomVO);
     }
+
+    // 객실 삭제
+    @Override
+    public void roomDelete(String roomId) throws Exception {
+        roomDAO.roomDelete(roomId);
+    }
+
 }

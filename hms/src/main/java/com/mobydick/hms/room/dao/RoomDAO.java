@@ -11,23 +11,17 @@ public interface RoomDAO {
 
     // 전체 객실 조회
     List<RoomVO> selectAllRooms() throws DataAccessException;
-
-    // 객실 등록
-    void insertRoom(RoomVO room) throws DataAccessException;
-
-    // 객실 타입 목록 조회 (codeId, codeName)
-    List<RoomVO> getRoomTypeAndName() throws DataAccessException;
-
-    // 객실 정보 수정
-    void updateRoom(RoomVO room) throws DataAccessException;
-
-    // 객실 ID로 상세 조회
+    
+    // 객실 세부 조회
     RoomVO selectRoomById(String roomId) throws DataAccessException;
+    
+    // 객실 등록
+    void insertRoom(RoomVO roomVO) throws DataAccessException;
+
+    // 객실 수정
+    void roomUpdate(RoomVO roomVO) throws DataAccessException;
 
     // 객실 삭제
-    void deleteRoom(String roomId) throws DataAccessException;
-    
-    // 청소 상태, 특이 사항, 담당자 조회
-    List<RoomVO> selectRoomsWithWorkDetails() throws DataAccessException;
-    
+    void roomDelete(String roomId) throws DataAccessException;
+
 }

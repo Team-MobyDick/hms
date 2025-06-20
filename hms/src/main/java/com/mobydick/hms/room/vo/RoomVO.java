@@ -11,22 +11,16 @@ public class RoomVO {
     private String roomId;         // 객실 ID
     private String roomName;       // 객실 이름
     private String roomClass;      // 객실 등급 코드 (TP_01 등)
-    private String reservDate;     // 예약 일자 (yyyy-MM-dd)
+    private String roomClassName;  // 객실 등급 코드 이름 (스탠다드 룸 등)
 
-    // 생성/수정 정보
+    // 생성, 수정 정보
     private Date createdDate;      // 등록 일자
     private String createdId;      // 등록자 ID
     private Date updatedDate;      // 수정 일자
     private String updatedId;      // 수정자 ID
 
-    // 객실 등급 코드 정보 (조인용)
-    private String codeId;         // 객실 타입 코드
-    private String codeName;       // 객실 타입 이름
-
-    // 업무 디테일 정보 (업무 관련)
-    private String emplId;         // 담당자 ID
-    private String workDetail;     // 업무 내용
-    private String extraInfo;      // 특이사항
-    private String emplName;       // 담당자 이름
+    // 업무명, 담당자명
+    private String workdName;      // 업무명
+    private String emplName;       // 담당자명
 
 }
