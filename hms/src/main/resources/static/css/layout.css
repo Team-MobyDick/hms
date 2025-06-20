@@ -9,6 +9,10 @@
   flex: 1;
   padding: 1em;
   transition: all 0.3s ease;
+
+  margin-left: 150px;
+  padding-bottom: 60px;
+  margin-top: 50px;
 }
 
 .main-content.expanded {
@@ -35,11 +39,13 @@
     width: 100%;
     margin-left: 0;
     padding: 0.8em;
+    margin-top: 50px;
   }
 
   .footer {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.3em;
     padding: 0.5em;
     font-size: 0.8em;
   }

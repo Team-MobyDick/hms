@@ -11,7 +11,7 @@
         <div class="sidebar" id="sidebar">
 
           <ul>
-
+            <div class="user-name">id: ${fn:escapeXml(sessionScope.loginUser.emplName)}</div>
             <li onclick="location.href='${pageContext.request.contextPath}/'">대시보드</li>
 
             <!-- 관리자 또는 팀장 공통 메뉴 -->
@@ -26,7 +26,6 @@
 
           </ul>
 
-          <div class="user-name">${fn:escapeXml(sessionScope.loginUser.emplName)}</div>
         </div>
 
 </c:if>
