@@ -8,7 +8,7 @@ import java.sql.Date;
 public class NoticeVO {
 
     // 기본 공지사항 정보
-    private int noticeId;   // 공지 ID
+    private Integer noticeId;   // 공지 ID
     private String noticeTitle; //공지 제목
     private String emplId;  //글쓴이
     private String noticeContent;   //공지 내용
