@@ -76,6 +76,19 @@
         )
     </insert>
 
+    <!-- 주 업무 수정 -->
+    <update id="updateWorkM" parameterType="com.mobydick.hms.work.vo.WorkVO">
+        UPDATE TB_WORK_M
+        SET
+        WORKM_NAME = #{workMName},
+        WORKM_DEPT = #{workMDept},
+        WORKM_CONTEXT = #{workMContext},
+        WORKM_IMPO = #{workMImpo},
+        UPDATED_DATE = SYSDATE,
+        UPDATED_ID = #{updatedId}
+        WHERE WORKM_ID = #{workMId}
+    </update>
+
     <!-- 상세 업무 등록 -->
     <insert id="insertWorkD" parameterType="com.mobydick.hms.work.vo.WorkVO">
         INSERT INTO TB_WORK_D (

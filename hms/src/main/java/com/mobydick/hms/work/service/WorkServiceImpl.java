@@ -42,6 +42,10 @@ public class WorkServiceImpl implements WorkService{
         workDAO.insertWorkM(workM);
     };
 
+    public void updateWorkM(WorkVO workM) throws Exception {
+        workDAO.updateWorkM(workM);
+    };
+
     @Override
     public void insertWorkD(WorkVO workD) throws Exception {
         workDAO.insertWorkD(workD);
