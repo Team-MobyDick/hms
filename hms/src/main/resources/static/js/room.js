@@ -79,8 +79,8 @@ function saveChanges(roomId) {
         
         // 입력된 수정 값들 가져오기
         const roomName = $('#editForm_' + roomId + ' input[name="roomName"]').val();
-        const roomClassId = $('#roomType option:selected').val();
-        const roomClassName = $('#roomType option:selected').text();
+        const roomClassId = $('#editForm_' + roomId + ' select[name="roomType"]').val();
+        const roomClassName = $('#editForm_' + roomId + ' select[name="roomType"] option:selected').text();
 
         // 입력값 전달
         $.ajax({
@@ -90,7 +90,7 @@ function saveChanges(roomId) {
                 roomId: roomId,
                 roomName: roomName,
                 roomClass: roomClassId,
-                roomClassName: roomClassName
+                roomClassName: roomClassName,
             },
             success: function(response) {
                 alert("수정이 완료되었습니다.");
