@@ -9,17 +9,17 @@
     <select id="selectAllNotices" resultType="com.mobydick.hms.notice.vo.NoticeVO">
         <![CDATA[
         SELECT
-            ROW_NUMBER() OVER(ORDER BY A.CREATED_DATE DESC) NOTICE_ID,
-            A.NOTICE_TITLE,
-            A.EMPL_ID,
-            A.NOTICE_CONTENT,
-            A.CREATED_DATE,
-            A.CREATED_ID,
-            A.UPDATED_DATE,
-            A.UPDATED_ID
+            NOTICE_ID,
+            NOTICE_TITLE,
+            EMPL_ID,
+            NOTICE_CONTENT,
+            CREATED_DATE,
+            CREATED_ID,
+            UPDATED_DATE,
+            UPDATED_ID
         FROM
-            TB_NOTICE A
-        ORDER BY A.CREATED_DATE DESC
+            TB_NOTICE
+        ORDER BY CREATED_DATE DESC
         ]]>
     </select>
 
@@ -41,7 +41,7 @@
 
     <!-- 공지사항 등록 (Oracle 시퀀스 사용 방식) -->
     <insert id="insertNotice" parameterType="com.mobydick.hms.notice.vo.NoticeVO">
-        <!-- NOTICE_ID_SEQ는 실제 존재하는 시퀀스 이름으로 교체하세요 -->
+        <!-- SEQ_NOTICE_ID 실제 존재하는 시퀀스 이름으로 교체하세요 -->
         <selectKey keyProperty="noticeId" resultType="int" order="BEFORE">
             SELECT SEQ_NOTICE_ID.NEXTVAL FROM DUAL
         </selectKey>

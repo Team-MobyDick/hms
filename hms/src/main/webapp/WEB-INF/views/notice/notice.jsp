@@ -46,14 +46,15 @@
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="notice" items="${noticeList}">
+        <c:forEach var="notice" items="${noticeList}" varStatus="status">
             <tr class="ann-row"
                 data-notice-id="${notice.noticeId}"
                 data-title="${fn:escapeXml(notice.noticeTitle)}"
                 data-writer="${notice.emplId}"
                 data-date="<fmt:formatDate value='${notice.createdDate}' pattern='yyyy-MM-dd' />"
                 data-content="${fn:escapeXml(notice.noticeContent)}">
-                <td>${notice.noticeId}</td>
+                <td>${status.count}</td>
+<%--                <td>${notice.noticeId}</td>--%>
                 <td>${notice.noticeTitle}</td>
                 <td>${notice.emplId}</td>
                 <td><fmt:formatDate value="${notice.createdDate}" pattern="yyyy-MM-dd" /></td>
