@@ -17,6 +17,12 @@ public interface WorkDAO {
 
     List<WorkVO> selectWorkDByEmplByDate(String emplId, String date) throws DataAccessException;
 
+    void insertWorkM(WorkVO workM) throws DataAccessException;
+
+    void updateWorkM(WorkVO workM) throws DataAccessException;
+
+    void insertWorkD(WorkVO workD) throws DataAccessException;
+
     List<WorkVO> getDetailWorkList(String workMId, String date) throws DataAccessException;
 
     List<WorkVO> getDept() throws DataAccessException;
@@ -26,8 +32,4 @@ public interface WorkDAO {
     List<WorkVO> getRoom() throws DataAccessException;
 
     List<WorkVO> getEmpl() throws DataAccessException;
-
-    void insertWorkM(WorkVO workM) throws DataAccessException;
-
-    void insertWorkD(WorkVO workD) throws DataAccessException;
 }

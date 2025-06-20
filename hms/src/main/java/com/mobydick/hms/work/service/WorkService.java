@@ -21,6 +21,7 @@ public interface WorkService {
     void insertWorkM(WorkVO vo) throws Exception;
 
     // 주 업무 수정 (최고관리자)
+    void updateWorkM(WorkVO vo) throws Exception;
 
     // 주 업무 삭제 (최고관리자)
 

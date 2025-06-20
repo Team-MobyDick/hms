@@ -80,6 +80,23 @@ public class WorkController {
         }
     }
 
+    // 주 업무 수정
+    @PostMapping("/modifyWorkM")
+    public ResponseEntity<String> modifyWorkM(@RequestBody WorkVO vo, HttpSession session) {
+        try {
+            // 주 업무 ID 생성
+            String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
+
+            vo.setUpdatedId(loginUserId);
+
+            workService.updateWorkM(vo);
+            return ResponseEntity.ok("success");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
+        }
+    }
+
     // 업무 배분 등록
     @PostMapping("/addWorkD")
     public ResponseEntity<String> addWorkD(@RequestBody WorkVO vo, HttpSession session) {

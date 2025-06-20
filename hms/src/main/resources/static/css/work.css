@@ -1,0 +1,66 @@
+/* 전체 모달 오버레이 스타일 */
+.workMDetail {
+    position: fixed;              /* 스크린 전체를 덮음 */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;                /* 처음엔 숨김 */
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); /* 반투명 검은 배경 */
+    z-index: 1000;
+}
+
+/* 모달 안 폼 스타일 */
+.workMDetailForm {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    min-width: 300px;
+    max-width: 500px;
+    box-shadow: 0px 4px 20px rgba(0,0,0,.3);
+}
+
+/* 폼 내 레이블 스타일 */
+.workMDetailForm label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+.workMDetailForm input,
+.workMDetailForm select,
+.workMDetailForm textarea {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 14px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+
+.workMDetailForm button {
+    padding: 8px 14px;
+    margin: 5px 3px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.workMDetailForm button[type="submit"] {
+    background: #007BFF;
+    color: #fff;
+    border: none;
+}
+
+.workMDetailForm .delete_btn_M {
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+}
+
+.workMDetailForm .cancle_btn_M {
+    background: #777;
+    color: #fff;
+    border: none;
+}

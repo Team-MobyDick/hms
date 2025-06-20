@@ -152,7 +152,7 @@ $(document).ready(function () {
                 if (detailWorks.length === 0) {
                     const emptyRow = $(`
                         <tr class="workD-row" data-parent="${workMId}">
-                            <td colspan="6" style="background:#f9f9f9;">상세업무가 없습니다.</td>
+                            <td colspan="5" style="background:#f0f0f0;">상세업무가 없습니다.</td>
                         </tr>
                     `);
                     $clickedRow.after(emptyRow);
@@ -164,12 +164,11 @@ $(document).ready(function () {
                                 data-parent="${workMId}"
                                 data-workd-id="${detail.workDId}"
                                 style="display:none; background:#f0f0f0;">
-                                <td data-label="level"></td>
-                                <td data-label="업무명">${detail.workDName}</td>
                                 <td data-label="부서"></td>
+                                <td data-label="업무명">${detail.workDName}</td>
                                 <td data-label="담당자">${detail.emplName}</td>
                                 <td data-label="중요도">${detail.workDImpoN}</td>
-                                <td data-label="일자">${detail.workDDate}</td>
+                                <td data-label="업무상세"><button id="detail_btn_D">업무 상세</button></td>
                             </tr>
                         `);
                         detailRows.push(detailRow);
@@ -254,10 +253,78 @@ $(document).ready(function () {
              }
          });
         });
+
+    // #detail_btn_M 클릭시 업무 상세 모달 열기
+    $(document).on('click', '.detail_btn_M', function (e) {
+        e.stopPropagation(); // 상위 tr 클릭 이벤트 방지
+
+        const $btn = $(this);
+        const $row = $btn.closest('tr');
+        const workMId = $row.data('workm-id');
+        const workMName = $row.data('workm-name');
+        const workMDept = $row.data('workm-dept');
+        const workMImpo = $row.data('workm-impo');
+        const workMContext = $row.data('workm-context');
+
+        // 값 채워주기
+        const $modal = $('.workMDetail');
+        $modal.find('[name="workMId"]').val(workMId);
+        $modal.find('[name="workMName"]').val(workMName);
+        $modal.find('[name="workMDept"]').val(workMDept);
+        $modal.find('[name="workMImpo"]').val(workMImpo);
+        $modal.find('[name="workMContext"]').val(workMContext);
+
+        $modal.fadeIn(200);
+    });
+
+    // #cancle_btn_M 클릭시 업무 상세 모달 닫기
+    $(document).on('click', '.cancle_btn_M', function (e) {
+        e.stopPropagation(); // 상위 tr 클릭 이벤트 방지
+        $('.workMDetail').fadeOut(200);
+    });
+
+    // 수정 버튼 클릭
+    $(document).on('submit', '.workMDetailForm', function (e) {
+        e.preventDefault();
+        const $form = $(this);
+        const $formDiv = $form.closest('div');
+
+        const data = {
+         workMId: $form.find('input[name="workMId"]').val(),
+         workMName: $form.find('input[name="workMName"]').val(),
+         workMDept: $form.find('select[name="workMDept"]').val(),
+         workMImpo: $form.find('select[name="workMImpo"]').val(),
+         workMContext: $form.find('textarea[name="workMContext"]').val(),
+        };
+
+        console.log(data);
+
+        if (!data.workMName || !data.workMDept || !data.workMImpo) {
+         alert("업무 이름과 부서, 중요도는 필수입니다.");
+         return;
+        }
+
+        $.ajax({
+            url: '/work/modifyWorkM',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                alert('주 업무 내용이 수정되었습니다.');
+                // 성공 후 필요한 작업
+                $formDiv.fadeOut(200);
+            },
+            error: function (xhr) {
+                alert('수정 실패: ' + xhr.responseText);
+            }
+        });
+    });
+
 });
 
+
 // #add_btn_D 클릭시 업무 배분 등록폼 열기
-$(document).on('click', '#add_btn_D', function (e) {
+$(document).on('click', '.add_btn_D', function (e) {
     e.stopPropagation(); // 상위 tr 클릭 이벤트 방지
 
     const $button = $(this);
@@ -279,7 +346,7 @@ $(document).on('click', '#add_btn_D', function (e) {
 
     const formRow = $(`
         <tr class="newWorkDForm">
-            <td colspan="6" style="background:#eef; padding:10px;">
+            <td colspan="5" style="background:#eef; padding:10px;">
                 <form class="workDForm">
                     <input type="hidden" name="workMId" value="${workMId}" />
                     <input type="hidden" name="workDDept" value="${workMDept}" />
@@ -338,20 +405,21 @@ $(document).on('click', '.add_cancle_D', function () {
         $(this).remove();
     });
 });
+
 // workDForm 등록 폼 제출
 $(document).on('submit', '.workDForm', function (e) {
     e.preventDefault();
     const $form = $(this);
 
     const data = {
-     workMId: $('input[name="workMId"]').val(),
-     workDDept: $('input[name="workDDept"]').val(),
-     workDName: $('input[name="workDName"]').val(),
-     workDEmplId: $('select[name="workDEmplId"]').val(),
-     workDDate: $('input[name="workDDate"]').val(),
-     workDRoomId: $('select[name="workDRoomId"]').val(),
-     workDImpo: $('select[name="workDImpo"]').val(),
-     workDContext: $('textarea[name="workDContext"]').val(),
+     workMId: $form.find('input[name="workMId"]').val(),
+     workDDept: $form.find('input[name="workDDept"]').val(),
+     workDName: $form.find('input[name="workDName"]').val(),
+     workDEmplId: $form.find('select[name="workDEmplId"]').val(),
+     workDDate: $form.find('input[name="workDDate"]').val(),
+     workDRoomId: $form.find('select[name="workDRoomId"]').val(),
+     workDImpo: $form.find('select[name="workDImpo"]').val(),
+     workDContext: $form.find('textarea[name="workDContext"]').val(),
     };
 
     if (!data.workDName || !data.workDDate || !data.workDImpo) {
@@ -360,7 +428,7 @@ $(document).on('submit', '.workDForm', function (e) {
     }
 
     $.ajax({
-        url: '/work/addWorkD', // 실제 저장하는 URL로 변경
+        url: '/work/addWorkD',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(data),
