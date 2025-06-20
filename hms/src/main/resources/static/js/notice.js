@@ -1,23 +1,25 @@
 
-    const userRole = 'test';
+const userRole = userRoleJs;
 
-    function getButtonsByRole(role, noticeId) {
-        if (role === 'test') {
-            return `
-                <button class="action-btn edit-btn" data-id="${noticeId}">수정</button>
-                <button class="action-btn delete-btn" data-id="${noticeId}">삭제</button>
-                <button class="action-btn close-btn">닫기</button>
-            `;
-        } else {
-            return `<button class="action-btn close-btn">닫기</button>`;
-        }
-    }
+
+// 사용하지 않는 소스
+    // function getButtonsByRole(role, noticeId) {
+    //     if (role === 'test') {
+    //         return `
+    //             <button class="action-btn edit-btn" data-id="${noticeId}">수정</button>
+    //             <button class="action-btn delete-btn" data-id="${noticeId}">삭제</button>
+    //             <button class="action-btn close-btn">닫기</button>
+    //         `;
+    //     } else {
+    //         return `<button class="action-btn close-btn">닫기</button>`;
+    //     }
+    // }
 
 $(document).ready(function () {
-    const userRole = 'test'; // 실제론 세션 등에서 받아야 함
+    // const userRole = 'test'; // 실제론 세션 등에서 받아야 함
 
     function getButtonsByRole(role, noticeId) {
-        if (role === 'test') {
+        if (role === 'GR_01') {
             return `
                 <button class="action-btn edit-btn" data-id="${noticeId}">수정</button>
                 <button class="action-btn delete-btn" data-id="${noticeId}">삭제</button>
@@ -29,8 +31,11 @@ $(document).ready(function () {
     }
 
     // 등록 버튼 클릭 시 폼 이동
-    $('#add_btn').on('click', function () {
+    $('#add_btn').on('click', function getButtonsByRole (userRole, id) {
+
         location.href = contextPath + '/notice/form';
+
+
     });
 
     // 공지 클릭 시 슬라이드 오픈
@@ -54,11 +59,8 @@ $(document).ready(function () {
         const $detail = $(`
             <tr class="detail-slide">
                 <td colspan="4">
-                    <table style="width:100%; border: 1px solid #ccc;">
-                        <tr><th style="width:100px;">제목</th><td>${title}</td></tr>
-                        <tr><th>작성자</th><td>${writer}</td></tr>
-                        <tr><th>작성일</th><td>${date}</td></tr>
-                        <tr><th>내용</th><td style="white-space: pre-wrap;">${content}</td></tr>
+                    <table style="width:100%; border: 1px solid #ccc;">                        
+                        <tr><th style="width:100px;">내용</th><td style="white-space: pre-wrap;">${content}</td></tr>
                         <tr>
                             <td colspan="2" class="button-area" style="text-align:center;">
                                 ${getButtonsByRole(userRole, id)}
