@@ -3,17 +3,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
   background-color: #f8f8f8;
   border-bottom: 1px solid #ddd;
-
-  /* --- 고정 헤더를 위한 추가/수정된 속성 --- */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1010;
-  /* -------------------------------------- */
+  box-sizing: border-box;
+  padding: 12px 16px;
+
 }
 
 /* ===== 왼쪽: 메뉴 + 제목 ===== */
@@ -21,6 +20,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .menu-icon {
@@ -32,6 +32,7 @@
   font-size: 1.3em;
   font-weight: bold;
   color: #333;
+  min-width: 0;
 }
 
 .mainIcon {
@@ -47,6 +48,10 @@
   font-size: 14px;
   font-weight: 500;
   color: #333;
+  flex-shrink: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  /* ------------------------------------------------ */
 }
 
 .logout-btn {
@@ -57,6 +62,8 @@
   border-radius: 4px;
   font-size: 13px;
   transition: background-color 0.2s ease;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .logout-btn:hover {
@@ -69,7 +76,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 10px 16px;
-    /* 고정된 헤더 스타일은 모바일에서도 동일하게 적용 */
+    box-sizing: border-box;
   }
 
   .header-left,
@@ -77,6 +84,7 @@
     width: 100%;
     justify-content: space-between;
     margin-top: 6px;
+    box-sizing: border-box;
   }
 
   .screen-title {
@@ -90,5 +98,6 @@
   .logout-btn {
     padding: 5px 10px;
     font-size: 12px;
+    box-sizing: border-box;
   }
 }
