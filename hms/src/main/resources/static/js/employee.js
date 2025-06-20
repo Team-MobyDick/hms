@@ -17,15 +17,21 @@ $(document).ready(function () {
 
     // **새로 추가된 부분: 정렬 버튼 클릭 이벤트**
     $('.sort-btn').on('click', function() {
-        const selectedSortOrder = $(this).data('sort-order'); // data-sort-order 속성에서 값 가져오기
+        // data-sort-order 속성에서 값 가져오기
+        const selectedSortOrder = $(this).data('sort-order');
+
         // 현재 URL 가져오기
         const currentUrl = new URL(window.location.href);
+
         // sortOrder 파라미터 업데이트 또는 추가
         currentUrl.searchParams.set('sortOrder', selectedSortOrder);
+
         // 페이지 번호를 1로 초기화 (정렬 기준이 바뀌면 보통 첫 페이지로 이동)
         currentUrl.searchParams.set('page', '1');
+
         // 업데이트된 URL로 이동
         window.location.href = currentUrl.toString();
+
     });
     // 끝
 
@@ -104,17 +110,23 @@ $(document).ready(function () {
         const $buttonArea = $detailRow.find('.button-area');
         const $uploadSection = $detailRow.find('#uploadSection');
 
-        // 권한별 버튼 노출 및 사진 업로드 섹션 표시
+        // 권한별 버튼 노출 및 사진 업로드 섹션 표시(총지배인일 경우 수정, 삭제 버튼 표시)
         if (userRole === 'GR_01') {
             $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
             $buttonArea.append('<button class="action-btn btn-delete">삭제</button> ');
-            $uploadSection.show(); // 총지배인은 항상 사진 업로드 섹션 표시
-        } else if (userRole === 'GR_02') {
-            if (userDept === dept) { // 팀장은 같은 부서의 직원에게만 수정 가능 및 사진 업로드 섹션 표시
+
+            // 총지배인은 항상 사진 업로드 섹션 표시
+            $uploadSection.show();
+        }
+        // 팀장은 같은 부서의 직원에게만 수정 가능 및 사진 업로드 섹션 표시
+        else if (userRole === 'GR_02') {
+            if (userDept === dept) {
                 $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
                 $uploadSection.show();
             }
         }
+
+        // 닫기 버튼 권한 상관 없이 모두 표시
         $buttonArea.append('<button class="action-btn btn-close">닫기</button>');
 
         $clickedRow.after($detailRow);
@@ -123,8 +135,8 @@ $(document).ready(function () {
     // 새로 추가: '사진 선택' 버튼 클릭 시 실제 파일 입력 필드 트리거
     // 동적으로 생성되는 요소에 이벤트를 바인딩하므로 $(document).on 사용
     $(document).on('click', '.select-photo-button', function() {
-        // 클릭된 버튼과 연관된 input[type="file"]의 ID를 동적으로 찾아 클릭합니다.
-        // 현재 버튼의 부모인 .upload-section 내에서 .photo-upload-input을 찾습니다.
+        // 클릭된 버튼과 연관된 input[type="file"]의 ID를 동적으로 찾아 클릭
+        // 현재 버튼의 부모인 .upload-section 내에서 .photo-upload-input을 찾음
         $(this).closest('.upload-section').find('.photo-upload-input').trigger('click');
     });
 
@@ -135,6 +147,7 @@ $(document).ready(function () {
 
     // 신규 등록 폼 열기/닫기
     $('#add_btn').click(() => $('#newEmployeeForm').toggle(300));
+
     $('#add_cancel').click(() => {
         $('#newEmployeeForm')[0].reset();
         $('#newEmployeeForm').hide(300);
@@ -156,11 +169,13 @@ $(document).ready(function () {
             },
             error: (xhr, status, error) => {
                 let errorMessage = '등록 중 오류가 발생했습니다.';
+
                 if (xhr.responseText) {
                     errorMessage += ': ' + xhr.responseText;
                 } else if (error) {
                     errorMessage += ': ' + error;
                 }
+
                 alert(errorMessage);
                 console.error("AJAX Error:", status, error, xhr.responseText);
             }
@@ -183,6 +198,7 @@ $(document).ready(function () {
             photoName: photoName,
             photoPath: photoPath,
         };
+
         $detailTable.find('input:not([name="emplId"]), select, textarea').each(function() {
             formData[$(this).attr('name')] = $(this).val();
         });
@@ -197,11 +213,13 @@ $(document).ready(function () {
             },
             error: (xhr, status, error) => {
                 let errorMessage = '직원 정보 수정 중 오류가 발생했습니다.';
+
                 if (xhr.responseText) {
                     errorMessage += ': ' + xhr.responseText;
                 } else if (error) {
                     errorMessage += ': ' + error;
                 }
+
                 alert(errorMessage);
                 console.error("AJAX Error:", status, error, xhr.responseText);
             }
@@ -224,11 +242,13 @@ $(document).ready(function () {
             const $clickedRow = $(this).closest('.detail-slide').prev('.employee-row');
             const photoName = $clickedRow.data('photo-name');
             const photoPath = $clickedRow.data('photo-path');
+
             if (photoName) {
                 $photoContainer.html(`<img src="${contextPath}/${photoPath}/${photoName}" alt="사진">`);
             } else {
                 $photoContainer.empty();
             }
+
         }
     });
 
@@ -273,16 +293,20 @@ $(document).ready(function () {
                 // 파일 input 초기화 (같은 파일 다시 선택 가능하도록)
                 fileInput.value = ""; // 또는 fileInput.remove() 후 다시 추가
             },
+
             error: (xhr, status, error) => {
                 let errorMessage = '사진 업로드 중 오류가 발생했습니다.';
+
                 if (xhr.responseText) {
                     errorMessage += ': ' + xhr.responseText;
                 } else if (error) {
                     errorMessage += ': ' + error;
                 }
+
                 alert(errorMessage);
                 console.error("AJAX Error:", status, error, xhr.responseText);
             }
+
         });
     });
 
@@ -300,22 +324,27 @@ $(document).ready(function () {
                     alert(response);
                     location.reload();
                 },
+
                 error: (xhr, status, error) => {
                     let errorMessage = '직원 삭제 중 오류가 발생했습니다.';
+
                     if (xhr.responseText) {
                         errorMessage += ': ' + xhr.responseText;
                     } else if (error) {
                         errorMessage += ': ' + error;
                     }
+
                     alert(errorMessage);
                     console.error("AJAX Error:", status, error, xhr.responseText);
                 }
+
             });
         }
     });
 });
 
 const modal = document.querySelector('.modal');
+
 const modalClose = document.querySelector('.close_btn');
 
 modalClose.addEventListener('click', function () {
@@ -329,7 +358,10 @@ document.querySelectorAll('.printQR').forEach(function (btn) {
         const emplId = row.getAttribute('data-id');
 
         const qrContainer = document.getElementById("qrcode");
+
         qrContainer.innerHTML = "";
+
+        // QRCode 라이브러리
         new QRCode(qrContainer, {
             text: emplId,
             width: 300,
@@ -347,6 +379,7 @@ printBtn.addEventListener('click', function () {
     const qrHtml = qrContainer.innerHTML;
 
     const printWindow = window.open('', '', 'width=400,height=500');
+
     printWindow.document.write(`
         <html>
         <head>
@@ -367,5 +400,6 @@ printBtn.addEventListener('click', function () {
         </body>
         </html>
     `);
+
     printWindow.document.close();
 });
