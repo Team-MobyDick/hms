@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    // 직원 조회
-    List<EmployeeVO> selectAllEmployees() throws Exception;
+    // 직원 조회 (정렬 기준 파라미터 추가)
+    List<EmployeeVO> selectAllEmployees(String sortOrder) throws Exception; // <-- sortOrder 추가
 
     // 직원 등록
     void insertEmployee(EmployeeVO employeeVO) throws Exception;

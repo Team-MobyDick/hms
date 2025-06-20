@@ -15,6 +15,20 @@ const deptMap = {
 
 $(document).ready(function () {
 
+    // **새로 추가된 부분: 정렬 버튼 클릭 이벤트**
+    $('.sort-btn').on('click', function() {
+        const selectedSortOrder = $(this).data('sort-order'); // data-sort-order 속성에서 값 가져오기
+        // 현재 URL 가져오기
+        const currentUrl = new URL(window.location.href);
+        // sortOrder 파라미터 업데이트 또는 추가
+        currentUrl.searchParams.set('sortOrder', selectedSortOrder);
+        // 페이지 번호를 1로 초기화 (정렬 기준이 바뀌면 보통 첫 페이지로 이동)
+        currentUrl.searchParams.set('page', '1');
+        // 업데이트된 URL로 이동
+        window.location.href = currentUrl.toString();
+    });
+    // 끝
+
     // 직원 행 클릭 - 상세 폼 토글
     $('.employee-row').on('click', function () {
         const $clickedRow = $(this);

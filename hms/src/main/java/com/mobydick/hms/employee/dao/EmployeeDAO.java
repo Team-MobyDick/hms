@@ -2,14 +2,15 @@ package com.mobydick.hms.employee.dao;
 
 import com.mobydick.hms.employee.vo.EmployeeVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param; // @Param 어노테이션 임포트
 
 import java.util.List;
 
 @Mapper
 public interface EmployeeDAO {
 
-    // 직원 목록 조회
-    List<EmployeeVO> selectAllEmployees();
+    // 직원 목록 조회 (정렬 기준 파라미터 추가)
+    List<EmployeeVO> selectAllEmployees(@Param("sortOrder") String sortOrder); // <-- @Param 어노테이션 사용
 
     // 직원 ID 중복 확인
     int countEmployeeById(String emplId) throws Exception;

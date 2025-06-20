@@ -17,9 +17,15 @@
 
     <h2>직원 관리</h2>
 
-    <button id="add_btn">직원 등록</button>
+    <div class="controls-container">
+        <button id="add_btn">직원 등록</button>
 
-    <!-- 직원 등록 폼 -->
+        <div class="sort-buttons"> <%-- 정렬 버튼들을 묶을 div 추가 --%>
+            <button id="sort_by_dept" class="sort-btn" data-sort-order="emplDept_ASC">부서별 정렬</button>
+            <button id="sort_by_grade" class="sort-btn" data-sort-order="emplGrade_ASC">직책별 정렬</button>
+        </div>
+    </div>
+
     <form id="newEmployeeForm" hidden>
         <h3>새 직원 등록</h3>
         <table>
@@ -73,10 +79,11 @@
             </tr>
         </thead>
         <tbody>
-            <c:choose>
+<c:choose>
                 <c:when test="${not empty employeeList}">
                     <c:forEach var="emp" items="${employeeList}">
-                        <tr class="employee-row"
+                        <%-- 여기에 직책(emplGrade)에 따라 동적으로 클래스 추가 --%>
+                        <tr class="employee-row grade-${emp.emplGrade}" <%-- ex: class="employee-row grade-GR_01" --%>
                             data-id="${emp.emplId}"
                             data-name="${emp.emplName}"
                             data-dept="${emp.emplDept}"

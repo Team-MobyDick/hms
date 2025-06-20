@@ -21,6 +21,43 @@ th {
   background-color: #f3f3f3;
 }
 
+/* 컨트롤 컨테이너 */
+.controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* 직원등록 버튼 */
+#add_btn {
+    /* 필요 시 추가 스타일 */
+}
+
+/* 정렬 버튼 컨테이너 */
+.sort-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* 정렬 버튼 스타일 */
+.sort-btn {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.sort-btn:hover {
+    background-color: #45a049;
+}
+
+/* 상세 슬라이드 및 내용 (JS에서 동적 생성) */
 .detail-slide .slide-content {
   padding: 15px;
   background: #f9f9f9;
@@ -29,83 +66,74 @@ th {
   text-align: left;
 }
 
-.action-btn {
+.action-btn { /* JS에서 동적으로 생성되는 버튼들에 사용됨 */
   margin: 5px;
   padding: 6px 12px;
   font-size: 14px;
   cursor: pointer;
 }
 
-.photo-container {
+.photo-container { /* 직원 목록 및 상세 보기에서 사용됨 */
     width: 80px;
     height: 80px;
-    border-radius: 50%; /* 원형으로 보이게 */
-    overflow: hidden; /* 테두리 밖으로 나가는 부분 숨김 */
-    margin: 0 auto 10px; /* 가운데 정렬 및 하단 여백 */
-    border: 1px solid #ccc; /* 테두리 추가 */
-    display: flex; /* 이미지를 중앙 정렬하기 위해 */
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    border: 1px solid #ccc;
+    display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0; /* 사진이 없을 때 배경색 */
+    background-color: #f0f0f0;
 }
 
-.photo-container img {
+.photo-container img { /* photo-container 내부 이미지에 적용 */
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 이미지가 컨테이너를 꽉 채우도록 */
+    object-fit: cover;
 }
 
-.upload-section {
+.upload-section { /* JS에서 동적 생성되는 사진 업로드 영역 */
     text-align: center;
     margin-top: 10px;
 }
 
-.upload-section input[type="file"] {
-    display: none; /* 실제 파일 선택 input 숨기기 */
+/* 직책별 배경색 */
+.grade-GR_01 { /* 총지배인 */
+    background-color: #ffe0b2;
 }
 
-.upload-section label button { /* '사진 선택' 버튼 스타일 */
-    padding: 5px 10px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    margin-right: 5px;
+.grade-GR_02 { /* 팀장 */
+    background-color: #bbdefb;
 }
 
-.upload-section #uploadPhotoButton { /* '업로드' 버튼 스타일 */
-    padding: 5px 10px;
-    cursor: pointer;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
+.grade-GR_03 { /* 일반 직원 */
+    background-color: #c8e6c9;
 }
 
-/* 상세 보기 레이아웃 조정을 위한 스타일 */
+/* 상세 보기 레이아웃 조정 */
 .detail-content-wrapper {
     display: flex;
-    justify-content: center; /* 중앙 정렬 */
-    gap: 20px; /* 항목 간 간격 */
+    justify-content: center;
+    gap: 20px;
     padding: 10px;
 }
 
 .detail-photo-area {
-    flex-shrink: 0; /* 공간이 부족해도 줄어들지 않음 */
-    width: 150px; /* 사진 영역 고정 너비 */
+    flex-shrink: 0;
+    width: 150px;
     text-align: center;
 }
 
 .detail-info-area {
-    flex-grow: 1; /* 남은 공간을 채움 */
-    max-width: 600px; /* 정보 테이블 최대 너비 */
+    flex-grow: 1;
+    max-width: 600px;
 }
 .detail-info-area table th, .detail-info-area table td {
     padding: 8px;
-    border: 1px solid #eee; /* 상세 테이블 내부 경계선 */
+    border: 1px solid #eee;
 }
 
+/* 애니메이션 */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -117,7 +145,7 @@ th {
   }
 }
 
-/* 반응형 추가 */
+/* 반응형 */
 @media screen and (max-width: 768px) {
   table,
   thead,
@@ -163,6 +191,7 @@ th {
   }
 }
 
+/* 모달 */
 .modal {
     display: none;
     position: fixed;
@@ -189,19 +218,27 @@ th {
     margin: 20px auto;
     display: block;
 }
-.modal .modal_popup .close_btn  .print_btn {
+.modal .modal_popup .close_btn, .modal .modal_popup .print_btn {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: rgb(116, 0, 0);
+    background-color: #007bff;
     border: none;
     border-radius: 5px;
     color: #fff;
     cursor: pointer;
     font-weight: bold;
+    margin-right: 10px;
 }
-img{
 
+.modal .modal_popup .close_btn {
+    background-color: #6c757d;
+}
+.modal .modal_popup .print_btn {
+    background-color: #28a745;
+}
+
+
+img{
     width: 100%;
     height: 100%;
-
 }

@@ -46,26 +46,33 @@ public class EmployeeController {
 
     // 직원 목록 조회
     @GetMapping("/list")
-    public String employeeList(Model model, @RequestParam(defaultValue = "1") int page, HttpSession session) throws Exception {
+    public String employeeList(
+            Model model,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "default") String sortOrder, // <-- 추가된 부분
+            HttpSession session) throws Exception {
 
         int pageSize = 10; // 페이지당 항목 수
-        int totalCount = employeeService.selectAllEmployees().size();
+        // 전체 직원 수 조회 시 정렬 기준은 필요 없음 (페이징을 위한 전체 개수)
+        int totalCount = employeeService.selectAllEmployees(null).size(); // <-- null 전달
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
         int startIndex = (page - 1) * pageSize;
 
-        List<EmployeeVO> employeeList = employeeService.selectAllEmployees().subList(startIndex, Math.min(startIndex + pageSize, totalCount));
+        // 정렬 기준을 서비스 계층으로 전달
+        List<EmployeeVO> allEmployees = employeeService.selectAllEmployees(sortOrder); // <-- sortOrder 전달
+        List<EmployeeVO> employeeList = allEmployees.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
 
         System.out.println("test = " + employeeList.toString());
 
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
         model.addAttribute("currentPage", page);                        // 현재 페이지
         model.addAttribute("totalPages", totalPages);                   // 전체 페이지 수
-
+        model.addAttribute("sortOrder", sortOrder); // <-- 현재 정렬 기준을 JSP로 다시 전달하여 <select>의 selected 옵션을 유지
 
         if (loginUser != null) {
             model.addAttribute("userRole", loginUser.getEmplGrade());
-            model.addAttribute("userDept", loginUser.getEmplDept()); // userDept도 JSP로 전달
+            model.addAttribute("userDept", loginUser.getEmplDept());
         } else {
             model.addAttribute("userRole", "");
             model.addAttribute("userDept", "");

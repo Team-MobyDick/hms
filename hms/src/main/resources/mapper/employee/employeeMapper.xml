@@ -6,121 +6,117 @@
 <mapper namespace="com.mobydick.hms.employee.dao.EmployeeDAO">
 
     <select id="selectAllEmployees" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
-        <![CDATA[
         SELECT
-            EMPL_ID,
-            EMPL_NAME,
-            EMPL_PHONE,
-            EMPL_DEPT,
-            EMPL_GRADE,
-            PHOTO_NAME,
-            PHOTO_PATH,
-            EMPL_NOTES,
-            CREATED_DATE,
-            CREATED_ID,
-            UPDATED_DATE,
-            UPDATED_ID
+        EMPL_ID,
+        EMPL_NAME,
+        EMPL_PHONE,
+        EMPL_DEPT,
+        EMPL_GRADE,
+        PHOTO_NAME,
+        PHOTO_PATH,
+        EMPL_NOTES,
+        CREATED_DATE,
+        CREATED_ID,
+        UPDATED_DATE,
+        UPDATED_ID
         FROM TB_EMPL
-        ORDER BY EMPL_GRADE ASC, EMPL_DEPT ASC
-        ]]>
+        <choose>
+            <when test="sortOrder == 'emplDept_ASC'">
+                ORDER BY EMPL_DEPT ASC, EMPL_GRADE ASC
+            </when>
+            <when test="sortOrder == 'emplGrade_ASC'">
+                ORDER BY EMPL_GRADE ASC, EMPL_DEPT ASC
+            </when>
+            <otherwise>
+                ORDER BY EMPL_GRADE ASC, EMPL_DEPT ASC
+            </otherwise>
+        </choose>
     </select>
 
     <select id="selectEmployeeById" parameterType="string" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
-        <![CDATA[
         SELECT
-            EMPL_ID,
-            EMPL_NAME,
-            EMPL_PHONE,
-            EMPL_DEPT,
-            EMPL_GRADE,
-            PHOTO_NAME,
-            PHOTO_PATH,
-            EMPL_NOTES,
-            CREATED_DATE,
-            CREATED_ID,
-            UPDATED_DATE,
-            UPDATED_ID
+        EMPL_ID,
+        EMPL_NAME,
+        EMPL_PHONE,
+        EMPL_DEPT,
+        EMPL_GRADE,
+        PHOTO_NAME,
+        PHOTO_PATH,
+        EMPL_NOTES,
+        CREATED_DATE,
+        CREATED_ID,
+        UPDATED_DATE,
+        UPDATED_ID
         FROM TB_EMPL
         WHERE EMPL_ID = #{emplId}
-        ]]>
     </select>
 
     <insert id="insertEmployee" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
-        <![CDATA[
         INSERT INTO TB_EMPL (
-            EMPL_ID,
-            EMPL_NAME,
-            EMPL_PHONE,
-            EMPL_DEPT,
-            EMPL_GRADE,
-            PHOTO_NAME,
-            PHOTO_PATH,
-            EMPL_NOTES,
-            CREATED_DATE,
-            CREATED_ID,
-            UPDATED_DATE,
-            UPDATED_ID
+        EMPL_ID,
+        EMPL_NAME,
+        EMPL_PHONE,
+        EMPL_DEPT,
+        EMPL_GRADE,
+        PHOTO_NAME,
+        PHOTO_PATH,
+        EMPL_NOTES,
+        CREATED_DATE,
+        CREATED_ID,
+        UPDATED_DATE,
+        UPDATED_ID
         ) VALUES (
-            #{emplId},
-            #{emplName},
-            #{emplPhone},
-            #{emplDept},
-            #{emplGrade},
-            #{photoName, jdbcType=VARCHAR},
-            #{photoPath, jdbcType=VARCHAR},
-            #{emplNotes},
-            SYSDATE,
-            #{createdId},
-            SYSDATE,
-            #{createdId}
+        #{emplId},
+        #{emplName},
+        #{emplPhone},
+        #{emplDept},
+        #{emplGrade},
+        #{photoName, jdbcType=VARCHAR},
+        #{photoPath, jdbcType=VARCHAR},
+        #{emplNotes},
+        SYSDATE,
+        #{createdId},
+        SYSDATE,
+        #{createdId}
         )
-        ]]>
     </insert>
 
     <update id="updateEmployee" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
-        <![CDATA[
         UPDATE TB_EMPL
         SET
-            EMPL_NAME = #{emplName},
-            EMPL_PHONE = #{emplPhone},
-            EMPL_DEPT = #{emplDept},
-            EMPL_GRADE = #{emplGrade},
-            PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
-            PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
-            EMPL_NOTES = #{emplNotes},
-            UPDATED_DATE = SYSDATE,
-            UPDATED_ID = #{updatedId}
+        EMPL_NAME = #{emplName},
+        EMPL_PHONE = #{emplPhone},
+        EMPL_DEPT = #{emplDept},
+        EMPL_GRADE = #{emplGrade},
+        PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
+        PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
+        EMPL_NOTES = #{emplNotes},
+        UPDATED_DATE = SYSDATE,
+        UPDATED_ID = #{updatedId}
         WHERE
-            EMPL_ID = #{emplId}
-        ]]>
+        EMPL_ID = #{emplId}
     </update>
 
     <update id="updateEmployeePhoto" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
-        <![CDATA[
         UPDATE TB_EMPL
         SET
-            PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
-            PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
-            UPDATED_DATE = SYSDATE,
-            UPDATED_ID = #{updatedId}
+        PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
+        PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
+        UPDATED_DATE = SYSDATE,
+        UPDATED_ID = #{updatedId}
         WHERE
-            EMPL_ID = #{emplId}
-        ]]>
+        EMPL_ID = #{emplId}
     </update>
 
     <delete id="deleteEmployee" parameterType="string">
-        <![CDATA[
         DELETE FROM TB_EMPL
         WHERE EMPL_ID = #{emplId}
-        ]]>
     </delete>
 
     <select id="countEmployeeById" parameterType="string" resultType="int">
-        <![CDATA[
         SELECT COUNT(*)
         FROM TB_EMPL
         WHERE EMPL_ID = #{emplId}
-        ]]>
     </select>
 
 </mapper>

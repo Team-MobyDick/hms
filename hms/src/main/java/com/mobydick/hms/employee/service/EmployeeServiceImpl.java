@@ -15,10 +15,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeDAO employeeDAO;
 
-    // 직원 조회
+    // 직원 조회 (정렬 기준 파라미터 처리)
     @Override
-    public List<EmployeeVO> selectAllEmployees() throws Exception {
-        return employeeDAO.selectAllEmployees();
+    public List<EmployeeVO> selectAllEmployees(String sortOrder) throws Exception { // <-- sortOrder 파라미터 받음
+        return employeeDAO.selectAllEmployees(sortOrder); // <-- DAO로 sortOrder 전달
     }
 
     // 직원 등록
