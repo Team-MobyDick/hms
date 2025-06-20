@@ -37,8 +37,8 @@ qrLoginBtn.addEventListener('click', function () {
             (errorMessage) => {
                 // 인식 실패 시 무시 (계속 시도함)
             }
-        ).catch((err) => {
-            alert("카메라 시작 실패: " + err);
+        ).catch(() => {
+            alert("카메라에 접근할 수 없습니다. 기기의 카메라가 제대로 연결되어 있는지 확인해주세요.");
         });
     }
 });
