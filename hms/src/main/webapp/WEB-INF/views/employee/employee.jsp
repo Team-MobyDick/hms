@@ -27,7 +27,6 @@
     </div>
 
     <form id="newEmployeeForm" hidden>
-        <h3>새 직원 등록</h3>
         <table>
             <tr>
                 <th>이름</th>
