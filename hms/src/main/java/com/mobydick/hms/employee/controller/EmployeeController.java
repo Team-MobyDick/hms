@@ -34,11 +34,15 @@ public class EmployeeController {
         // 업로드 디렉토리가 없으면 생성
         try {
             Path path = Paths.get(uploadDir);
+
             if (!Files.exists(path)) {
                 Files.createDirectories(path);
             }
+
         } catch (Exception e) {
+
             e.printStackTrace();
+
             // 에러 처리: 디렉토리 생성 실패
             System.err.println("Failed to create upload directory: " + uploadDir);
         }
@@ -61,11 +65,13 @@ public class EmployeeController {
 
         // 정렬 기준을 서비스 계층으로 전달
         List<EmployeeVO> allEmployees = employeeService.selectAllEmployees(sortOrder); // <-- sortOrder 전달
+
         List<EmployeeVO> employeeList = allEmployees.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
 
         System.out.println("test = " + employeeList.toString());
 
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
         model.addAttribute("currentPage", page);                        // 현재 페이지
         model.addAttribute("totalPages", totalPages);                   // 전체 페이지 수
         model.addAttribute("sortOrder", sortOrder); // <-- 현재 정렬 기준을 JSP로 다시 전달하여 <select>의 selected 옵션을 유지
@@ -100,9 +106,11 @@ public class EmployeeController {
             }
             employeeVO.setCreatedId(loginUser.getEmplId());
 
-            if (employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() ||
-                    employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() ||
-                    employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()) {
+            if (
+                    employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() || // 이름 없음
+                    employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() || // 부서 없음
+                    employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty() // 직급 없음
+            ) {
                 return ResponseEntity.badRequest().body("필수 입력 항목(이름, 부서, 직책)을 모두 채워주세요.");
             }
 
@@ -112,11 +120,16 @@ public class EmployeeController {
 
             employeeService.insertEmployee(employeeVO);
             return ResponseEntity.ok("직원이 성공적으로 등록되었습니다.");
+
         } catch (IllegalArgumentException e) {
+
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 등록 중 오류가 발생했습니다: " + e.getMessage());
+
         }
     }
 
@@ -126,6 +139,7 @@ public class EmployeeController {
     public ResponseEntity<?> updateEmployee(@ModelAttribute EmployeeVO employeeVO, HttpSession session) {
         try {
             LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
             if (loginUser == null || loginUser.getEmplId() == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다. 다시 로그인 해주세요.");
             }
@@ -138,6 +152,7 @@ public class EmployeeController {
             }
 
             EmployeeVO targetEmployee = employeeService.selectEmployeeById(employeeVO.getEmplId());
+
             if (targetEmployee == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("수정하려는 직원을 찾을 수 없습니다.");
             }
@@ -148,18 +163,24 @@ public class EmployeeController {
                 }
             }
 
-            if (employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() ||
+            if (
+                    employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() ||
                     employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() ||
-                    employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()) {
+                    employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()
+            ) {
                 return ResponseEntity.badRequest().body("필수 입력 항목(이름, 부서, 직책)을 모두 채워주세요.");
             }
 
             employeeVO.setUpdatedId(loginUser.getEmplId());
             employeeService.updateEmployee(employeeVO);
+
             return ResponseEntity.ok("직원 정보가 성공적으로 수정되었습니다.");
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 정보 수정 중 오류가 발생했습니다: " + e.getMessage());
+
         }
     }
 
@@ -173,6 +194,7 @@ public class EmployeeController {
     ) {
         try {
             LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
             if (loginUser == null || loginUser.getEmplId() == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다. 다시 로그인 해주세요.");
             }
@@ -186,6 +208,7 @@ public class EmployeeController {
             }
 
             EmployeeVO targetEmployee = employeeService.selectEmployeeById(emplId);
+
             if (targetEmployee == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("직원을 찾을 수 없습니다.");
             }
@@ -204,9 +227,11 @@ public class EmployeeController {
             // 파일 저장 로직
             String originalFilename = file.getOriginalFilename();
             String fileExtension = "";
+
             if (originalFilename != null && originalFilename.contains(".")) {
                 fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
             }
+
             String uniqueFilename = UUID.randomUUID().toString() + fileExtension; // 고유한 파일명 생성
             Path filePath = Paths.get(uploadDir, uniqueFilename);
 
@@ -223,9 +248,12 @@ public class EmployeeController {
             employeeService.updateEmployeePhoto(employeeVO);
 
             return ResponseEntity.ok("사진이 성공적으로 업로드되었습니다.::" + uniqueFilename + "::" + "employee_photos"); // 파일명, 경로 반환
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사진 업로드 중 오류가 발생했습니다: " + e.getMessage());
+
         }
     }
 
@@ -236,6 +264,7 @@ public class EmployeeController {
     public ResponseEntity<?> deleteEmployee(@RequestParam("emplId") String emplId, HttpSession session) {
         try {
             LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
             if (loginUser == null || loginUser.getEmplId() == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다. 다시 로그인 해주세요.");
             }
@@ -251,6 +280,7 @@ public class EmployeeController {
 
             // DB에서 사진 정보를 가져와 파일 시스템에서 삭제 (선택 사항)
             EmployeeVO employeeToDelete = employeeService.selectEmployeeById(emplId);
+
             if (employeeToDelete != null && employeeToDelete.getPhotoName() != null && !employeeToDelete.getPhotoName().isEmpty()) {
                 try {
                     Path photoPath = Paths.get(uploadDir, employeeToDelete.getPhotoName());
@@ -263,9 +293,12 @@ public class EmployeeController {
 
             employeeService.deleteEmployee(emplId);
             return ResponseEntity.ok("직원이 성공적으로 삭제되었습니다.");
+
         } catch (Exception e) {
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 삭제 중 오류가 발생했습니다: " + e.getMessage());
+
         }
     }
 }
