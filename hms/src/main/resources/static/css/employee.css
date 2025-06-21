@@ -31,8 +31,17 @@ th {
 }
 
 /* 직원등록 버튼 */
-#add_btn {
-    /* 필요 시 추가 스타일 */
+#add_btn,
+.sort-btn,
+{
+    margin: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 /* 정렬 버튼 컨테이너 */
@@ -41,18 +50,7 @@ th {
     gap: 10px;
 }
 
-/* 정렬 버튼 스타일 */
-.sort-btn {
-    padding: 8px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-}
-
+#add-btn:hover,
 .sort-btn:hover {
     background-color: #45a049;
 }
