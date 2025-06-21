@@ -317,8 +317,9 @@ public class EmployeeController {
             }
 
             String userRole = loginUser.getEmplGrade();
-            String updatedId = loginUser.getEmplId(); // Get the ID of the logged-in user
+            String updatedId = loginUser.getEmplId();
 
+            // 총지배인(GR_01)만 퇴사 처리 권한 설정
             if (!"GR_01".equals(userRole)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("직원을 퇴사 처리할 권한이 없습니다.");
             }

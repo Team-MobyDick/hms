@@ -352,9 +352,9 @@ $(document).ready(function () {
         const emplIdToDelete = $detailTable.find('input[name="emplId"]').val();
         const retiredYn = $(this).closest('.detail-slide').prev('.employee-row').data('retired-yn'); // 퇴사 여부 확인
 
-        // 퇴사된 직원은 물리적으로 삭제 불가
-        if (retiredYn === 'Y') {
-            alert('퇴사된 직원은 물리적으로 삭제할 수 없습니다. 퇴사 처리 상태를 유지해주세요.');
+        // 총지배인만 퇴사된 직원 삭제 가능
+        if (userRole !== 'GR_01' && retiredYn === 'Y') {
+            alert('퇴사된 직원은 총지배인만 영구 삭제할 수 있습니다.');
             return;
         }
 
