@@ -22,4 +22,7 @@ public interface EmployeeService {
 
     // 직원 사진 정보 업데이트 메서드 추가
     void updateEmployeePhoto(EmployeeVO employeeVO) throws Exception;
+
+    // 직원 퇴사 처리
+    void retireEmployee(String emplId, String updatedId) throws Exception;
 }

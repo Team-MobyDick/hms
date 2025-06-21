@@ -55,4 +55,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void updateEmployeePhoto(EmployeeVO employeeVO) throws Exception {
         employeeDAO.updateEmployeePhoto(employeeVO);
     }
+
+    // 직원 퇴사 처리
+    @Override
+    public void retireEmployee(String emplId, String updatedId) throws Exception {
+        employeeDAO.retireEmployee(emplId, updatedId);
+    }
 }

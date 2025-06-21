@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -104,6 +103,7 @@ public class EmployeeController {
             if (loginUser == null || loginUser.getEmplId() == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다. 다시 로그인 해주세요.");
             }
+
             employeeVO.setCreatedId(loginUser.getEmplId());
 
             if (
@@ -119,6 +119,7 @@ public class EmployeeController {
             employeeVO.setPhotoPath(null);
 
             employeeService.insertEmployee(employeeVO);
+
             return ResponseEntity.ok("직원이 성공적으로 등록되었습니다.");
 
         } catch (IllegalArgumentException e) {
@@ -126,8 +127,8 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 
         } catch (Exception e) {
-
             e.printStackTrace();
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 등록 중 오류가 발생했습니다: " + e.getMessage());
 
         }
@@ -172,13 +173,14 @@ public class EmployeeController {
             }
 
             employeeVO.setUpdatedId(loginUser.getEmplId());
+
             employeeService.updateEmployee(employeeVO);
 
             return ResponseEntity.ok("직원 정보가 성공적으로 수정되었습니다.");
 
         } catch (Exception e) {
-
             e.printStackTrace();
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 정보 수정 중 오류가 발생했습니다: " + e.getMessage());
 
         }
@@ -250,8 +252,8 @@ public class EmployeeController {
             return ResponseEntity.ok("사진이 성공적으로 업로드되었습니다.::" + uniqueFilename + "::" + "employee_photos"); // 파일명, 경로 반환
 
         } catch (Exception e) {
-
             e.printStackTrace();
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사진 업로드 중 오류가 발생했습니다: " + e.getMessage());
 
         }
@@ -292,13 +294,57 @@ public class EmployeeController {
             }
 
             employeeService.deleteEmployee(emplId);
+
             return ResponseEntity.ok("직원이 성공적으로 삭제되었습니다.");
 
         } catch (Exception e) {
-
             e.printStackTrace();
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 삭제 중 오류가 발생했습니다: " + e.getMessage());
 
         }
     }
+
+    // 직원 퇴사 처리
+    @PostMapping("/retire")
+    @ResponseBody
+    public ResponseEntity<?> retireEmployee(@RequestParam("emplId") String emplId, HttpSession session) {
+        try {
+            LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
+            if (loginUser == null || loginUser.getEmplId() == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다. 다시 로그인 해주세요.");
+            }
+
+            String userRole = loginUser.getEmplGrade();
+            String updatedId = loginUser.getEmplId(); // Get the ID of the logged-in user
+
+            if (!"GR_01".equals(userRole)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("직원을 퇴사 처리할 권한이 없습니다.");
+            }
+
+            if (emplId == null || emplId.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("퇴사 처리할 직원 ID가 필요합니다.");
+            }
+
+            EmployeeVO targetEmployee = employeeService.selectEmployeeById(emplId);
+
+            if (targetEmployee == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("퇴사 처리하려는 직원을 찾을 수 없습니다.");
+            }
+            if ("Y".equals(targetEmployee.getRetiredYn())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 퇴사 처리된 직원입니다.");
+            }
+
+            // emplId와 updatedId를 모두 서비스에 전달
+            employeeService.retireEmployee(emplId, updatedId);
+
+            return ResponseEntity.ok("직원이 성공적으로 퇴사 처리되었습니다.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 퇴사 처리 중 오류가 발생했습니다:" + e.getMessage());
+        }
+    }
+
 }

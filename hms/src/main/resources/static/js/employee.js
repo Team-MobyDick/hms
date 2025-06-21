@@ -59,6 +59,7 @@ $(document).ready(function () {
         const createdDate = $clickedRow.data('created-date');
         const photoName = $clickedRow.data('photo-name'); // 기존 사진 파일명
         const photoPath = $clickedRow.data('photo-path'); // 기존 사진 경로
+        const retiredYn = $clickedRow.data('retired-yn');
 
         // 상세 폼 HTML 생성 (수정 가능 input/select 포함 및 사진 업로드 섹션 추가)
         let detailHTML = `
@@ -100,6 +101,7 @@ $(document).ready(function () {
                                 <tr><th style="padding:8px;">전화번호</th><td><input type="text" name="emplPhone" value="${phone}"></td></tr>
                                 <tr><th style="padding:8px;">메모</th><td><input type="text" name="emplNotes" value="${note}"></td></tr>
                                 <tr><th>등록일</th><td>${createdDate}</td></tr>
+                                <tr><th>퇴사 여부</th><td>${retiredYn === 'Y' ? '<span style="color: red; font-weight: bold;">퇴사</span>' : '<span>재직</span>'}</td></tr>
                                 <tr><td colspan="2" style="text-align: center;" class="button-area"></td></tr>
                             </table>
                         </div>
@@ -117,14 +119,26 @@ $(document).ready(function () {
             $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
             $buttonArea.append('<button class="action-btn btn-delete">삭제</button> ');
 
+            // 총지배인만 퇴사시키기 버튼을 볼 수 있고 해당 직원이 재직 중일 때만 활성화
+            if (retiredYn === 'N') {
+                $buttonArea.append(`<button class="action-btn btn-retire" data-empid="${empId}">퇴사시키기</button> `);
+            } else {
+                // 이미 퇴사한 직원은 퇴사시키기 버튼 대신 비활성화된 메시지 표시
+                $buttonArea.append('<button class="action-btn" disabled style="background-color: #ccc;">이미 퇴사 처리됨</button> ');
+            }
+
             // 총지배인은 항상 사진 업로드 섹션 표시
             $uploadSection.show();
         }
-        // 팀장은 같은 부서의 직원에게만 수정 가능 및 사진 업로드 섹션 표시
+
+        // 팀장은 같은 부서의 직원에게만 수정 가능(퇴사하지 않은 경우) 및 사진 업로드 섹션 표시
         else if (userRole === 'GR_02') {
-            if (userDept === dept) {
+            if (userDept === dept && retiredYn === 'N') { // 팀장은 재직 중인 같은 부서 직원만 수정 가능
                 $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
                 $uploadSection.show();
+            } else {
+                // 퇴사했거나 다른 부서 직원은 수정 버튼 비활성화
+                $buttonArea.append('<button class="action-btn" disabled style="background-color: #ccc;">수정 권한 없음</button> ');
             }
         }
 
@@ -159,12 +173,15 @@ $(document).ready(function () {
     $('#newEmployeeForm').on('submit', function (e) {
         e.preventDefault();
 
-        const formData = $(this).serialize();
+        const formData = new FormData(this);
+        formData.append('retiredYn', 'N');
 
         $.ajax({
             url: contextPath + '/employee/register',
             type: 'POST',
             data: formData,
+            processData: false,
+            contentType: false,
             success: (response) => {
                 alert(response);
                 location.reload();
@@ -191,6 +208,15 @@ $(document).ready(function () {
         // emplId는 readonly input에서 직접 가져옵니다.
         const emplId = $detailTable.find('input[name="emplId"]').val();
 
+        // 현재 직원의 퇴사 여부 가져오기
+        const retiredYn = $detailSlide.prev('.employee-row').data('retired-yn');
+
+        // 퇴사된 직원은 수정 불가 (클라이언트 단 유효성 검사)
+        if (retiredYn === 'Y') {
+            alert('퇴사된 직원은 정보를 수정할 수 없습니다.');
+            return;
+        }
+
         const $employeeRow = $detailSlide.prev('.employee-row');
         const photoName = $employeeRow.data("photo-name") || "";
         const photoPath = $employeeRow.data("photo-path") || "employee_photos";
@@ -199,6 +225,7 @@ $(document).ready(function () {
             emplId: emplId, // ID는 수정 불가이므로 명시적으로 추가
             photoName: photoName,
             photoPath: photoPath,
+            retiredYn: retiredYn
         };
 
         $detailTable.find('input:not([name="emplId"]), select, textarea').each(function() {
@@ -260,6 +287,13 @@ $(document).ready(function () {
         const emplId = $(this).data('empid');
         const fileInput = $(`#photoUploadInput_${emplId}`)[0]; // 해당 직원의 파일 input 가져오기
         const file = fileInput.files[0];
+        const retiredYn = $(this).closest('.detail-slide').prev('.employee-row').data('retired-yn'); // 퇴사 여부 확인
+
+        // 퇴사된 직원은 사진 수정 불가
+        if (retiredYn === 'Y') {
+            alert('퇴사된 직원의 사진은 수정할 수 없습니다.');
+            return;
+        }
 
         if (!file) {
             alert('업로드할 사진 파일을 선택해주세요.');
@@ -316,6 +350,13 @@ $(document).ready(function () {
     $(document).on('click', '.btn-delete', function () {
         const $detailTable = $(this).closest('table');
         const emplIdToDelete = $detailTable.find('input[name="emplId"]').val();
+        const retiredYn = $(this).closest('.detail-slide').prev('.employee-row').data('retired-yn'); // 퇴사 여부 확인
+
+        // 퇴사된 직원은 물리적으로 삭제 불가
+        if (retiredYn === 'Y') {
+            alert('퇴사된 직원은 물리적으로 삭제할 수 없습니다. 퇴사 처리 상태를 유지해주세요.');
+            return;
+        }
 
         if (confirm(`직원 ID: ${emplIdToDelete} 을(를) 정말 삭제하시겠습니까?`)) {
             $.ajax({
@@ -343,6 +384,38 @@ $(document).ready(function () {
             });
         }
     });
+
+    // 퇴사시키기
+    $(document).on('click', '.btn-retire', function () {
+
+        // 버튼의 data-empid 속성에서 직원 ID 가져오기
+        const emplIdToRetire = $(this).data('empid');
+
+        if (confirm(`직원 ID: ${emplIdToRetire} 을(를) 정말 퇴사 처리하시겠습니까? (이 작업은 되돌릴 수 없습니다.)`)) {
+            $.ajax({
+                url: contextPath + '/employee/retire',
+                type: 'POST',
+                data: { emplId: emplIdToRetire }, // 퇴사시킬 직원 ID 전송
+                success: (response) => {
+                    alert(response);
+                    location.reload(); // 성공 시 페이지 새로고침하여 목록 업데이트
+                },
+                error: (xhr, status, error) => {
+                    let errorMessage = '직원 퇴사 처리 중 오류가 발생했습니다.';
+
+                    if (xhr.responseText) {
+                        errorMessage += ': ' + xhr.responseText;
+                    } else if (error) {
+                        errorMessage += ': ' + error;
+                    }
+
+                    alert(errorMessage);
+                    console.error("AJAX Error:", status, error, xhr.responseText);
+                }
+            });
+        }
+    });
+
 });
 
 const modal = document.querySelector('.modal');

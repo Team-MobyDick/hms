@@ -18,7 +18,8 @@
             CREATED_DATE,
             CREATED_ID,
             UPDATED_DATE,
-            UPDATED_ID
+            UPDATED_ID,
+            RETIRED_YN
         FROM TB_EMPL
         <choose>
             <when test="sortOrder == 'emplDept_ASC'">
@@ -46,38 +47,41 @@
             CREATED_DATE,
             CREATED_ID,
             UPDATED_DATE,
-            UPDATED_ID
+            UPDATED_ID,
+            RETIRED_YN
         FROM TB_EMPL
         WHERE EMPL_ID = #{emplId}
     </select>
 
     <insert id="insertEmployee" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
         INSERT INTO TB_EMPL (
-        EMPL_ID,
-        EMPL_NAME,
-        EMPL_PHONE,
-        EMPL_DEPT,
-        EMPL_GRADE,
-        PHOTO_NAME,
-        PHOTO_PATH,
-        EMPL_NOTES,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
+            EMPL_ID,
+            EMPL_NAME,
+            EMPL_PHONE,
+            EMPL_DEPT,
+            EMPL_GRADE,
+            PHOTO_NAME,
+            PHOTO_PATH,
+            EMPL_NOTES,
+            CREATED_DATE,
+            CREATED_ID,
+            UPDATED_DATE,
+            UPDATED_ID,
+            RETIRED_YN
         ) VALUES (
-        #{emplId},
-        #{emplName},
-        #{emplPhone},
-        #{emplDept},
-        #{emplGrade},
-        #{photoName, jdbcType=VARCHAR},
-        #{photoPath, jdbcType=VARCHAR},
-        #{emplNotes},
-        SYSDATE,
-        #{createdId},
-        SYSDATE,
-        #{createdId}
+            #{emplId},
+            #{emplName},
+            #{emplPhone, jdbcType=VARCHAR},
+            #{emplDept},
+            #{emplGrade},
+            #{photoName, jdbcType=VARCHAR},
+            #{photoPath, jdbcType=VARCHAR},
+            #{emplNotes, jdbcType=VARCHAR},
+            SYSDATE,
+            #{createdId},
+            SYSDATE,
+            #{createdId},
+            #{retiredYn}
         )
     </insert>
 
@@ -94,7 +98,7 @@
             UPDATED_DATE = SYSDATE,
             UPDATED_ID = #{updatedId}
         WHERE
-        EMPL_ID = #{emplId}
+        EMPL_ID = #{emplId} AND RETIRED_YN = 'N'
     </update>
 
     <update id="updateEmployeePhoto" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
@@ -105,7 +109,7 @@
             UPDATED_DATE = SYSDATE,
             UPDATED_ID = #{updatedId}
         WHERE
-        EMPL_ID = #{emplId}
+        EMPL_ID = #{emplId} AND RETIRED_YN = 'N'
     </update>
 
     <delete id="deleteEmployee" parameterType="string">
@@ -118,5 +122,14 @@
         FROM TB_EMPL
         WHERE EMPL_ID = #{emplId}
     </select>
+
+    <update id="retireEmployee">
+        UPDATE TB_EMPL
+        SET
+            RETIRED_YN = 'Y',
+            UPDATED_DATE = SYSDATE,
+            UPDATED_ID = #{updatedId}
+        WHERE EMPL_ID = #{emplId} AND RETIRED_YN = 'N'
+    </update>
 
 </mapper>

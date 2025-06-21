@@ -18,6 +18,8 @@ public class EmployeeVO {
     private String createdId;
     private Date updatedDate;
     private String updatedId;
+    private String retiredYn;
 
     private String emplGradeName;
+
 }

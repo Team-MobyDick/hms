@@ -30,4 +30,7 @@ public interface EmployeeDAO {
     // 직원 ID 중복 확인
     int countEmployeeById(String emplId) throws Exception;
 
+    // 직원 퇴사 처리
+    void retireEmployee(@Param("emplId") String emplId, @Param("updatedId") String updatedId) throws Exception;
+
 }

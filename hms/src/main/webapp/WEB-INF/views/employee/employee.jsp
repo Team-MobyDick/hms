@@ -77,6 +77,7 @@
                 <th>등록일</th>
                 <th>사진</th>
                 <th>QR 출력</th>
+                <th>퇴사 여부</th>
             </tr>
         </thead>
         <tbody>
@@ -93,6 +94,7 @@
                             data-created-date="<fmt:formatDate value='${emp.createdDate}' pattern='yyyy-MM-dd'/>"
                             data-photo-name="${emp.photoName}"
                             data-photo-path="${emp.photoPath}"
+                            data-retired-yn="${emp.retiredYn}"
                         >
                             <td>${emp.emplId}</td>
                             <td>${emp.emplName}</td>
@@ -123,11 +125,21 @@
                                 </div>
                             </td>
                             <td><button class="printQR">출력하기</button></td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${emp.retiredYn eq 'Y'}">
+                                        <span style="color: red; font-weight: bold;">퇴사</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span>재직</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <tr><td colspan="8">직원 목록이 비어 있습니다.</td></tr>
+                    <tr><td colspan="10">직원 목록이 비어 있습니다.</td></tr>
                 </c:otherwise>
             </c:choose>
         </tbody>
