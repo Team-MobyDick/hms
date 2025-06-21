@@ -108,9 +108,15 @@
                             </td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${emp.emplGrade eq 'GR_01'}">총지배인</c:when>
-                                    <c:when test="${emp.emplGrade eq 'GR_02'}">팀장</c:when>
-                                    <c:when test="${emp.emplGrade eq 'GR_03'}">일반</c:when>
+                                    <c:when test="${emp.emplGrade eq 'GR_01'}">
+                                        <span style="color: #4B0082; font-weight: bold;">총지배인</span>
+                                    </c:when>
+                                    <c:when test="${emp.emplGrade eq 'GR_02'}">
+                                        <span style="font-weight: bold;">팀장</span>
+                                     </c:when>
+                                    <c:when test="${emp.emplGrade eq 'GR_03'}">
+                                        일반
+                                    </c:when>
                                     <c:otherwise>미정</c:otherwise>
                                 </c:choose>
                             </td>
