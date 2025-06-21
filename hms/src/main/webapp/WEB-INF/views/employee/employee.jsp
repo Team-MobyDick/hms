@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
 <c:set var="userDept" value="${sessionScope.loginUser.emplDept}" />
@@ -73,6 +74,7 @@
                 <th>직책</th>
                 <th>전화번호</th>
                 <th>메모</th>
+                <th>등록일</th>
                 <th>사진</th>
                 <th>QR 출력</th>
             </tr>
@@ -88,8 +90,10 @@
                             data-grade="${emp.emplGrade}"
                             data-phone="${emp.emplPhone}"
                             data-note="${emp.emplNotes}"
+                            data-created-date="<fmt:formatDate value='${emp.createdDate}' pattern='yyyy-MM-dd'/>"
                             data-photo-name="${emp.photoName}"
-                            data-photo-path="${emp.photoPath}">
+                            data-photo-path="${emp.photoPath}"
+                        >
                             <td>${emp.emplId}</td>
                             <td>${emp.emplName}</td>
                             <td>
@@ -110,6 +114,7 @@
                             </td>
                             <td>${emp.emplPhone}</td>
                             <td>${emp.emplNotes}</td>
+                            <td><fmt:formatDate value="${emp.createdDate}" pattern="yyyy-MM-dd"/></td>
                             <td>
                                 <div class="photo-container">
                                     <c:if test="${not empty emp.photoName}">

@@ -7,18 +7,18 @@
 
     <select id="selectAllEmployees" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
         SELECT
-        EMPL_ID,
-        EMPL_NAME,
-        EMPL_PHONE,
-        EMPL_DEPT,
-        EMPL_GRADE,
-        PHOTO_NAME,
-        PHOTO_PATH,
-        EMPL_NOTES,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
+            EMPL_ID,
+            EMPL_NAME,
+            EMPL_PHONE,
+            EMPL_DEPT,
+            EMPL_GRADE,
+            PHOTO_NAME,
+            PHOTO_PATH,
+            EMPL_NOTES,
+            CREATED_DATE,
+            CREATED_ID,
+            UPDATED_DATE,
+            UPDATED_ID
         FROM TB_EMPL
         <choose>
             <when test="sortOrder == 'emplDept_ASC'">
@@ -35,18 +35,18 @@
 
     <select id="selectEmployeeById" parameterType="string" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
         SELECT
-        EMPL_ID,
-        EMPL_NAME,
-        EMPL_PHONE,
-        EMPL_DEPT,
-        EMPL_GRADE,
-        PHOTO_NAME,
-        PHOTO_PATH,
-        EMPL_NOTES,
-        CREATED_DATE,
-        CREATED_ID,
-        UPDATED_DATE,
-        UPDATED_ID
+            EMPL_ID,
+            EMPL_NAME,
+            EMPL_PHONE,
+            EMPL_DEPT,
+            EMPL_GRADE,
+            PHOTO_NAME,
+            PHOTO_PATH,
+            EMPL_NOTES,
+            CREATED_DATE,
+            CREATED_ID,
+            UPDATED_DATE,
+            UPDATED_ID
         FROM TB_EMPL
         WHERE EMPL_ID = #{emplId}
     </select>
@@ -84,15 +84,15 @@
     <update id="updateEmployee" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
         UPDATE TB_EMPL
         SET
-        EMPL_NAME = #{emplName},
-        EMPL_PHONE = #{emplPhone},
-        EMPL_DEPT = #{emplDept},
-        EMPL_GRADE = #{emplGrade},
-        PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
-        PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
-        EMPL_NOTES = #{emplNotes},
-        UPDATED_DATE = SYSDATE,
-        UPDATED_ID = #{updatedId}
+            EMPL_NAME = #{emplName},
+            EMPL_PHONE = #{emplPhone},
+            EMPL_DEPT = #{emplDept},
+            EMPL_GRADE = #{emplGrade},
+            PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
+            PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
+            EMPL_NOTES = #{emplNotes},
+            UPDATED_DATE = SYSDATE,
+            UPDATED_ID = #{updatedId}
         WHERE
         EMPL_ID = #{emplId}
     </update>
@@ -100,10 +100,10 @@
     <update id="updateEmployeePhoto" parameterType="com.mobydick.hms.employee.vo.EmployeeVO">
         UPDATE TB_EMPL
         SET
-        PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
-        PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
-        UPDATED_DATE = SYSDATE,
-        UPDATED_ID = #{updatedId}
+            PHOTO_NAME = #{photoName, jdbcType=VARCHAR},
+            PHOTO_PATH = #{photoPath, jdbcType=VARCHAR},
+            UPDATED_DATE = SYSDATE,
+            UPDATED_ID = #{updatedId}
         WHERE
         EMPL_ID = #{emplId}
     </update>

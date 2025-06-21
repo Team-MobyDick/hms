@@ -56,6 +56,7 @@ $(document).ready(function () {
         const grade = $clickedRow.data('grade');
         const phone = $clickedRow.data('phone');
         const note = $clickedRow.data('note');
+        const createdDate = $clickedRow.data('created-date');
         const photoName = $clickedRow.data('photo-name'); // 기존 사진 파일명
         const photoPath = $clickedRow.data('photo-path'); // 기존 사진 경로
 
@@ -98,6 +99,7 @@ $(document).ready(function () {
                                 </tr>
                                 <tr><th style="padding:8px;">전화번호</th><td><input type="text" name="emplPhone" value="${phone}"></td></tr>
                                 <tr><th style="padding:8px;">메모</th><td><input type="text" name="emplNotes" value="${note}"></td></tr>
+                                <tr><th>등록일</th><td>${createdDate}</td></tr>
                                 <tr><td colspan="2" style="text-align: center;" class="button-area"></td></tr>
                             </table>
                         </div>
