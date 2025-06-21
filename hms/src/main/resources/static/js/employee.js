@@ -15,7 +15,7 @@ const deptMap = {
 
 $(document).ready(function () {
 
-    // **새로 추가된 부분: 정렬 버튼 클릭 이벤트**
+    // 정렬 버튼 클릭 이벤트
     $('.sort-btn').on('click', function() {
         // data-sort-order 속성에서 값 가져오기
         const selectedSortOrder = $(this).data('sort-order');
@@ -33,7 +33,6 @@ $(document).ready(function () {
         window.location.href = currentUrl.toString();
 
     });
-    // 끝
 
     // 직원 행 클릭 - 상세 폼 토글
     $('.employee-row').on('click', function () {
@@ -119,11 +118,11 @@ $(document).ready(function () {
             $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
             $buttonArea.append('<button class="action-btn btn-delete">삭제</button> ');
 
-            // 총지배인만 퇴사시키기 버튼을 볼 수 있고 해당 직원이 재직 중일 때만 활성화
+            // 총지배인만 퇴사처리 버튼을 볼 수 있고 해당 직원이 재직 중일 때만 활성화
             if (retiredYn === 'N') {
-                $buttonArea.append(`<button class="action-btn btn-retire" data-empid="${empId}">퇴사시키기</button> `);
+                $buttonArea.append(`<button class="action-btn btn-retire" data-empid="${empId}">퇴사처리</button> `);
             } else {
-                // 이미 퇴사한 직원은 퇴사시키기 버튼 대신 비활성화된 메시지 표시
+                // 이미 퇴사한 직원은 퇴사처리 버튼 대신 비활성화된 메시지 표시
                 $buttonArea.append('<button class="action-btn" disabled style="background-color: #ccc;">이미 퇴사 처리됨</button> ');
             }
 
@@ -133,7 +132,8 @@ $(document).ready(function () {
 
         // 팀장은 같은 부서의 직원에게만 수정 가능(퇴사하지 않은 경우) 및 사진 업로드 섹션 표시
         else if (userRole === 'GR_02') {
-            if (userDept === dept && retiredYn === 'N') { // 팀장은 재직 중인 같은 부서 직원만 수정 가능
+            // 팀장은 재직 중인 같은 부서 직원만 수정 가능
+            if (userDept === dept && retiredYn === 'N') {
                 $buttonArea.append('<button class="action-btn btn-update">수정</button> ');
                 $uploadSection.show();
             } else {
@@ -148,7 +148,7 @@ $(document).ready(function () {
         $clickedRow.after($detailRow);
     });
 
-    // 새로 추가: '사진 선택' 버튼 클릭 시 실제 파일 입력 필드 트리거
+    // 사진 선택 버튼 클릭 시 실제 파일 입력 필드 트리거
     // 동적으로 생성되는 요소에 이벤트를 바인딩하므로 $(document).on 사용
     $(document).on('click', '.select-photo-button', function() {
         // 클릭된 버튼과 연관된 input[type="file"]의 ID를 동적으로 찾아 클릭
@@ -238,7 +238,7 @@ $(document).ready(function () {
             data: formData,
             success: (response) => {
                 alert(response);
-                location.reload(); // 페이지 새로고침하여 업데이트된 정보 표시
+                location.reload();
             },
             error: (xhr, status, error) => {
                 let errorMessage = '직원 정보 수정 중 오류가 발생했습니다.';
@@ -308,15 +308,16 @@ $(document).ready(function () {
             url: contextPath + '/employee/uploadPhoto',
             type: 'POST',
             data: formData,
-            processData: false, // FormData를 사용할 때는 필수
-            contentType: false, // FormData를 사용할 때는 필수
+            processData: false,
+            contentType: false,
             success: (response) => {
-                const parts = response.split('::'); // "메시지::파일명::경로" 분리
+                const parts = response.split('::');
                 const message = parts[0];
                 const newPhotoName = parts[1];
                 const newPhotoPath = parts[2];
 
                 alert(message);
+
                 // UI 업데이트: 상세보기의 사진을 바로 변경
                 const $detailPhotoContainer = $(this).closest('.detail-photo-area').find('#detailPhotoContainer');
                 $detailPhotoContainer.html(`<img src="${contextPath}/${newPhotoPath}/${newPhotoName}" alt="직원 사진">`);
@@ -327,7 +328,7 @@ $(document).ready(function () {
                 $(`.employee-row[data-id="${emplId}"] .photo-container`).html(`<img src="${contextPath}/${newPhotoPath}/${newPhotoName}" alt="사진" />`);
 
                 // 파일 input 초기화 (같은 파일 다시 선택 가능하도록)
-                fileInput.value = ""; // 또는 fileInput.remove() 후 다시 추가
+                fileInput.value = "";
             },
 
             error: (xhr, status, error) => {
@@ -385,7 +386,7 @@ $(document).ready(function () {
         }
     });
 
-    // 퇴사시키기
+    // 퇴사처리
     $(document).on('click', '.btn-retire', function () {
 
         // 버튼의 data-empid 속성에서 직원 ID 가져오기
@@ -398,7 +399,7 @@ $(document).ready(function () {
                 data: { emplId: emplIdToRetire }, // 퇴사시킬 직원 ID 전송
                 success: (response) => {
                     alert(response);
-                    location.reload(); // 성공 시 페이지 새로고침하여 목록 업데이트
+                    location.reload();
                 },
                 error: (xhr, status, error) => {
                     let errorMessage = '직원 퇴사 처리 중 오류가 발생했습니다.';

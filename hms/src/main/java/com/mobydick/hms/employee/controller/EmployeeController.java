@@ -39,9 +39,7 @@ public class EmployeeController {
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
             // 에러 처리: 디렉토리 생성 실패
             System.err.println("Failed to create upload directory: " + uploadDir);
         }
@@ -52,27 +50,27 @@ public class EmployeeController {
     public String employeeList(
             Model model,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "default") String sortOrder, // <-- 추가된 부분
-            HttpSession session) throws Exception {
+            @RequestParam(defaultValue = "default") String sortOrder,
+            HttpSession session
+    ) throws Exception {
 
         int pageSize = 10; // 페이지당 항목 수
+
         // 전체 직원 수 조회 시 정렬 기준은 필요 없음 (페이징을 위한 전체 개수)
         int totalCount = employeeService.selectAllEmployees(null).size(); // <-- null 전달
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
-
         int startIndex = (page - 1) * pageSize;
 
         // 정렬 기준을 서비스 계층으로 전달
         List<EmployeeVO> allEmployees = employeeService.selectAllEmployees(sortOrder); // <-- sortOrder 전달
-
         List<EmployeeVO> employeeList = allEmployees.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
 
         System.out.println("test = " + employeeList.toString());
 
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
 
-        model.addAttribute("currentPage", page);                        // 현재 페이지
-        model.addAttribute("totalPages", totalPages);                   // 전체 페이지 수
+        model.addAttribute("currentPage", page); // 현재 페이지
+        model.addAttribute("totalPages", totalPages); // 전체 페이지 수
         model.addAttribute("sortOrder", sortOrder); // <-- 현재 정렬 기준을 JSP로 다시 전달하여 <select>의 selected 옵션을 유지
 
         if (loginUser != null) {
@@ -109,7 +107,7 @@ public class EmployeeController {
             if (
                     employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() || // 이름 없음
                     employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() || // 부서 없음
-                    employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty() // 직급 없음
+                    employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()  // 직급 없음
             ) {
                 return ResponseEntity.badRequest().body("필수 입력 항목(이름, 부서, 직책)을 모두 채워주세요.");
             }
@@ -123,14 +121,10 @@ public class EmployeeController {
             return ResponseEntity.ok("직원이 성공적으로 등록되었습니다.");
 
         } catch (IllegalArgumentException e) {
-
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-
         } catch (Exception e) {
             e.printStackTrace();
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 등록 중 오류가 발생했습니다: " + e.getMessage());
-
         }
     }
 
@@ -173,16 +167,13 @@ public class EmployeeController {
             }
 
             employeeVO.setUpdatedId(loginUser.getEmplId());
-
             employeeService.updateEmployee(employeeVO);
 
             return ResponseEntity.ok("직원 정보가 성공적으로 수정되었습니다.");
 
         } catch (Exception e) {
             e.printStackTrace();
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 정보 수정 중 오류가 발생했습니다: " + e.getMessage());
-
         }
     }
 
@@ -244,7 +235,7 @@ public class EmployeeController {
             EmployeeVO employeeVO = new EmployeeVO();
             employeeVO.setEmplId(emplId);
             employeeVO.setPhotoName(uniqueFilename); // 실제 저장된 파일명
-            employeeVO.setPhotoPath("employee_photos"); // 하위 경로 (uploadDir 바로 아래라고 가정)
+            employeeVO.setPhotoPath("employee_photos"); // 하위 경로
             employeeVO.setUpdatedId(loginUser.getEmplId());
 
             employeeService.updateEmployeePhoto(employeeVO);
@@ -253,12 +244,9 @@ public class EmployeeController {
 
         } catch (Exception e) {
             e.printStackTrace();
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사진 업로드 중 오류가 발생했습니다: " + e.getMessage());
-
         }
     }
-
 
     // 직원 삭제 처리
     @PostMapping("/delete")
@@ -288,8 +276,8 @@ public class EmployeeController {
                     Path photoPath = Paths.get(uploadDir, employeeToDelete.getPhotoName());
                     Files.deleteIfExists(photoPath);
                 } catch (Exception e) {
-                    System.err.println("Failed to delete employee photo file: " + employeeToDelete.getPhotoName() + " - " + e.getMessage());
                     // 파일 삭제 실패해도 직원 정보는 삭제 진행
+                    System.err.println("Failed to delete employee photo file: " + employeeToDelete.getPhotoName() + " - " + e.getMessage());
                 }
             }
 
@@ -299,9 +287,7 @@ public class EmployeeController {
 
         } catch (Exception e) {
             e.printStackTrace();
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 삭제 중 오류가 발생했습니다: " + e.getMessage());
-
         }
     }
 
@@ -333,6 +319,7 @@ public class EmployeeController {
             if (targetEmployee == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("퇴사 처리하려는 직원을 찾을 수 없습니다.");
             }
+
             if ("Y".equals(targetEmployee.getRetiredYn())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 퇴사 처리된 직원입니다.");
             }
@@ -347,5 +334,4 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("직원 퇴사 처리 중 오류가 발생했습니다:" + e.getMessage());
         }
     }
-
 }
