@@ -217,6 +217,26 @@ public class EmployeeController {
                 return ResponseEntity.badRequest().body("업로드할 파일이 없습니다.");
             }
 
+            // 최대 5MB
+            long maxFileSize = 5 * 1024 * 1024;
+            String contentType = file.getContentType();
+
+            // 1. 파일 크기 검사
+            if (file.getSize() > maxFileSize) {
+                return ResponseEntity.badRequest().body("파일 크기가 너무 큽니다. 최대 " + (maxFileSize / (1024 * 1024)) + "MB까지 업로드 가능합니다.");
+            }
+
+            // 2. 파일 형식 검사 (JPEG, PNG, GIF, jfif만 허용)
+            // getContentType()이 null일 수 있으므로 null 체크 먼저
+            if (contentType == null ||
+                    !(contentType.equals("image/jpeg") || contentType.equals("image/png") ||
+                            contentType.equals("image/gif") || contentType.equals("image/jfif")
+                    )
+            ) {
+                return ResponseEntity.badRequest().body("지원하지 않는 파일 형식입니다. JPEG, PNG, GIF 파일만 업로드 가능합니다.");
+            }
+
+
             // 파일 저장 로직
             String originalFilename = file.getOriginalFilename();
             String fileExtension = "";

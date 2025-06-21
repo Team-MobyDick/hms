@@ -73,6 +73,7 @@ $(document).ready(function () {
                                 <button type="button" class="action-btn select-photo-button">사진 선택</button>
                                 <input type="file" id="photoUploadInput_${empId}" class="photo-upload-input" name="photo" accept="image/*" style="display: none;">
                                 <button type="button" class="action-btn upload-photo-btn" data-empid="${empId}">업로드</button>
+                                <p style="font-size: 0.85em; color: #666; margin-top: 8px;">(JPEG, PNG, GIF, JFIF 형식, 최대 5MB 파일만 업로드 가능합니다)</p>
                             </div>
                         </div>
                         <div class="detail-info-area">
@@ -261,10 +262,34 @@ $(document).ready(function () {
         const $photoContainer = $(this).closest('.detail-photo-area').find('#detailPhotoContainer');
 
         if (file) {
+            // 최대 5MB
+            const maxFileSizeMB = 5;
+            // 5MB를 바이트로 변환
+            const maxFileSizeBytes = maxFileSizeMB * 1024 * 1024;
+            // 허용할 파일 타입 목록
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jfif'];
+
+            // 파일 크기 검사
+            if (file.size > maxFileSizeBytes) {
+                alert(`사진 파일 크기가 너무 큽니다. 최대 ${maxFileSizeMB}MB까지 업로드 가능합니다.`);
+                event.target.value = ''; // 파일 선택 취소
+                $photoContainer.empty(); // 미리보기 초기화
+                return;
+            }
+
+            // 파일 타입 검사
+            if (!allowedTypes.includes(file.type)) {
+                alert('지원하지 않는 사진 파일 형식입니다. JPEG, PNG, GIF, jfif 파일만 업로드 가능합니다.');
+                event.target.value = ''; // 파일 선택 취소
+                $photoContainer.empty(); // 미리보기 초기화
+                return; // 이후 로직 실행 중단
+            }
+
             const reader = new FileReader();
             reader.onload = function (e) {
                 $photoContainer.html(`<img src="${e.target.result}" alt="미리보기">`);
             };
+
             reader.readAsDataURL(file);
         } else {
             // 파일 선택 취소 시 원래 이미지 복원 또는 빈 상태로
@@ -297,6 +322,20 @@ $(document).ready(function () {
 
         if (!file) {
             alert('업로드할 사진 파일을 선택해주세요.');
+            return;
+        }
+
+        const maxFileSizeMB = 5;
+
+        if (file.size > maxFileSizeMB * 1024 * 1024) {
+            alert(`파일 크기가 너무 큽니다. 최대 ${maxFileSizeMB}MB까지 업로드 가능합니다.`);
+            return;
+        }
+
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jfif'];
+
+        if (!allowedTypes.includes(file.type)) {
+            alert('지원하지 않는 파일 형식입니다. JPEG, PNG, GIF, JFIF 파일만 업로드 가능합니다.');
             return;
         }
 
