@@ -1,7 +1,7 @@
 package com.mobydick.hms;
 
 import com.mobydick.hms.common.service.CommonService;
-import com.mobydick.hms.common.vo.CommonVO; // CommonVO import
+import com.mobydick.hms.common.vo.CommonVO;
 import com.mobydick.hms.login.vo.LoginVO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class HomeController {
 
         try {
             // 서비스에서 대시보드 데이터를 한번에 가져옴
-            CommonVO dashboardData = commonService.getDashboardData();
+            CommonVO dashboardData = commonService.getDashboardData(loginUser.getEmplId());
             model.addAttribute("dashboardData", dashboardData);
 
             model.addAttribute("screenTitle", "대시보드");

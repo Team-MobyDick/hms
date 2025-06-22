@@ -4,6 +4,7 @@ import com.mobydick.hms.notice.vo.NoticeVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
 import com.mobydick.hms.employee.vo.EmployeeVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface CommonDAO {
     List<EmployeeVO> selectRandomEmployeesGR03();
 
     // 주간 스케줄 조회 (SYSDATE 기준 현재 주의 스케줄)
-    List<ScheduleVO> selectWeeklySchedules();
+    List<ScheduleVO> selectWeeklySchedules(@Param("emplId") String emplId);
 
     // 최신 공지사항 3개 조회
     List<NoticeVO> selectLatestNotices();

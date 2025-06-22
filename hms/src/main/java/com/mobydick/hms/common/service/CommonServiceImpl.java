@@ -1,4 +1,3 @@
-// CommonServiceImpl.java
 package com.mobydick.hms.common.service;
 
 import com.mobydick.hms.common.dao.CommonDAO;
@@ -26,19 +25,19 @@ public class CommonServiceImpl implements CommonService {
     private volatile LocalDate lastEmployeesOfTheDayCachedDate;
 
     @Override
-    public CommonVO getDashboardData() throws Exception {
+    public CommonVO getDashboardData(String emplId) throws Exception {
         // 대시보드 데이터를 담을 CommonVO 객체 생성
         CommonVO dashboardData = new CommonVO();
 
-        // 1. 오늘의 사원 정보 조회 후 CommonVO에 설정
+        // 오늘의 사원 정보 조회 후 CommonVO에 설정
         List<EmployeeVO> employees = getEmployeesOfTheDayDailyFixed();
         dashboardData.setEmployeesOfTheDay(employees);
 
-        // 2. 주간 스케줄 정보 조회 후 CommonVO에 설정
-        List<ScheduleVO> schedules = commonDAO.selectWeeklySchedules();
+        // 주간 스케줄 정보 조회 후 CommonVO에 설정
+        List<ScheduleVO> schedules = commonDAO.selectWeeklySchedules(emplId);
         dashboardData.setWeeklySchedules(schedules);
 
-        // 3. 최신 공지사항 정보 조회 후 CommonVO에 설정
+        // 최신 공지사항 정보 조회 후 CommonVO에 설정
         List<NoticeVO> notices = commonDAO.selectLatestNotices();
         dashboardData.setLatestNotices(notices);
 

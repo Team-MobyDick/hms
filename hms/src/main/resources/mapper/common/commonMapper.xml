@@ -75,7 +75,9 @@
             A.CREATED_DATE
         FROM TB_SCHEDULE A
         JOIN TB_EMPL B ON A.EMPL_ID = B.EMPL_ID
-        WHERE A.SCHE_DATE BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+        WHERE A.SCHE_DATE >= TRUNC(SYSDATE, 'IW')
+        AND A.SCHE_DATE < TRUNC(SYSDATE, 'IW') + 7
+        AND A.EMPL_ID = #{emplId}
         ORDER BY A.SCHE_DATE ASC
         ]]>
     </select>
