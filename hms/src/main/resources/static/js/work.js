@@ -187,6 +187,20 @@ $(document).ready(function () {
         });
     });
 
+    // 상세업무 상세페이지로 이동
+    $(document).on('click', '#detail_btn_D', function (e) {
+        e.preventDefault();
+
+        const workDId = $(this).closest('tr').data('workd-id');
+
+        if (!workDId) {
+            alert('업무 ID를 찾을 수 없습니다.');
+            return;
+        }
+
+        window.location.href = `${contextPath}/work/detailWorkD?workDId=${workDId}`;
+    });
+
 
     // 주 업무 등록 폼 토글
     $('#add_btn_M').click(function () {
@@ -297,8 +311,6 @@ $(document).ready(function () {
          workMContext: $form.find('textarea[name="workMContext"]').val(),
         };
 
-        console.log(data);
-
         if (!data.workMName || !data.workMDept || !data.workMImpo) {
          alert("업무 이름과 부서, 중요도는 필수입니다.");
          return;
@@ -316,6 +328,31 @@ $(document).ready(function () {
             },
             error: function (xhr) {
                 alert('수정 실패: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // 삭제 버튼 클릭
+    $(document).on('click', '.delete_btn_M', function (e) {
+        e.preventDefault();
+        const $form = $(this).closest('form');
+        const $formDiv = $form.closest('div');
+
+        const workMId = $form.find('input[name="workMId"]').val();
+
+        $.ajax({
+            url: '/work/deleteWorkM',
+            method: 'POST',
+            data: {
+                workMId : workMId,
+            },
+            success: function (response) {
+                alert('주 업무 내용이 삭제되었습니다.');
+                // 성공 후 필요한 작업
+                $formDiv.fadeOut(200);
+            },
+            error: function (xhr) {
+                alert('삭제 실패: ' + xhr.responseText);
             }
         });
     });
@@ -445,99 +482,57 @@ $(document).on('submit', '.workDForm', function (e) {
     });
 });
 
-// workD-row 클릭 시 하위 상세정보 폼 토글
-//$(document).on('click', '.workD-row', function () {
-//    const $clickedDetailRow = $(this);
-//    const workDId = $clickedDetailRow.data('workd-id');
-//    const $next = $clickedDetailRow.next('.workD-detail');
+
+
+
+
+// * workDDetail.jsp
+
+// 수정 버튼 클릭
+$(document).on('submit', '.workDDetailForm', function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+//    const data = {
+//     workDId: $form.find('input[name="workDId"]').val(),
+//     workDName: $form.find('input[name="workDName"]').val(),
+//     workDEmplId: $form.find('select[name="workDEmplId"]').val(),
+//     workDDate: $form.find('input[name="workDDate"]').val(),
+//     workDRoomId: $form.find('select[name="workDRoomId"]').val(),
+//     workDImpo: $form.find('select[name="workDImpo"]').val(),
+//     workDContext: $form.find('textarea[name="workDContext"]').val(),
+//     workDIssue: $form.find('input[name="workDIssue"]').val().is(':checked'),
+//     workDExtra: $form.find('textarea[name="workDExtra"]').val(),
+//    };
 //
-//    // 기존 열림 닫기
-//    $('.workD-detail').slideUp(200, function () {
-//        $(this).remove();
-//    });
-//
-//    // 이미 열려 있으면 닫기
-//    if ($next.length > 0) {
-//        $next.slideUp(200, function () {
-//            $next.remove();
-//        });
-//        return;
+//    if (!data.workDName || !data.workDDate || !data.workDImpo) {
+//     alert("업무 이름과 날짜, 중요도는 필수입니다.");
+//     return;
 //    }
-//
-//    const detailFormRow = $(`
-//        <tr class="workD-detail" style="width: 320px; padding: 16px; border: 1px solid #ccc; border-radius: 8px; font-family: sans-serif;">
-//            <td colspan="6" style="padding: 10px;">
-//                <h3 style="margin-bottom: 12px;">할 일 상세보기/수정</h3>
-//
-//                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-//                <button>수정</button>
-//                <button>취소</button>
-//                <button>삭제</button>
-//                </div>
-//
-//                <div class="form-group">
-//                <label>업무명</label>
-//                <input type="text" value="101호 객실 청소" />
-//                </div>
-//
-//                <div class="form-group">
-//                <label>담당자</label>
-//                <select>
-//                  <option>최영범</option>
-//                  <!-- 다른 인원 옵션 -->
-//                </select>
-//                </div>
-//
-//                <div class="form-group">
-//                <label>업무일자</label>
-//                <input type="date" value="2025-06-12" />
-//                </div>
-//
-//                <div class="form-group">
-//                <label>객실번호</label>
-//                <input type="text" value="101호" />
-//                </div>
-//
-//                <div class="form-group">
-//                <label>중요도</label>
-//                <select>
-//                  <option>높음</option>
-//                  <!-- 중간, 낮음 등 -->
-//                </select>
-//                </div>
-//
-//                <div class="form-group">
-//                <label>업무 내용</label>
-//                <textarea rows="3">아주 중요한 일임
-//                팀장: 진짜임</textarea>
-//                </div>
-//
-//                <div class="form-group" style="display: flex; gap: 12px; align-items: center;">
-//                <div style="text-align: center;">
-//                  <label>시작사진</label><br />
-//                  <button style="border-radius: 50%; width: 60px; height: 60px;">+</button><br />
-//                  <small>시작시간</small>
-//                </div>
-//                <div style="text-align: center;">
-//                  <label>종료사진</label><br />
-//                  <button style="border-radius: 50%; width: 60px; height: 60px;">+</button><br />
-//                  <small>종료시간</small>
-//                </div>
-//                </div>
-//
-//                <div class="form-group" style="margin-top: 12px;">
-//                <label><input type="checkbox" checked /> 문제발생</label>
-//                </div>
-//
-//                <div class="form-group">
-//                <label>특이사항</label>
-//                <textarea rows="2">변기 뚫느라 시간이 오래걸렸습니다</textarea>
-//                </div>
-//            </td>
-//        </tr>
-//    `);
-//
-//    $clickedDetailRow.after(detailFormRow);
-//    detailFormRow.hide().slideDown(200);
-//});
+
+    $.ajax({
+        url: '/work/modifyWorkD',
+        method: 'POST',
+//        contentType: 'application/json',
+//        data: JSON.stringify(data),
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function() {
+            alert('업무가 수정되었습니다.');
+            location.reload();
+        },
+        error: function(xhr) {
+            alert('실패: ' + xhr.responseText);
+        }
+//        success: function () {
+//            alert('업무 내용이 수정되었습니다.');
+//            location.reload();
+//        },
+//        error: function (xhr) {
+//            alert('수정 실패: ' + xhr.responseText);
+//        }
+    });
+});
+
 

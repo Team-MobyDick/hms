@@ -2,7 +2,10 @@ package com.mobydick.hms.work.service;
 
 import com.mobydick.hms.room.vo.RoomVO;
 import com.mobydick.hms.work.vo.WorkVO;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 // 할일 관리 서비스 인터페이스
@@ -24,6 +27,7 @@ public interface WorkService {
     void updateWorkM(WorkVO vo) throws Exception;
 
     // 주 업무 삭제 (최고관리자)
+    void deleteWorkM(String workMId) throws Exception;;
 
     // 주 업무별 상세 업무 배분 목록 조회
     List<WorkVO> getDetailWorkList(String workMId, String date);
@@ -31,7 +35,11 @@ public interface WorkService {
     // 상세 업무 등록 (최고관리자, 중간관리자)
     void insertWorkD(WorkVO vo) throws Exception;
 
+    // 상세 업무 페이지 이동 (최고관리자, 중간관리자, 직원)
+    WorkVO selectDetailWorkD(String workDId) throws Exception;
+
     // 상세 업무 수정 (최고관리자, 중간관리자, 직원)
+    void updateWorkD(String workDId, String workDName, String workDEmplId, LocalDate workDDate, String workDStartPath, Timestamp workDStartTime, String workDEndPath, Timestamp workDEndTime) throws Exception;
 
     // 상세 업무 삭제 (최고관리자, 중간관리자)
 
@@ -42,5 +50,8 @@ public interface WorkService {
     List<WorkVO> getImpo();
     List<WorkVO> getRoom();
     List<WorkVO> getEmpl();
+    List<WorkVO> selectEmployeesByDept(String emplDept) throws Exception;
 
+    // 파일 저장후 경로 반환
+    String saveFile(MultipartFile file) throws Exception;
 }

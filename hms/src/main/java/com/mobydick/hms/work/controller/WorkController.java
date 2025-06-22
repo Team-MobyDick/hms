@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -84,7 +87,7 @@ public class WorkController {
     @PostMapping("/modifyWorkM")
     public ResponseEntity<String> modifyWorkM(@RequestBody WorkVO vo, HttpSession session) {
         try {
-            // 주 업무 ID 생성
+
             String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
 
             vo.setUpdatedId(loginUserId);
@@ -95,6 +98,17 @@ public class WorkController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
         }
+    }
+
+    // 주 업무 삭제
+    @PostMapping("/deleteWorkM")
+    @ResponseBody
+    public String deleteWorkM(@RequestParam String workMId, HttpSession session) throws Exception {
+
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
+        workService.deleteWorkM(workMId);
+        return "success";
     }
 
     // 업무 배분 등록
@@ -122,6 +136,33 @@ public class WorkController {
     @ResponseBody
     public List<WorkVO> getDetailWorkList(@RequestParam("workMId") String workMId, @RequestParam("date") String date) {
         return workService.getDetailWorkList(workMId, date);
+    };
+
+    // 상세업무 개별 버튼 클릭시 상세페이지 이동
+    @GetMapping("/detailWorkD")
+    public String getDetailWorkD(Model model, HttpSession session, @RequestParam("workDId") String workDId) throws Exception {
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+        String grade = loginUser.getEmplGrade();
+        List<WorkVO> emplList;
+        List<WorkVO> roomList = workService.getRoom();
+        List<WorkVO> impoList = workService.getImpo();
+        if ("GR_01".equals(grade)) {
+            emplList = workService.getEmpl();
+        } else if ("GR_02".equals(grade)) {
+            emplList = workService.selectEmployeesByDept(loginUser.getEmplDept());
+        } else {
+            emplList = Collections.emptyList();
+        }
+
+        WorkVO detailWorkD = workService.selectDetailWorkD(workDId);
+
+        model.addAttribute("emplList", emplList);
+        model.addAttribute("roomList", roomList);
+        model.addAttribute("impoList", impoList);
+        model.addAttribute("detailWorkD", detailWorkD);
+        model.addAttribute("bodyPage", "work/workDDetail.jsp");
+
+        return "index";
     };
 
     // 부서 목록 (AJAX)
@@ -170,5 +211,46 @@ public class WorkController {
             e.printStackTrace();
             return Collections.emptyList();
         }
+    }
+
+    @PostMapping("/work/modifyWorkD")
+    @ResponseBody
+    public ResponseEntity<String> modifyWorkD(
+            @RequestParam("workDId") String workDId,
+            @RequestParam("workDName") String workDName,
+            @RequestParam("workDEmplId") String workDEmplId,
+            @RequestParam("workDDate") LocalDate workDDate,
+            @RequestParam("workDRoomId") String workDRoomId,
+            @RequestParam("workDImpo") String workDImpo,
+            @RequestParam("workDContext") String workDContext,
+            @RequestParam("workDExtra") String workDExtra,
+            @RequestParam(value = "workDStartFile", required = false) MultipartFile workDStartFile,
+            @RequestParam(value = "workDEndFile", required = false) MultipartFile workDEndFile
+    ) throws Exception {
+        // 파일 업로드
+        String workDStartPath = null;
+        Timestamp workDStartTime = null;
+        if (workDStartFile != null && !workDStartFile.isEmpty()) {
+            workDStartPath = workService.saveFile(workDStartFile); // 파일 저장 후 경로 반환
+            workDStartTime = new Timestamp(System.currentTimeMillis());
+        }
+
+        String workDEndPath = null;
+        Timestamp workDEndTime = null;
+        if (workDEndFile != null && !workDEndFile.isEmpty()) {
+            workDEndPath = workService.saveFile(workDEndFile);
+            workDEndTime = new Timestamp(System.currentTimeMillis());
+        }
+
+//        // 현재 timestamp
+//        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        // Service 호출해서 DB update
+        workService.updateWorkD(
+                workDId, workDName, workDEmplId, workDDate,
+                workDStartPath, workDStartTime, workDEndPath, workDEndTime
+        );
+
+        return ResponseEntity.ok("ok");
     }
 }

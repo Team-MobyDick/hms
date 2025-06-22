@@ -86,18 +86,18 @@
     </form>
 
     <table>
-        <thead>
-            <tr>
-                <th>부서</th>
-                <th>업무명</th>
-                <th>담당자</th>
-                <th>중요도</th>
-                <th>업무배분/상세</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:choose>
-                <c:when test="${not empty workMList}">
+        <c:choose>
+            <c:when test="${not empty workMList}">
+                <thead>
+                    <tr>
+                        <th>부서</th>
+                        <th>업무명</th>
+                        <th>담당자</th>
+                        <th>중요도</th>
+                        <th>업무배분/상세</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <c:forEach var="workM" items="${workMList}">
                         <tr class="workM-row"
                             data-workm-name="${workM.workMName}"
@@ -116,31 +116,45 @@
                             </td>
                         </tr>
                     </c:forEach>
-                </c:when>
-                <c:when test="${not empty workDList}">
+                </tbody>
+            </c:when>
+            <c:when test="${not empty workDList}">
+                <thead>
+                    <tr>
+                        <th>업무명</th>
+                        <th>담당자</th>
+                        <th>중요도</th>
+                        <th>업무배분/상세</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <c:forEach var="workD" items="${workDList}">
                         <tr class="workD-row"
-                            data-workM="${workD.workDName}"
-                            data-dept="${workM.workMDept}"
-                            data-workM-id="${workM.workMId}"
-                            data-createdDate="${workM.createdDate}"
-                            data-createdId="${workM.createdId}"
-                            data-updatedDate="${workM.updatedDate}"
-                            data-updatedId="${workM.updatedId}">
-                            <td data-label="level"></td>
+                            data-parent="${workD.workMId}"
+                            data-workd-id="${workD.workDId}">
                             <td data-label="업무명">${workD.workDName}</td>
-                            <td data-label="부서"></td>
                             <td data-label="담당자">${workD.emplName}</td>
                             <td data-label="중요도">${codeMap[workD.workDImpo]}</td>
-                            <td data-label="업무일자">${workD.workDDate}</td>
+                            <td data-label="업무상세"><button id="detail_btn_D">업무 상세</button></td>
                         </tr>
                     </c:forEach>
-                </c:when>
-                <c:otherwise>
+                </tbody>
+            </c:when>
+            <c:otherwise>
+                <thead>
+                    <tr>
+                        <th>부서</th>
+                        <th>업무명</th>
+                        <th>담당자</th>
+                        <th>중요도</th>
+                        <th>업무배분/상세</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <tr><td colspan="6">업무 목록이 비어 있습니다.</td></tr>
-                </c:otherwise>
-            </c:choose>
-        </tbody>
+                </tbody>
+            </c:otherwise>
+        </c:choose>
     </table>
 
     <!-- 주 업무 상세 모달 폼 -->
@@ -167,5 +181,8 @@
         </form>
     </div>
 </body>
+<script>
+    const contextPath = '${pageContext.request.contextPath}';
+</script>
 <script src="/js/work.js"></script>
 </html>
