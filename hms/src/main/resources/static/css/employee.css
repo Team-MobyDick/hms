@@ -1,5 +1,4 @@
-/* 객실 관리 스타일 */
-
+/* === 기본 요소 스타일 === */
 h1 {
   font-size: 28px;
 }
@@ -15,47 +14,66 @@ td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: center;
+  vertical-align: middle;
 }
 
 th {
   background-color: #f3f3f3;
 }
 
-/* 컨트롤 컨테이너 */
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* === 컨트롤 및 버튼 스타일 === */
 .controls-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
-/* 직원등록 버튼 */
-#add_btn,
-.sort-btn,
-{
-    margin: 5px;
-    padding: 6px 12px;
-    font-size: 14px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* 정렬 버튼 컨테이너 */
 .sort-buttons {
     display: flex;
     gap: 10px;
 }
 
-#add-btn:hover,
+/* 모든 액션/기능성 버튼의 공통 스타일  */
+#add_btn,
+.sort-btn,
+.action-btn,
+.modal .modal_popup .close_btn,
+.modal .modal_popup .print_btn {
+    margin: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+}
+
+#add_btn,
+.sort-btn {
+    background-color: #4CAF50;
+}
+
+#add_btn:hover,
 .sort-btn:hover {
     background-color: #45a049;
 }
 
-/* 상세 슬라이드 및 내용 (JS에서 동적 생성) */
+.action-btn:hover {
+    opacity: 0.9;
+}
+
+
+/* === 상세 슬라이드 및 내용 === */
 .detail-slide .slide-content {
   padding: 15px;
   background: #f9f9f9;
@@ -64,14 +82,8 @@ th {
   text-align: left;
 }
 
-.action-btn { /* JS에서 동적으로 생성되는 버튼들에 사용됨 */
-  margin: 5px;
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.photo-container { /* 직원 목록 및 상세 보기에서 사용됨 */
+/* 직원 목록 및 상세 보기에서 사용되는 사진 컨테이너 */
+.photo-container {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -84,18 +96,14 @@ th {
     background-color: #f0f0f0;
 }
 
-.photo-container img { /* photo-container 내부 이미지에 적용 */
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
-.upload-section { /* JS에서 동적 생성되는 사진 업로드 영역 */
+/* JS에서 동적 생성되는 사진 업로드 영역 */
+.upload-section {
     text-align: center;
     margin-top: 10px;
 }
 
-/* 직책별 배경색 */
+/* === 직책별 배경색 === */
 .grade-GR_01 { /* 총지배인 */
     background-color: #ffe0b2;
 }
@@ -108,12 +116,13 @@ th {
     background-color: #c8e6c9;
 }
 
-/* 상세 보기 레이아웃 조정 */
+/* === 상세 보기 레이아웃 조정 === */
 .detail-content-wrapper {
     display: flex;
     justify-content: center;
     gap: 20px;
     padding: 10px;
+    align-items: flex-start;
 }
 
 .detail-photo-area {
@@ -131,7 +140,7 @@ th {
     border: 1px solid #eee;
 }
 
-/* 애니메이션 */
+/* === 애니메이션 === */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -143,7 +152,47 @@ th {
   }
 }
 
-/* 반응형 */
+/* === 모달 === */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.on {
+    display: flex;
+}
+.modal .modal_popup {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    width: 350px;
+    max-width: 90vw;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+#qrcode {
+    margin: 20px auto;
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* 모달 버튼별 색상 */
+.modal .modal_popup .close_btn {
+    background-color: #6c757d;
+}
+.modal .modal_popup .print_btn {
+    background-color: #28a745;
+    margin-right: 10px;
+}
+
+
+/* === 반응형  === */
 @media screen and (max-width: 768px) {
   table,
   thead,
@@ -171,72 +220,111 @@ th {
     position: relative;
     border: none;
     border-bottom: 1px solid #eee;
+    white-space: normal;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
   }
 
   td::before {
     content: attr(data-label);
     position: absolute;
     left: 10px;
-    top: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     font-weight: bold;
     white-space: nowrap;
+    width: 40%;
+    box-sizing: border-box;
   }
 
-  .action-btn {
+  /* .action-btn 및 유사 버튼의 모바일 반응형 */
+  #add_btn,
+  .sort-btn,
+  .action-btn,
+  .modal .modal_popup .close_btn,
+  .modal .modal_popup .print_btn {
     display: block;
     width: 100%;
     margin: 5px 0;
+    font-size: 14px;
+    padding: 8px 12px;
   }
-}
 
-/* 모달 */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-.modal.on {
-    display: flex;
-}
-.modal .modal_popup {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 40px;
-    text-align: center;
-    width: 350px;
-    max-width: 90vw;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-}
-#qrcode {
-    margin: 20px auto;
-    display: block;
-}
-.modal .modal_popup .close_btn, .modal .modal_popup .print_btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    margin-right: 10px;
-}
+  /* 상세 보기 레이아웃 모바일 반응형 */
+  .detail-content-wrapper {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+  }
 
-.modal .modal_popup .close_btn {
-    background-color: #6c757d;
-}
-.modal .modal_popup .print_btn {
-    background-color: #28a745;
-}
+  .detail-photo-area {
+      width: 100%;
+      max-width: 200px;
+  }
+  .photo-container {
+      width: 100px;
+      height: 100px;
+  }
 
+  .detail-info-area {
+      width: 100%;
+      padding: 15px;
+  }
+  .detail-info-area table th, .detail-info-area table td {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 8px 10px;
+      border: none;
+      border-bottom: 1px solid #eee;
+  }
+  .detail-info-area table th {
+      background-color: #f3f3f3;
+      font-weight: bold;
+      padding-top: 12px;
+      padding-bottom: 5px;
+  }
+  .detail-info-area table td {
+      padding-top: 5px;
+      padding-bottom: 12px;
+  }
+  .detail-info-area table td input[type="text"],
+  .detail-info-area table td select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px;
+      font-size: 0.95em;
+  }
 
-img{
-    width: 100%;
-    height: 100%;
+  /* 신규 등록 폼 반응형  */
+  #newEmployeeForm {
+      padding: 15px;
+  }
+  #newEmployeeForm .form-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      margin-bottom: 10px;
+  }
+  #newEmployeeForm .form-row label {
+      width: 100%;
+      margin-bottom: 5px;
+  }
+  #newEmployeeForm .form-row input[type="text"],
+  #newEmployeeForm .form-row select,
+  #newEmployeeForm .form-row textarea,
+  #newEmployeeForm .form-row input[type="file"] {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 0;
+  }
+
+  .button-area {
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 15px;
+  }
 }
