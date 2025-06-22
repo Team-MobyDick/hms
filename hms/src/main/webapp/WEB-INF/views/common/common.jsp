@@ -76,6 +76,7 @@
                                 <li>
                                     <a href="${pageContext.request.contextPath}/notice/list">
                                         <span class="list-item-title">${notice.noticeTitle}</span>
+                                        <span class="list-item-author">(${notice.emplName})</span>
                                         <span class="list-item-date"><fmt:formatDate value="${notice.createdDate}" pattern="yyyy.MM.dd" /></span>
                                     </a>
                                 </li>

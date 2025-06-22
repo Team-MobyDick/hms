@@ -122,6 +122,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.list-item-author {
+    font-size: 0.85em;
+    color: #666;
+    margin-left: 5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
 .list-item-date {
     font-size: 0.9em;
     color: #777;
