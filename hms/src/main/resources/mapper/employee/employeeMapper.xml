@@ -117,6 +117,25 @@
         WHERE EMPL_ID = #{emplId}
     </delete>
 
+    <update id="updateNoticeEmplIdToNull" parameterType="string">
+        UPDATE TB_NOTICE
+        SET
+            EMPL_ID = NULL,
+            UPDATED_DATE = SYSDATE,
+            UPDATED_ID = 'SYSTEM'
+        WHERE EMPL_ID = #{emplId}
+    </update>
+
+    <delete id="deleteSchedulesByEmplId" parameterType="string">
+        DELETE FROM TB_SCHEDULE
+        WHERE EMPL_ID = #{emplId}
+    </delete>
+
+    <delete id="deleteWorkDetailsByEmplId" parameterType="string">
+        DELETE FROM TB_WORK_D
+        WHERE EMPL_ID = #{emplId}
+    </delete>
+
     <select id="countEmployeeById" parameterType="string" resultType="int">
         SELECT COUNT(*)
         FROM TB_EMPL

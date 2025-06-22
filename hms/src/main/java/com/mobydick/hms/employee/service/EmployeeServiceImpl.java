@@ -41,6 +41,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     // 직원 삭제
     @Override
     public void deleteEmployee(String emplId) throws Exception {
+        employeeDAO.updateNoticeEmplIdToNull(emplId);
+        employeeDAO.deleteSchedulesByEmplId(emplId);
+        employeeDAO.deleteWorkDetailsByEmplId(emplId);
         employeeDAO.deleteEmployee(emplId);
     }
 

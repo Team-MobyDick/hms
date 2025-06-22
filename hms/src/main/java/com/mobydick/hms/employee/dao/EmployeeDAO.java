@@ -24,13 +24,15 @@ public interface EmployeeDAO {
     // 직원 사진 정보만 업데이트하는 메서드 추가
     void updateEmployeePhoto(EmployeeVO employeeVO) throws Exception;
 
-    // 직원 삭제
-    void deleteEmployee(String emplId) throws Exception;
-
     // 직원 ID 중복 확인
     int countEmployeeById(String emplId) throws Exception;
 
     // 직원 퇴사 처리
     void retireEmployee(@Param("emplId") String emplId, @Param("updatedId") String updatedId) throws Exception;
 
+    // 직원 삭제
+    void deleteEmployee(String emplId) throws Exception;
+    void updateNoticeEmplIdToNull(@Param("emplId") String emplId) throws Exception;
+    void deleteSchedulesByEmplId(@Param("emplId") String emplId) throws Exception;
+    void deleteWorkDetailsByEmplId(@Param("emplId") String emplId) throws Exception;
 }
