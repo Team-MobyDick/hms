@@ -17,10 +17,9 @@
                 <h2>오늘의 사원</h2>
                 <div class="employee-of-day-list">
                     <c:choose>
-                        <%-- dashboardData에서 오늘의 사원 리스트를 가져옴 --%>
                         <c:when test="${not empty dashboardData.employeesOfTheDay}">
                             <c:forEach var="emp" items="${dashboardData.employeesOfTheDay}">
-                                <div class="employee-item" onclick="location.href='${pageContext.request.contextPath}/employee/list';">
+                                <div class="employee-item" data-empl-grade="${emp.emplGrade}" onclick="return handleEmployeeClick(this);"> <%-- onclick 속성 수정 및 data-empl-grade 추가 --%>
                                     <c:set var="photoSrc">
                                         <c:choose>
                                             <c:when test="${not empty emp.photoName && not empty emp.photoPath}">
@@ -34,7 +33,6 @@
                                     <img src="${photoSrc}" alt="${emp.emplName} 사진">
                                     <div class="employee-info">
                                         <div class="name">${emp.emplName}</div>
-                                        <%-- emplGrade 대신 emplGradeName(직책명)을 표시 --%>
                                         <div class="grade">(${emp.emplGradeName})</div>
                                     </div>
                                 </div>
@@ -51,13 +49,11 @@
                 <h2>주간 스케줄</h2>
                 <ul>
                     <c:choose>
-                        <%-- dashboardData에서 주간 스케줄 리스트를 가져옴 --%>
                         <c:when test="${not empty dashboardData.weeklySchedules}">
                             <c:forEach var="schedule" items="${dashboardData.weeklySchedules}">
                                 <li class="schedule-item"> <a href="${pageContext.request.contextPath}/schedule/list">
                                         <div class="schedule-content">
                                             <span class="schedule-date"><fmt:formatDate value="${schedule.scheDate}" pattern="MM/dd (E)" /></span>
-                                            <%-- emplId 대신 emplName(사원명)을 표시 --%>
                                             <span class="schedule-info">[${schedule.emplName}] ${schedule.scheShift}</span>
                                         </div>
                                     </a>
@@ -75,7 +71,6 @@
                 <h2>공지사항</h2>
                 <ul>
                     <c:choose>
-                        <%-- dashboardData에서 공지사항 리스트를 가져옴 --%>
                         <c:when test="${not empty dashboardData.latestNotices}">
                             <c:forEach var="notice" items="${dashboardData.latestNotices}">
                                 <li>
@@ -93,6 +88,22 @@
                 </ul>
             </div>
         </div>
+
+        <script>
+            function handleEmployeeClick() {
+                const loggedInUserGrade = '${loginUser.emplGrade}';
+
+                console.log("현재 로그인한 사용자 등급:", loggedInUserGrade);
+
+                if (loggedInUserGrade === 'GR_01' || loggedInUserGrade === 'GR_02') {
+                    location.href = '${pageContext.request.contextPath}/employee/list';
+                    return true;
+                } else if (loggedInUserGrade === 'GR_03') {
+                    alert('일반 등급 직원은 직원 관리 페이지로 이동할 수 없습니다.');
+                    return false;
+                }
+            }
+        </script>
     </body>
 
 </html>

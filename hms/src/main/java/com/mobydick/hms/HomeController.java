@@ -18,14 +18,17 @@ public class HomeController {
     @GetMapping("/")
     public String main(Model model, HttpSession session) {
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
         if (loginUser == null) {
             return "redirect:/login";
         }
 
+        model.addAttribute("loginUser", loginUser);
+
         try {
             // 서비스에서 대시보드 데이터를 한번에 가져옴
             CommonVO dashboardData = commonService.getDashboardData();
-            model.addAttribute("dashboardData", dashboardData); // CommonVO 객체를 모델에 추가
+            model.addAttribute("dashboardData", dashboardData);
 
             model.addAttribute("screenTitle", "대시보드");
             model.addAttribute("bodyPage", "/WEB-INF/views/common/common.jsp");

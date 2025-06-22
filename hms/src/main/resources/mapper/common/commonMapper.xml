@@ -23,12 +23,44 @@
                 EMPL_GRADE,
                 PHOTO_NAME,
                 PHOTO_PATH
-            FROM TB_EMPL
-            WHERE EMPL_GRADE = 'GR_03'
-            ORDER BY DBMS_RANDOM.VALUE
+            FROM (
+                SELECT
+                    EMPL_ID,
+                    EMPL_NAME,
+                    EMPL_DEPT,
+                    EMPL_GRADE,
+                    PHOTO_NAME,
+                    PHOTO_PATH
+                FROM TB_EMPL
+                WHERE EMPL_GRADE = 'GR_02' AND RETIRED_YN = 'N'
+                ORDER BY DBMS_RANDOM.VALUE
+            )
+            WHERE ROWNUM <= 1
+
+            UNION ALL
+
+            SELECT
+                EMPL_ID,
+                EMPL_NAME,
+                EMPL_DEPT,
+                EMPL_GRADE,
+                PHOTO_NAME,
+                PHOTO_PATH
+            FROM (
+                SELECT
+                    EMPL_ID,
+                    EMPL_NAME,
+                    EMPL_DEPT,
+                    EMPL_GRADE,
+                    PHOTO_NAME,
+                    PHOTO_PATH
+                FROM TB_EMPL
+                WHERE EMPL_GRADE = 'GR_03' AND RETIRED_YN = 'N'
+                ORDER BY DBMS_RANDOM.VALUE
+            )
+            WHERE ROWNUM <= 2
         ) A
         JOIN TB_CODE B ON A.EMPL_GRADE = B.CODE_ID
-        WHERE ROWNUM <= 3
         ]]>
     </select>
 
