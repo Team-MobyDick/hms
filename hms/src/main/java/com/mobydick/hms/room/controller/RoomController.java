@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,22 +30,48 @@ public class RoomController {
 
     // 객실 목록 페이지
     @GetMapping("/list")
-    public String room(Model model, HttpSession session) throws Exception {
+    public String room(
+            Model model,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            HttpSession session
+    ) throws Exception {
+        try {
 
-        // 전체 객실 조회
-        List<RoomVO> roomList =  roomService.selectAllRooms();
+            int totalCount = roomService.selectAllRooms().size();
+            int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+            int startIndex = (page - 1) * pageSize;
 
-        // 객실 관련 코드 조회
-        List<CodeVO> codeList =  codeService.getRoomCode();
+            // 전체 객실 조회
+            List<RoomVO> allRooms =  roomService.selectAllRooms();
+            List<RoomVO> roomList;
 
-        // view에 전달할 값
-        model.addAttribute("screenTitle", "객실 관리");
-        model.addAttribute("roomList", roomList);
-        model.addAttribute("codeList", codeList);
-        model.addAttribute("bodyPage", "room/room.jsp");
-        
-        return "index";
-        
+            if (startIndex < totalCount) {
+                roomList = allRooms.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
+            } else {
+                roomList = new ArrayList<>();
+            }
+
+            // 객실 관련 코드 조회
+            List<CodeVO> codeList =  codeService.getRoomCode();
+
+            // view에 전달할 값
+            model.addAttribute("screenTitle", "객실 관리");
+            model.addAttribute("roomList", roomList);
+            model.addAttribute("codeList", codeList);
+            model.addAttribute("bodyPage", "room/room.jsp");
+
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("pageSize", pageSize);
+
+            return "index";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "목록 조회 중 오류 발생");
+            return "error";
+        }
+
     }
 
     // 객실 세부 조회

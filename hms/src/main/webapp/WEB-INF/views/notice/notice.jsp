@@ -49,20 +49,28 @@
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="notice" items="${noticeList}" varStatus="status">
-            <tr class="ann-row"
-                data-notice-id="${notice.noticeId}"
-                data-title="${fn:escapeXml(notice.noticeTitle)}"
-                data-writer="${notice.emplId}"
-                data-date="<fmt:formatDate value='${notice.createdDate}' pattern='yyyy-MM-dd' />"
-                data-content="${fn:escapeXml(notice.noticeContent)}">
-                <td>${(currentPage - 1) * pageSize + status.count}</td>
-<%--                <td>${notice.noticeId}</td>--%>
-                <td>${notice.noticeTitle}</td>
-                <td>${notice.emplId}</td>
-                <td><fmt:formatDate value="${notice.createdDate}" pattern="yyyy-MM-dd" /></td>
-            </tr>
-        </c:forEach>
+        <c:choose>
+            <c:when test="${not empty noticeList}">
+                <c:forEach var="notice" items="${noticeList}" varStatus="status">
+                    <tr class="ann-row"
+                        data-notice-id="${notice.noticeId}"
+                        data-title="${fn:escapeXml(notice.noticeTitle)}"
+                        data-writer="${notice.emplId}"
+                        data-date="<fmt:formatDate value='${notice.createdDate}' pattern='yyyy-MM-dd' />"
+                        data-content="${fn:escapeXml(notice.noticeContent)}">
+                        <td>${(currentPage - 1) * pageSize + status.count}</td>
+                        <td>${notice.noticeTitle}</td>
+                        <td>${notice.emplId}</td>
+                        <td><fmt:formatDate value="${notice.createdDate}" pattern="yyyy-MM-dd" /></td>
+                    </tr>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td colspan="4" style="text-align: center;">공지사항이 없습니다.</td>
+                </tr>
+            </c:otherwise>
+        </c:choose>
     </tbody>
 </table>
 

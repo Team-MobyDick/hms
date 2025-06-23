@@ -41,17 +41,28 @@
 
             <tbody>
 
-                <c:forEach var="room" items="${roomList}">
+                <c:choose>
 
-                    <%-- 행 하나를 클릭 시 상세 정보 조회--%>
-                    <tr onclick="loadDetail('${room.roomId}')">
-                        <td>${room.roomName}</td>
-                        <td>${room.roomClassName}</td>
-                        <td>${room.workdName}</td>
-                        <td>${room.emplName}</td>
-                    </tr>
+                    <c:when test="${not empty roomList}">
 
-                </c:forEach>
+                        <c:forEach var="room" items="${roomList}">
+                            <tr onclick="loadDetail('${room.roomId}')">
+                                <td>${room.roomName}</td>
+                                <td>${room.roomClassName}</td>
+                                <td>${room.workdName}</td>
+                                <td>${room.emplName}</td>
+                            </tr>
+                        </c:forEach>
+
+                    </c:when>
+
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="4" style="text-align: center;">객실 목록이 비어 있습니다.</td>
+                        </tr>
+                    </c:otherwise>
+
+                </c:choose>
 
             </tbody>
 
@@ -59,6 +70,8 @@
 
         <%-- 객실 상세 정보 페이지 --%>
         <div id="roomDetailContainer" style="display: none; margin-top: 20px;"></div>
+
+        <jsp:include page="/WEB-INF/views/include/pagination.jsp" />
 
     </body>
 
