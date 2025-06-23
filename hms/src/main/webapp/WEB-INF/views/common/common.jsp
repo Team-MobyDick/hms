@@ -68,15 +68,51 @@
             </div>
 
             <div class="dashboard-card">
+                <h2>오늘 할 일</h2>
+                <ul class="activity-list"> <c:choose>
+                        <c:when test="${not empty dashboardData.todayWorks}">
+                            <c:forEach var="work" items="${dashboardData.todayWorks}">
+                                <li>
+                                    <div class="activity-item d-flex">
+                                        <div class="activite-label">${work.workDDate}</div>
+                                        <p class='activity-badge
+                                            ${work.workDImpo == "IM_03" ? "text-danger": work.workDImpo == "IM_02" ? "text-warning": "text-success" }'>
+                                            <c:choose>
+                                                <c:when test="${work.workDImpo == 'IM_03'}">높음</c:when>
+                                                <c:when test="${work.workDImpo == 'IM_02'}">보통</c:when>
+                                                <c:otherwise>낮음</c:otherwise>
+                                            </c:choose>
+                                        </p>
+                                        <div class="activity-content">
+                                            <strong>${work.workDName}</strong>
+                                            <p>${work.workDContext}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <li><p class="empty-data">오늘 할 일이 없습니다.</p></li>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+            </div>
+
+            <div class="dashboard-card">
                 <h2>공지사항</h2>
                 <ul>
                     <c:choose>
                         <c:when test="${not empty dashboardData.latestNotices}">
+                            <li class="notice-header-row">
+                                <span class="list-item-title">제목</span>
+                                <span class="list-item-author">작성자</span>
+                                <span class="list-item-date">날짜</span>
+                            </li>
                             <c:forEach var="notice" items="${dashboardData.latestNotices}">
                                 <li>
                                     <a href="${pageContext.request.contextPath}/notice/list">
                                         <span class="list-item-title">${notice.noticeTitle}</span>
-                                        <span class="list-item-author">(${notice.emplName})</span>
+                                        <span class="list-item-author">${notice.emplName}</span>
                                         <span class="list-item-date"><fmt:formatDate value="${notice.createdDate}" pattern="yyyy.MM.dd" /></span>
                                     </a>
                                 </li>
@@ -88,37 +124,7 @@
                     </c:choose>
                 </ul>
             </div>
-        </div>
 
-        <div class="dashboard-card">
-            <h2>오늘 할 일</h2>
-            <ul class="activity-list"> <c:choose>
-                    <c:when test="${not empty dashboardData.todayWorks}">
-                        <c:forEach var="work" items="${dashboardData.todayWorks}">
-                            <li>
-                                <div class="activity-item d-flex">
-                                    <div class="activite-label">${work.workDDate}</div>
-                                    <i class='bi bi-circle-fill activity-badge
-                                        ${work.workDImpoN == "높음"
-                                            ? "text-danger"
-                                            : work.workDImpoN == "보통"
-                                                ? "text-warning"
-                                                : "text-success"
-                                        } align-self-start'>
-                                    </i>
-                                    <div class="activity-content">
-                                        <strong>${work.workDName}</strong>
-                                        <p>${work.workDContext}</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <li><p class="empty-data">오늘 할 일이 없습니다.</p></li>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
         </div>
 
         <script>

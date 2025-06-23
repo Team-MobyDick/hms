@@ -1,10 +1,11 @@
 .dashboard-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     max-width: 1200px;
     margin: 20px auto;
 }
+
 .dashboard-card {
     background-color: #ffffff;
     border-radius: 8px;
@@ -15,6 +16,7 @@
     flex-direction: column;
     border: 1px solid #d4edda;
 }
+
 .dashboard-card h2 {
     margin-top: 0;
     color: #28a745;
@@ -29,6 +31,7 @@
     padding: 0;
     margin: 0;
 }
+
 .schedule-item {
     padding: 10px 15px;
     border-bottom: 1px solid #eee;
@@ -116,32 +119,45 @@
     color: #666;
 }
 
+.notice-header-row {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 10px 0;
+    border-bottom: 2px solid #ddd;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
 .list-item-title {
-    flex-grow: 1;
+    flex-basis: 60%;
+    max-width: 60%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .list-item-author {
+    flex-basis: 20%;
+    max-width: 20%;
     font-size: 0.85em;
-    color: #666;
-    margin-left: 5px;
-    flex-shrink: 0;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 .list-item-date {
+    flex-basis: 20%;
+    max-width: 20%;
     font-size: 0.9em;
-    color: #777;
-    flex-shrink: 0;
-    margin-left: 10px;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .dashboard-card ul li {
     padding: 10px 0;
     border-bottom: 1px solid #e2f0d4;
-}
-.dashboard-card ul li:last-child {
-    border-bottom: none;
 }
 .dashboard-card ul li a {
     text-decoration: none;
@@ -150,12 +166,14 @@
     justify-content: space-between;
     align-items: center;
     transition: color 0.2s ease;
+    border-bottom: 1px solid #e2f0d4;
+}
+.dashboard-card ul li:last-child {
+    border-bottom: none;
 }
 .dashboard-card ul li a:hover {
     color: #218838;
 }
-
-
 
 .activity {
     padding: 10px 0;
@@ -163,47 +181,48 @@
 
 .activity-item {
     display: flex;
-    align-items: flex-start;
-    padding: 10px 0;
-    border-bottom: 1px dashed #eee;
-    margin-bottom: 10px;
-    position: relative;
-}
-
-.activity-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
+    align-items: center;
+    gap: 10px;
 }
 
 .activite-label {
-    font-size: 0.85em;
-    color: #888;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
     min-width: 60px;
     text-align: right;
-    padding-right: 15px;
     flex-shrink: 0;
 }
 
 .activity-badge {
-    font-size: 0.7em;
-    margin-right: 15px;
-    line-height: 1.5;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 10px;
 }
 
 .text-danger {
-    color: #dc3545 !important;
+    background-color: #dc3545 !important;
+    color: white !important;
 }
 .text-warning {
-    color: #ffc107 !important;
+    background-color: #ffc107 !important;
+    color: black !important;
 }
 .text-success {
-    color: #28a745 !important;
+    background-color: #28a745 !important;
+    color: white !important;
 }
-
 
 .activity-content {
     flex-grow: 1;
     color: #555;
+    margin-left: 10px
 }
 
 .activity-content strong {
@@ -218,8 +237,4 @@
     font-size: 0.9em;
     color: #777;
     line-height: 1.4;
-}
-
-.align-self-start {
-    align-self: flex-start;
 }

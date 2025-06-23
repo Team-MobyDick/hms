@@ -45,6 +45,10 @@ public class CommonServiceImpl implements CommonService {
         List<WorkVO> todayWorks = commonDAO.selectTodayWorks(emplId);
         dashboardData.setTodayWorks(todayWorks);
 
+        if (todayWorks != null && !todayWorks.isEmpty()) {
+            System.out.println("WorkDImpo from WorkVO in Service: " + todayWorks.get(0).getWorkDImpo());
+        }
+
         dashboardData.setTodayWorks(todayWorks);
         return dashboardData;
     }
