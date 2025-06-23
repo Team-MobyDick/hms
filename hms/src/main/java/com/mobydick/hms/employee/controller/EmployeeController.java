@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID; // 고유한 파일명 생성을 위함
 
@@ -63,7 +64,13 @@ public class EmployeeController {
 
         // 정렬 기준을 서비스 계층으로 전달
         List<EmployeeVO> allEmployees = employeeService.selectAllEmployees(sortOrder); // <-- sortOrder 전달
-        List<EmployeeVO> employeeList = allEmployees.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
+        List<EmployeeVO> employeeList;
+
+        if (startIndex < totalCount) {
+            employeeList = allEmployees.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
+        } else {
+            employeeList = new ArrayList<>();
+        }
 
         System.out.println("test = " + employeeList.toString());
 
