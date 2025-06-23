@@ -37,11 +37,11 @@
         a.workd_extra,
         a.room_id        AS workDRoomId,
         a.workd_impo,
+        a.workd_issue,
+        a.order_id,
         a.start_name     AS workDStartName,
-        a.start_path     AS workDStartPath,
         a.start_time     AS workDStartTime,
         a.end_name       AS workDEndName,
-        a.end_path       AS workDEndPath,
         a.end_time       AS workDEndTime,
         b.empl_name,
         c.room_name

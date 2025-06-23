@@ -103,8 +103,11 @@
                         <tr class="workM-row"
                             data-workm-name="${workM.workMName}"
                             data-workm-dept="${workM.workMDept}"
+                            data-workm-deptname="${codeMap[workM.workMDept]}"
                             data-workm-impo="${workM.workMImpo}"
+                            data-workm-imponame="${codeMap[workM.workMImpo]}"
                             data-workm-id="${workM.workMId}"
+                            data-userrole="${userRole}"
                             data-date="${formattedDate}"
                             data-workm-context="${workM.workMContext}">
                             <td data-label="부서">${codeMap[workM.workMDept]}</td>
@@ -112,7 +115,9 @@
                             <td data-label="담당자"></td>
                             <td data-label="중요도">${codeMap[workM.workMImpo]}</td>
                             <td data-label="상세/업무배분">
+                            <c:if test="${userRole == 'GR_01'||userRole == 'GR_02'}">
                                 <button class="add_btn_D">업무 배분</button>
+                            </c:if>
                             <button class="detail_btn_M">업무 상세</button>
                             </td>
                         </tr>
@@ -163,21 +168,34 @@
         <form class="workMDetailForm">
             <input type="hidden" name="workMId" />
             <label>업무명
-                <input type="text" name="workMName" />
+                <input type="text" name="workMName"
+                            ${userRole != 'GR_01' ? 'readonly' : ''} />
             </label>
             <label>부서
-                <select name="workMDept">
-                </select>
+                <c:choose>
+                    <c:when test="${userRole != 'GR_01'}">
+                        <input type="text" name="workMDept" readonly>
+                    </c:when>
+                    <c:otherwise>
+                        <select name="workMDept">
+                        </select>
+                    </c:otherwise>
+                </c:choose>
             </label>
             <label>중요도
-                <select name="workMImpo">
+                <select name="workMImpo"
+                            ${userRole != 'GR_01' ? 'readonly' : ''}>
                 </select>
             </label>
             <label>업무내용
-                <textarea name="workMContext"></textarea>
+                <textarea name="workMContext"
+                            ${userRole != 'GR_01' ? 'readonly' : ''}>
+                </textarea>
             </label>
-            <button type="submit">수정</button>
-            <button type="button" class="delete_btn_M">삭제</button>
+            <c:if test="${userRole == 'GR_01'}">
+                <button type="submit">수정</button>
+                <button type="button" class="delete_btn_M">삭제</button>
+            </c:if>
             <button type="button" class="cancle_btn_M">취소</button>
         </form>
     </div>
