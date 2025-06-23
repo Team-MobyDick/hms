@@ -62,12 +62,11 @@ function loadScheduleDetailByDate(dateStr) {
             } else {
                 html += '<ul>';
                 list.forEach(item => {
-
                     html += `<li>
                                 <input type="radio" name="selectScheduleToDelete" value="${escapeHtml(item.scheId)}" id="schedule-${escapeHtml(item.scheId)}">
                                 <label for="schedule-${escapeHtml(item.scheId)}">
                                     <strong>${escapeHtml(item.emplName)}</strong> -
-                                    <span style="color: blue;">${escapeHtml(item.workdName || '업무명 없음')}</span> ${escapeHtml(item.workdStateName)}
+                                    <span class="work-name">${escapeHtml(item.workdName || '업무명 없음')}</span> ${escapeHtml(item.workdStateName)}
                                 </label>
                              </li>`;
                 });
@@ -85,7 +84,7 @@ function loadScheduleDetailByDate(dateStr) {
             $('#scheduleDetailContent').html(html);
         },
         error: function () {
-            $('#scheduleDetailContent').html('<p style="color:red;">스케줄을 불러오는 중 오류가 발생했습니다.</p>');
+            $('#scheduleDetailContent').html('<p class="error-message">스케줄을 불러오는 중 오류가 발생했습니다.</p>');
             $('#btnDeleteSchedule').hide();
             $('#selectedScheId').val('');
         }
@@ -106,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
             right: 'dayGridMonth,timeGridWeek,listWeek'
         },
         events: '/schedule/display',
-        eventColor: '#378006',
         dateClick: function (info) {
             const dateStr = info.dateStr;
             console.log("dateStr = " + dateStr);
@@ -128,7 +126,7 @@ $('#scheduleForm').on('submit', function (e) {
     const emplId = $('#emplSelect').val();
     const shift = $('#scheShift').val();
     const start = new Date($('#startDate').val());
-    const end = new Date($('#endDate').val());
+    const end = new Date( $('#endDate').val());
 
     let scheduleList = [];
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {

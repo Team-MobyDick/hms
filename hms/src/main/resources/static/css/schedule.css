@@ -44,3 +44,20 @@
     list-style-type: disc;
     padding-left: 20px;
 }
+
+.fc-event {
+    background-color: #378006;
+    border-color: #378006;
+}
+
+#scheduleDetailContent strong {
+    font-size: 1.1em;
+}
+
+#scheduleDetailContent .work-name {
+    color: blue;
+}
+
+#scheduleDetailContent .error-message {
+    color: red;
+}
