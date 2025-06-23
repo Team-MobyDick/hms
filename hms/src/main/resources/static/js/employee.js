@@ -206,7 +206,6 @@ $(document).ready(function () {
     $(document).on('click', '.btn-update', function () {
         const $detailTable = $(this).closest('table');
         const $detailSlide = $(this).closest('tr.detail-slide');
-        // emplId는 readonly input에서 직접 가져옵니다.
         const emplId = $detailTable.find('input[name="emplId"]').val();
 
         // 현재 직원의 퇴사 여부 가져오기
@@ -223,7 +222,7 @@ $(document).ready(function () {
         const photoPath = $employeeRow.data("photo-path") || "employee_photos";
 
         const formData = {
-            emplId: emplId, // ID는 수정 불가이므로 명시적으로 추가
+            emplId: emplId,
             photoName: photoName,
             photoPath: photoPath,
             retiredYn: retiredYn
@@ -504,6 +503,7 @@ printBtn.addEventListener('click', function () {
                 canvas, img { width: 300px; height: 300px; }
             </style>
         </head>
+        <body>
         <body>
             ${qrHtml}
             <script>

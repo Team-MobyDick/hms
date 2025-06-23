@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,13 +23,34 @@ public class NoticeController {
 
     // 공지사항 목록
     @GetMapping("/list")
-    public String notice(Model model) {
+    public String notice(
+            Model model,
+            @RequestParam(defaultValue = "1") int page, // 현재 페이지 번호
+            @RequestParam(defaultValue = "10") int pageSize // 페이지당 항목 수
+    ) {
         try {
-            List<NoticeVO> noticeList = noticeService.selectAllNotices();
+            int totalCount = noticeService.selectAllNotices().size();
+            int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+            int startIndex = (page - 1) * pageSize;
+
+            List<NoticeVO> allNotices = noticeService.selectAllNotices();
+            List<NoticeVO> noticeList;
+
+            if (startIndex < totalCount) {
+                noticeList = allNotices.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
+            } else {
+                noticeList = new ArrayList<>();
+            }
+
             model.addAttribute("noticeList", noticeList);
             model.addAttribute("screenTitle", "공지사항 목록");
             model.addAttribute("mode", "list");
             model.addAttribute("bodyPage", "notice/notice.jsp");
+
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("pageSize", pageSize);
+
             return "index";
         } catch (Exception e) {
             e.printStackTrace();
