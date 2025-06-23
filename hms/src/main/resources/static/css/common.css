@@ -1,3 +1,4 @@
+/* 대시보드 공통 스타일 */
 .dashboard-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -11,7 +12,9 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 25px;
-    overflow: hidden;
+    /* overflow: hidden; -> 이 속성이 테이블 하단을 자를 수 있으므로 제거하거나 auto로 변경 */
+    /* 테이블 내용이 카드를 넘어갈 경우 스크롤바가 생기도록 auto로 변경 */
+    overflow: auto;
     display: flex;
     flex-direction: column;
     border: 1px solid #d4edda;
@@ -26,49 +29,13 @@
     margin-bottom: 15px;
     text-align: center;
 }
+
 .dashboard-card ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.schedule-item {
-    padding: 10px 15px;
-    border-bottom: 1px solid #eee;
-    background-color: #f9f9f9;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    transition: background-color 0.2s ease;
-}
-.schedule-item:last-child {
-    border-bottom: none;
-}
-.schedule-item:hover {
-    background-color: #e0e0e0;
-    cursor: pointer;
-}
-.schedule-item a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-.schedule-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.schedule-date {
-    font-weight: bold;
-    color: #333;
-    min-width: 90px;
-    text-align: left;
-}
-.schedule-info {
-    flex-grow: 1;
-    color: #555;
-    text-align: right;
-    font-size: 0.95em;
-}
 .empty-data {
     color: #999;
     text-align: center;
@@ -76,6 +43,7 @@
     font-style: italic;
 }
 
+/* 오늘의 사원 */
 .employee-of-day-list {
     display: flex;
     flex-direction: column;
@@ -83,6 +51,7 @@
     align-items: center;
     flex-grow: 1;
 }
+
 .employee-item {
     display: flex;
     align-items: center;
@@ -96,9 +65,11 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 .employee-item:hover {
     background-color: #d4edda;
 }
+
 .employee-item img {
     width: 60px;
     height: 60px;
@@ -106,55 +77,194 @@
     object-fit: cover;
     border: 2px solid #28a745;
 }
+
 .employee-info {
     flex-grow: 1;
     font-size: 1.1em;
     color: #333;
 }
+
 .employee-info .name {
     font-weight: bold;
 }
+
 .employee-info .grade {
     font-size: 0.9em;
     color: #666;
 }
 
-.notice-header-row {
+/* 주간 스케줄 */
+.schedule-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    background-color: #f9f9f9;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.schedule-item:last-child {
+    border-bottom: none;
+}
+
+.schedule-item:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.schedule-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.schedule-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.schedule-date {
     font-weight: bold;
+    color: #333;
+    min-width: 90px;
+    text-align: left;
+}
+
+.schedule-info {
+    flex-grow: 1;
+    color: #555;
+    text-align: right;
+    font-size: 0.95em;
+}
+
+/* 오늘 할 일 */
+.activity-table,
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+}
+
+.activity-table th,
+.notice-table th {
     background-color: #f2f2f2;
     color: #333;
-    padding: 10px 0;
+    padding: 10px;
     border-bottom: 2px solid #ddd;
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-}
-.list-item-title {
-    flex-basis: 60%;
-    max-width: 60%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.list-item-author {
-    flex-basis: 20%;
-    max-width: 20%;
-    font-size: 0.85em;
     text-align: center;
+}
+
+.activity-table td,
+.notice-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e2f0d4;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.activity-table td:nth-child(1) { /* 날짜 */
+    width: 10%;
+    min-width: 80px;
+    text-align: center;
+}
+
+.activity-table td:nth-child(2) { /* 중요도 */
+    width: 20%;
+    text-align: center;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
-.list-item-date {
-    flex-basis: 20%;
-    max-width: 20%;
-    font-size: 0.9em;
-    text-align: right;
+
+.activity-table td:nth-child(3) { /* 업무명 */
+    width: 35%;
+    font-weight: bold;
+    text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
+.activity-table td:nth-child(4) { /* 내용 */
+    width: 35%;
+    color: #666;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.activity-badge { /* 중요도 뱃지 */
+    display: inline-block;
+    font-size: 0.85em;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 4px;
+    white-space: nowrap;
+    line-height: 1.2;
+    box-sizing: border-box;
+}
+
+.activity-badge.text-danger {
+    background-color: #f5c6cb;
+    color: #721c24;
+}
+
+.activity-badge.text-warning {
+    background-color: #ffeeba;
+    color: #856404;
+}
+
+.activity-badge.text-success {
+    background-color: #c3e6cb;
+    color: #155724;
+}
+
+/* 공지사항 */
+.notice-table th:nth-child(1) { /* 제목 */
+    width: 60%;
+    text-align: left;
+}
+
+.notice-table th:nth-child(2) { /* 작성자 */
+    width: 20%;
+}
+
+.notice-table th:nth-child(3) { /* 날짜 */
+    width: 20%;
+    text-align: center;
+}
+
+.notice-table td:nth-child(1) { /* 제목 셀 */
+    font-weight: bold;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.notice-table td:nth-child(1) a { /* 제목 링크 */
+    text-decoration: none;
+    color: #333;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.notice-table td:nth-child(1) a:hover {
+    color: #218838;
+}
+
+.notice-table td:nth-child(2) { /* 작성자 셀 */
+    font-size: 0.85em;
+}
+
+.notice-table td:nth-child(3) { /* 날짜 셀 */
+    text-align: right;
+    font-size: 0.9em;
+}
+
+/* 주간 스케줄을 제외한 나머지 ul, li, a 스타일 */
 .dashboard-card ul li {
     padding: 10px 0;
     border-bottom: 1px solid #e2f0d4;
@@ -166,75 +276,10 @@
     justify-content: space-between;
     align-items: center;
     transition: color 0.2s ease;
-    border-bottom: 1px solid #e2f0d4;
 }
 .dashboard-card ul li:last-child {
     border-bottom: none;
 }
 .dashboard-card ul li a:hover {
     color: #218838;
-}
-
-.activity {
-    padding: 10px 0;
-}
-
-.activity-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.activite-label {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
-    min-width: 60px;
-    text-align: right;
-    flex-shrink: 0;
-}
-
-.activity-badge {
-    font-size: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-right: 10px;
-}
-
-.text-danger {
-    background-color: #dc3545 !important;
-    color: white !important;
-}
-.text-warning {
-    background-color: #ffc107 !important;
-    color: black !important;
-}
-.text-success {
-    background-color: #28a745 !important;
-    color: white !important;
-}
-
-.activity-content {
-    flex-grow: 1;
-    color: #555;
-    margin-left: 10px
-}
-
-.activity-content strong {
-    display: block;
-    font-size: 1.1em;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-.activity-content p {
-    margin: 0;
-    font-size: 0.9em;
-    color: #777;
-    line-height: 1.4;
 }
