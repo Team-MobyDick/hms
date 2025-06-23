@@ -49,7 +49,6 @@ public class CommonServiceImpl implements CommonService {
             System.out.println("WorkDImpo from WorkVO in Service: " + todayWorks.get(0).getWorkDImpo());
         }
 
-        dashboardData.setTodayWorks(todayWorks);
         return dashboardData;
     }
 

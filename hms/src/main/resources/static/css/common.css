@@ -12,8 +12,6 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 25px;
-    /* overflow: hidden; -> 이 속성이 테이블 하단을 자를 수 있으므로 제거하거나 auto로 변경 */
-    /* 테이블 내용이 카드를 넘어갈 경우 스크롤바가 생기도록 auto로 변경 */
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -95,47 +93,67 @@
 
 /* 주간 스케줄 */
 .schedule-item {
-    padding: 10px 15px;
-    border-bottom: 1px solid #eee;
     background-color: #f9f9f9;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     border-radius: 5px;
-    transition: background-color 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+    border: 1px solid #eee;
 }
 
 .schedule-item:last-child {
-    border-bottom: none;
+    margin-bottom: 0;
 }
 
-.schedule-item:hover {
-    background-color: #e0e0e0;
-    cursor: pointer;
-}
-
+/* 링크 스타일 초기화 및 블록화 */
 .schedule-item a {
     text-decoration: none;
     color: inherit;
     display: block;
+    padding: 15px 20px;
 }
 
+/* 호버 시 배경색 변경 및 그림자 강조 */
+.schedule-item a:hover {
+    background-color: #e6ffe6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 스케줄 내용 컨테이너 */
 .schedule-content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
+/* 날짜 표시 스타일 */
 .schedule-date {
     font-weight: bold;
-    color: #333;
-    min-width: 90px;
-    text-align: left;
+    color: #4CAF50;
+    font-size: 1.1em;
+    min-width: 100px;
 }
 
+/* 스케줄 정보 (담당자명, 시프트) 스타일 */
 .schedule-info {
-    flex-grow: 1;
+    font-size: 1em;
     color: #555;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
     text-align: right;
-    font-size: 0.95em;
+}
+.schedule-info .shift-day {
+    margin-left: 15px;
+    color: #0056b3;
+    font-weight: bold;
+}
+.schedule-info .shift-night {
+    margin-left: 15px;
+    color: #5a2d9c;
+    font-weight: bold;
 }
 
 /* 오늘 할 일 */

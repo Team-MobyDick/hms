@@ -54,7 +54,16 @@
                                 <li class="schedule-item"> <a href="${pageContext.request.contextPath}/schedule/list">
                                         <div class="schedule-content">
                                             <span class="schedule-date"><fmt:formatDate value="${schedule.scheDate}" pattern="MM/dd (E)" /></span>
-                                            <span class="schedule-info">[${schedule.emplName}] ${schedule.scheShift}</span>
+                                            <span class="schedule-info">
+                                                <span class="schedule-empl-name">${schedule.emplName}</span>  <c:choose>
+                                                    <c:when test="${schedule.scheShift == 'SH_01'}">
+                                                        <span class="shift-day">주간</span>
+                                                     </c:when>
+                                                    <c:when test="${schedule.scheShift == 'SH_02'}">
+                                                        <span class="shift-night">야간</span>
+                                                    </c:when>
+                                                </c:choose>
+                                            </span>
                                         </div>
                                     </a>
                                 </li>
