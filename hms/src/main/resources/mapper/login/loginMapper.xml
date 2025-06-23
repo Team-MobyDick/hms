@@ -21,7 +21,8 @@
             CREATED_DATE,
             CREATED_ID,
             UPDATED_DATE,
-            UPDATED_ID
+            UPDATED_ID,
+            RETIRED_YN
         FROM TB_EMPL
         ]]>
         <where>

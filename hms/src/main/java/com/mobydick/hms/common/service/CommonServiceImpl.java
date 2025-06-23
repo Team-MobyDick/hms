@@ -5,6 +5,7 @@ import com.mobydick.hms.common.vo.CommonVO;
 import com.mobydick.hms.notice.vo.NoticeVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
 import com.mobydick.hms.employee.vo.EmployeeVO;
+import com.mobydick.hms.work.vo.WorkVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,14 @@ public class CommonServiceImpl implements CommonService {
         // 최신 공지사항 정보 조회 후 CommonVO에 설정
         List<NoticeVO> notices = commonDAO.selectLatestNotices();
         dashboardData.setLatestNotices(notices);
+
+        // 오늘의 할 일 정보 조회 후 CommonVO에 설정
+        List<WorkVO> todayWorks = commonDAO.selectTodayWorks(emplId);
+        dashboardData.setTodayWorks(todayWorks);
+
+        // 미완료 작업 정보 조회 후 CommonVO에 설정
+        List<WorkVO> unfinishedWorks = commonDAO.selectUnfinishedWorks(emplId);
+        dashboardData.setUnfinishedWorks(unfinishedWorks);
 
         return dashboardData;
     }

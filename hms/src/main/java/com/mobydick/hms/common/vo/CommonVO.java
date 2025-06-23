@@ -3,6 +3,7 @@ package com.mobydick.hms.common.vo;
 import com.mobydick.hms.employee.vo.EmployeeVO;
 import com.mobydick.hms.notice.vo.NoticeVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
+import com.mobydick.hms.work.vo.WorkVO;
 import lombok.Data;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public class CommonVO {
     private List<EmployeeVO> employeesOfTheDay;
     private List<ScheduleVO> weeklySchedules;
     private List<NoticeVO> latestNotices;
+    private List<WorkVO> todayWorks;
+    private List<WorkVO> unfinishedWorks;
 }

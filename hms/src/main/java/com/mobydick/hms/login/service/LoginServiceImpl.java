@@ -19,7 +19,14 @@ public class LoginServiceImpl implements LoginService{
     @Override
     public LoginVO selectEmployeeById(String emplId) throws Exception{
 
-       return loginDAO.selectEmployeeById(emplId);
+        LoginVO loginUser = loginDAO.selectEmployeeById(emplId);
+
+        // 퇴사자는 로그인 불가
+        if (loginUser != null && "Y".equals(loginUser.getRetiredYn())) {
+            return null;
+        }
+
+        return loginUser;
 
     }
 

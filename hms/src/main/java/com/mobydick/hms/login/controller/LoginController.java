@@ -24,7 +24,7 @@ public class LoginController {
     public String loginForm(@RequestParam(value = "error", required = false) String error,
                             Model model) {
         if (error != null) {
-            model.addAttribute("error", "존재하지 않는 사용자입니다.");
+            model.addAttribute("error", "퇴사하였거나 존재하지 않는 사용자입니다.");
         }
         return "login/login";
     }

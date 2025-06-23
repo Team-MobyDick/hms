@@ -90,6 +90,47 @@
             </div>
         </div>
 
+        <div class="dashboard-card">
+            <h2>오늘 할 일</h2>
+            <ul>
+                <c:choose>
+                    <c:when test="${not empty dashboardData.todayWorks}">
+                        <c:forEach var="work" items="${dashboardData.todayWorks}">
+                            <li>
+                                <span class="list-item-title">[${work.workDImpoN}] ${work.workDName}</span>
+                                <span class="list-item-date"><fmt:formatDate value="${work.workDDate}" pattern="MM/dd" /></span>
+                                <span class="list-item-context">${work.workDContext}</span>
+                            </li>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p class="empty-data">오늘 할 일이 없습니다.</p>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>미완료 작업</h2>
+            <ul>
+                <c:choose>
+                    <c:when test="${not empty dashboardData.unfinishedWorks}">
+                        <c:forEach var="work" items="${dashboardData.unfinishedWorks}">
+                            <li>
+                                <span class="list-item-title">[${work.workDImpoN}] ${work.workDName}</span>
+                                <span class="list-item-date"><fmt:formatDate value="${work.workDDate}" pattern="yyyy.MM.dd" /></span>
+                                <span class="list-item-context">${work.workDContext}</span>
+                            </li>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p class="empty-data">미완료 작업이 없습니다.</p>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+        </div>
+    </div>
+
         <script>
             function handleEmployeeClick() {
                 const loggedInUserGrade = '${loginUser.emplGrade}';

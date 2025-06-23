@@ -3,6 +3,7 @@ package com.mobydick.hms.common.dao;
 import com.mobydick.hms.notice.vo.NoticeVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
 import com.mobydick.hms.employee.vo.EmployeeVO;
+import com.mobydick.hms.work.vo.WorkVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +20,11 @@ public interface CommonDAO {
 
     // 최신 공지사항 3개 조회
     List<NoticeVO> selectLatestNotices();
+
+    // 오늘의 할 일 조회
+    List<WorkVO> selectTodayWorks(@Param("emplId") String emplId);
+
+    // 미완료 작업 조회
+    List<WorkVO> selectUnfinishedWorks(@Param("emplId") String emplId);
+
 }

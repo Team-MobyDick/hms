@@ -20,5 +20,5 @@ public class LoginVO {
     private String createdId;  // 작성자 ID
     private Date updatedDate;  // 수정일자
     private String updatedId;  // 수정자 ID
-
+    private String retiredYn; // 퇴사여부
 }
