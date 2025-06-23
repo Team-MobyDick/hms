@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -46,10 +45,7 @@ public class CommonServiceImpl implements CommonService {
         List<WorkVO> todayWorks = commonDAO.selectTodayWorks(emplId);
         dashboardData.setTodayWorks(todayWorks);
 
-        // 미완료 작업 정보 조회 후 CommonVO에 설정
-        List<WorkVO> unfinishedWorks = commonDAO.selectUnfinishedWorks(emplId);
-        dashboardData.setUnfinishedWorks(unfinishedWorks);
-
+        dashboardData.setTodayWorks(todayWorks);
         return dashboardData;
     }
 

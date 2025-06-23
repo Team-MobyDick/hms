@@ -109,34 +109,15 @@
         SELECT
             TWD.WORKD_ID AS workDId,
             TWD.WORKD_NAME AS workDName,
-            TWD.WORKD_DATE AS workDDate,
-            TDC_IMPO.CODE_NAME AS workDImpoN,
-            TWD.WORKD_CONTEXT AS workDContext
-        FROM TB_WORK_D TWD
-        LEFT JOIN TB_CODE TDC_IMPO ON TWD.WORKD_IMPO = TDC_IMPO.CODE_ID
-        WHERE TWD.WORKD_DATE >= TRUNC(SYSDATE)
-        AND TWD.WORKD_DATE < TRUNC(SYSDATE) + 1
-        AND TWD.EMPL_ID = #{emplId}
-        AND TWD.END_TIME IS NULL
-        ORDER BY TWD.WORKD_IMPO DESC, TWD.WORKD_DATE ASC
-        ]]>
-    </select>
-
-    <select id="selectUnfinishedWorks" resultType="com.mobydick.hms.work.vo.WorkVO">
-        <![CDATA[
-        SELECT
-            TWD.WORKD_ID AS workDId,
-            TWD.WORKD_NAME AS workDName,
-            TWD.WORKD_DATE AS workDDate,
+            TO_CHAR(TWD.WORKD_DATE, 'MM/DD') AS workDDate,
             TDC_IMPO.CODE_NAME AS workDImpoN,
             TWD.WORKD_CONTEXT AS workDContext
         FROM TB_WORK_D TWD
         LEFT JOIN TB_CODE TDC_IMPO ON TWD.WORKD_IMPO = TDC_IMPO.CODE_ID
         WHERE TWD.EMPL_ID = #{emplId}
-        AND TWD.END_TIME IS NULL
-        ORDER BY TWD.WORKD_DATE ASC, TWD.WORKD_IMPO DESC
+        AND TWD.WORKD_DATE = TRUNC(SYSDATE)
+        ORDER BY TWD.WORKD_IMPO DESC
         ]]>
     </select>
-
 
 </mapper>

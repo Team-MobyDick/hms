@@ -92,44 +92,34 @@
 
         <div class="dashboard-card">
             <h2>오늘 할 일</h2>
-            <ul>
-                <c:choose>
+            <ul class="activity-list"> <c:choose>
                     <c:when test="${not empty dashboardData.todayWorks}">
                         <c:forEach var="work" items="${dashboardData.todayWorks}">
                             <li>
-                                <span class="list-item-title">[${work.workDImpoN}] ${work.workDName}</span>
-                                <span class="list-item-date"><fmt:formatDate value="${work.workDDate}" pattern="MM/dd" /></span>
-                                <span class="list-item-context">${work.workDContext}</span>
+                                <div class="activity-item d-flex">
+                                    <div class="activite-label">${work.workDDate}</div>
+                                    <i class='bi bi-circle-fill activity-badge
+                                        ${work.workDImpoN == "높음"
+                                            ? "text-danger"
+                                            : work.workDImpoN == "보통"
+                                                ? "text-warning"
+                                                : "text-success"
+                                        } align-self-start'>
+                                    </i>
+                                    <div class="activity-content">
+                                        <strong>${work.workDName}</strong>
+                                        <p>${work.workDContext}</p>
+                                    </div>
+                                </div>
                             </li>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <p class="empty-data">오늘 할 일이 없습니다.</p>
+                        <li><p class="empty-data">오늘 할 일이 없습니다.</p></li>
                     </c:otherwise>
                 </c:choose>
             </ul>
         </div>
-
-        <div class="dashboard-card">
-            <h2>미완료 작업</h2>
-            <ul>
-                <c:choose>
-                    <c:when test="${not empty dashboardData.unfinishedWorks}">
-                        <c:forEach var="work" items="${dashboardData.unfinishedWorks}">
-                            <li>
-                                <span class="list-item-title">[${work.workDImpoN}] ${work.workDName}</span>
-                                <span class="list-item-date"><fmt:formatDate value="${work.workDDate}" pattern="yyyy.MM.dd" /></span>
-                                <span class="list-item-context">${work.workDContext}</span>
-                            </li>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <p class="empty-data">미완료 작업이 없습니다.</p>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-        </div>
-    </div>
 
         <script>
             function handleEmployeeClick() {

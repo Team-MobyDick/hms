@@ -15,5 +15,4 @@ public class CommonVO {
     private List<ScheduleVO> weeklySchedules;
     private List<NoticeVO> latestNotices;
     private List<WorkVO> todayWorks;
-    private List<WorkVO> unfinishedWorks;
 }

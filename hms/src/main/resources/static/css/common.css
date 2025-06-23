@@ -154,3 +154,72 @@
 .dashboard-card ul li a:hover {
     color: #218838;
 }
+
+
+
+.activity {
+    padding: 10px 0;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.activite-label {
+    font-size: 0.85em;
+    color: #888;
+    min-width: 60px;
+    text-align: right;
+    padding-right: 15px;
+    flex-shrink: 0;
+}
+
+.activity-badge {
+    font-size: 0.7em;
+    margin-right: 15px;
+    line-height: 1.5;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+.text-warning {
+    color: #ffc107 !important;
+}
+.text-success {
+    color: #28a745 !important;
+}
+
+
+.activity-content {
+    flex-grow: 1;
+    color: #555;
+}
+
+.activity-content strong {
+    display: block;
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.activity-content p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #777;
+    line-height: 1.4;
+}
+
+.align-self-start {
+    align-self: flex-start;
+}

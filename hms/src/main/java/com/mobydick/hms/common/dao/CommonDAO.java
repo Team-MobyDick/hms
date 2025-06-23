@@ -24,7 +24,4 @@ public interface CommonDAO {
     // 오늘의 할 일 조회
     List<WorkVO> selectTodayWorks(@Param("emplId") String emplId);
 
-    // 미완료 작업 조회
-    List<WorkVO> selectUnfinishedWorks(@Param("emplId") String emplId);
-
 }
