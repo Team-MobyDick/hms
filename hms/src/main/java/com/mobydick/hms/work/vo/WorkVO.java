@@ -1,8 +1,10 @@
 package com.mobydick.hms.work.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 // 할일 관리 저장용 객체
 @Data
@@ -25,12 +27,14 @@ public class WorkVO {
     private String workDExtra;
     private String workDRoomId;
     private String workDImpo;
+    private String workDIssue;
+    private String orderId;
     private String workDStartName;
-    private String workDStartPath;
-    private Date workDStartTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Timestamp workDStartTime;
     private String workDEndName;
-    private String workDEndPath;
-    private Date workDEndTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Timestamp workDEndTime;
     private String emplName;
     private String roomName;
 

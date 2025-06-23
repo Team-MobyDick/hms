@@ -109,6 +109,7 @@
         WORKD_DEPT,
         WORKD_CONTEXT,
         WORKD_IMPO,
+        ORDER_ID,
         CREATED_DATE,
         CREATED_ID
         ) VALUES (
@@ -121,6 +122,7 @@
         #{workDDept},
         #{workDContext},
         #{workDImpo},
+        #{createdId},
         SYSDATE,
         #{createdId}
         )
@@ -137,11 +139,11 @@
         a.workd_extra,
         a.room_id        AS workDRoomId,
         a.workd_impo,
+        a.workd_issue,
+        a.order_id,
         a.start_name     AS workDStartName,
-        a.start_path     AS workDStartPath,
         a.start_time     AS workDStartTime,
         a.end_name       AS workDEndName,
-        a.end_path       AS workDEndPath,
         a.end_time       AS workDEndTime,
         b.empl_name,
         c.room_name
@@ -152,17 +154,22 @@
     </select>
 
     <!-- 상세 업무 수정 -->
-    <update id="updateWorkD" parameterType="com.mobydick.hms.work.vo.WorkVO">
+    <update id="updateWorkD">
         UPDATE TB_WORK_D
         SET
         WORKD_NAME     = #{workDName},
         EMPL_ID        = #{workDEmplId},
         WORKD_DATE     = #{workDDate},
-        START_PATH     = #{workDStartPath},
-        START_TIME     = #{workDStartTime},
-        END_PATH       = #{workDEndPath},
-        END_TIME       = #{workDEndTime},
-        UPDATED_DATE   = SYSDATE
+        WORKD_CONTEXT  = #{workDContext},
+        WORKD_EXTRA    = #{workDExtra},
+        ROOM_ID        = #{workDRoomId},
+        WORKD_IMPO     = #{workDImpo},
+        START_NAME     = #{workDStartName, jdbcType=VARCHAR},
+        START_TIME     = #{workDStartTime, jdbcType=TIMESTAMP},
+        END_NAME       = #{workDEndName, jdbcType=VARCHAR},
+        END_TIME       = #{workDEndTime, jdbcType=TIMESTAMP},
+        UPDATED_DATE   = SYSDATE,
+        UPDATED_ID     = #{updatedId}
         WHERE WORKD_ID = #{workDId}
     </update>
 
@@ -178,12 +185,12 @@
         a.workd_extra,
         a.room_id        AS workDRoomId,
         a.workd_impo,
+        a.workd_issue,
+        a.order_id,
         (select code_name from TB_CODE where code_id = a.workd_impo) AS workd_impoN,
         a.start_name     AS workDStartName,
-        a.start_path     AS workDStartPath,
         a.start_time     AS workDStartTime,
         a.end_name       AS workDEndName,
-        a.end_path       AS workDEndPath,
         a.end_time       AS workDEndTime,
         b.empl_name,
         c.room_name

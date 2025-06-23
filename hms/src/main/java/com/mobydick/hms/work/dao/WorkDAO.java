@@ -40,5 +40,5 @@ public interface WorkDAO {
 
     List<WorkVO> selectEmployeesByDept(String emplDept) throws DataAccessException;
 
-    void updateWorkD(String workDId, String workDName, String workDEmplId, LocalDate workDDate, String workDStartPath, Timestamp workDStartTime, String workDEndPath, Timestamp workDEndTime) throws DataAccessException;
+    void updateWorkD(WorkVO workVO) throws DataAccessException;
 }

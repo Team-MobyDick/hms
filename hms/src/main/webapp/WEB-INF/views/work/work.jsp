@@ -51,8 +51,9 @@
 
         <button id="nextBtn">→</button>
     </div>
-
-    <button id="add_btn_M">업무 등록</button>
+    <c:if test="${userRole == 'GR_01'}">
+        <button id="add_btn_M">업무 등록</button>
+    </c:if>
 
     <!-- 주 업무 등록 폼 -->
     <form id="newWorkMForm" hidden>
@@ -111,7 +112,7 @@
                             <td data-label="담당자"></td>
                             <td data-label="중요도">${codeMap[workM.workMImpo]}</td>
                             <td data-label="상세/업무배분">
-                            <button class="add_btn_D">업무 배분</button>
+                                <button class="add_btn_D">업무 배분</button>
                             <button class="detail_btn_M">업무 상세</button>
                             </td>
                         </tr>

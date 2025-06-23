@@ -4,10 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
 
-<jsp:useBean id="now" class="java.util.Date" />
-<c:set var="setDate" value="${now}" />
-<fmt:formatDate value="${setDate}" pattern="yyyy/MM/dd" var="formattedDate" />
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,6 +24,14 @@
             </div>
             <input type="hidden" name="workDId" value="${detailWorkD.workDId}" >
             <div class="form-group">
+                <select name="workDOrderId" disabled>
+                    <c:forEach var="empl" items="${emplList}">
+                      <option value="${empl.codeId}"
+                          <c:if test="${empl.codeId == detailWorkD.orderId}">selected</c:if>>
+                          ${empl.codeName}
+                      </option>
+                    </c:forEach>
+                </select>
                 <label>업무명</label>
                 <input type="text" name="workDName" value="${detailWorkD.workDName}"
                         ${userRole != 'GR_01' && userRole != 'GR_02' ? 'readonly' : ''} />
@@ -97,7 +101,7 @@
                 <label>중요도</label>
                 <c:choose>
                     <c:when test="${userRole != 'GR_01' && userRole != 'GR_02'}">
-                        <input type="text" name="workDImpo" value="${detailWorkD.workDImpo}" readonly>
+                        <input type="text" name="workDImpoName" value="${detailWorkD.workDImpo}" readonly>
                         <select name="workDImpo" style="display: none;" >
                             <c:forEach var="impo" items="${impoList}">
                               <option value="${impo.codeId}"
@@ -129,34 +133,34 @@
             <div class="form-group" style="display: flex; gap: 12px; align-items: center;">
                 <div style="text-align: center;">
                     <label>시작사진</label><br />
-                    <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDStartPath}"
+                    <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDStartName}"
                          alt="${detailWorkD.workDStartName}"
                          style="width: 60px; height: 60px; border-radius: 50%;" />
                     <br />
-                    <input type="file" name="workDStartFile" />
-                    <small>시작시간: <fmt:formatDate value="${detailWorkD.workDStartTime}" pattern="yyyy-MM-dd HH:mm" /></small>
+                    <input type="file" name="workDStartFile" id="workDStartFile" />
+                    <small>시작시간: <fmt:formatDate value="${detailWorkD.workDStartTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                 </div>
                 <div style="text-align: center;">
                     <label>종료사진</label><br />
-                    <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDEndPath}"
+                    <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDEndName}"
                          alt="${detailWorkD.workDEndName}"
                          style="width: 60px; height: 60px; border-radius: 50%;" />
                     <br />
-                    <input type="file" name="workDEndFile" />
-                    <small>종료시간: <fmt:formatDate value="${detailWorkD.workDEndTime}" pattern="yyyy-MM-dd HH:mm" /></small>
+                    <input type="file" name="workDEndFile" id="workDEndFile" />
+                    <small>종료시간: <fmt:formatDate value="${detailWorkD.workDEndTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                 </div>
             </div>
 
             <div class="form-group" style="margin-top: 12px;">
-                <label><input type="checkbox" ${not empty detailWork.workDExtra ? 'checked' : ''}/> 문제발생</label>
+                <label><input type="checkbox" ${not empty detailWorkD.workDExtra ? 'checked' : ''}/> 문제발생</label>
             </div>
 
             <div class="form-group">
                 <label>특이사항</label>
-                <textarea name="workDExtra" rows="2">${detailWork.workDExtra}</textarea>
+                <textarea name="workDExtra" rows="2">${detailWorkD.workDExtra}</textarea>
             </div>
-        <form>
+        </form>
     </div>
 </body>
-<script src="/js/work.js"></script>
+<script src="/js/workDDetail.js"></script>
 </html>

@@ -486,53 +486,53 @@ $(document).on('submit', '.workDForm', function (e) {
 
 
 
-// * workDDetail.jsp
-
-// 수정 버튼 클릭
-$(document).on('submit', '.workDDetailForm', function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-
-//    const data = {
-//     workDId: $form.find('input[name="workDId"]').val(),
-//     workDName: $form.find('input[name="workDName"]').val(),
-//     workDEmplId: $form.find('select[name="workDEmplId"]').val(),
-//     workDDate: $form.find('input[name="workDDate"]').val(),
-//     workDRoomId: $form.find('select[name="workDRoomId"]').val(),
-//     workDImpo: $form.find('select[name="workDImpo"]').val(),
-//     workDContext: $form.find('textarea[name="workDContext"]').val(),
-//     workDIssue: $form.find('input[name="workDIssue"]').val().is(':checked'),
-//     workDExtra: $form.find('textarea[name="workDExtra"]').val(),
-//    };
+//// * workDDetail.jsp
 //
-//    if (!data.workDName || !data.workDDate || !data.workDImpo) {
-//     alert("업무 이름과 날짜, 중요도는 필수입니다.");
-//     return;
-//    }
-
-    $.ajax({
-        url: '/work/modifyWorkD',
-        method: 'POST',
-//        contentType: 'application/json',
-//        data: JSON.stringify(data),
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function() {
-            alert('업무가 수정되었습니다.');
-            location.reload();
-        },
-        error: function(xhr) {
-            alert('실패: ' + xhr.responseText);
-        }
-//        success: function () {
-//            alert('업무 내용이 수정되었습니다.');
+//// 수정 버튼 클릭
+//$(document).on('submit', '.workDDetailForm', function (e) {
+//    e.preventDefault();
+//    const formData = new FormData(this);
+//
+////    const data = {
+////     workDId: $form.find('input[name="workDId"]').val(),
+////     workDName: $form.find('input[name="workDName"]').val(),
+////     workDEmplId: $form.find('select[name="workDEmplId"]').val(),
+////     workDDate: $form.find('input[name="workDDate"]').val(),
+////     workDRoomId: $form.find('select[name="workDRoomId"]').val(),
+////     workDImpo: $form.find('select[name="workDImpo"]').val(),
+////     workDContext: $form.find('textarea[name="workDContext"]').val(),
+////     workDIssue: $form.find('input[name="workDIssue"]').val().is(':checked'),
+////     workDExtra: $form.find('textarea[name="workDExtra"]').val(),
+////    };
+////
+////    if (!data.workDName || !data.workDDate || !data.workDImpo) {
+////     alert("업무 이름과 날짜, 중요도는 필수입니다.");
+////     return;
+////    }
+//
+//    $.ajax({
+//        url: '/work/modifyWorkD',
+//        method: 'POST',
+////        contentType: 'application/json',
+////        data: JSON.stringify(data),
+//        data: formData,
+//        contentType: false,
+//        processData: false,
+//        success: function() {
+//            alert('업무가 수정되었습니다.');
 //            location.reload();
 //        },
-//        error: function (xhr) {
-//            alert('수정 실패: ' + xhr.responseText);
+//        error: function(xhr) {
+//            alert('실패: ' + xhr.responseText);
 //        }
-    });
-});
+////        success: function () {
+////            alert('업무 내용이 수정되었습니다.');
+////            location.reload();
+////        },
+////        error: function (xhr) {
+////            alert('수정 실패: ' + xhr.responseText);
+////        }
+//    });
+//});
 
 

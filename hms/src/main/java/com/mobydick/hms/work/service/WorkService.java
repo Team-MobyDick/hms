@@ -39,7 +39,7 @@ public interface WorkService {
     WorkVO selectDetailWorkD(String workDId) throws Exception;
 
     // 상세 업무 수정 (최고관리자, 중간관리자, 직원)
-    void updateWorkD(String workDId, String workDName, String workDEmplId, LocalDate workDDate, String workDStartPath, Timestamp workDStartTime, String workDEndPath, Timestamp workDEndTime) throws Exception;
+    void updateWorkD(WorkVO workVO) throws Exception;
 
     // 상세 업무 삭제 (최고관리자, 중간관리자)
 
@@ -52,6 +52,4 @@ public interface WorkService {
     List<WorkVO> getEmpl();
     List<WorkVO> selectEmployeesByDept(String emplDept) throws Exception;
 
-    // 파일 저장후 경로 반환
-    String saveFile(MultipartFile file) throws Exception;
 }

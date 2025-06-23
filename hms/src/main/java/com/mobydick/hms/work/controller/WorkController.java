@@ -13,6 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -213,44 +218,34 @@ public class WorkController {
         }
     }
 
-    @PostMapping("/work/modifyWorkD")
+    @PostMapping("/uploadFile")
     @ResponseBody
-    public ResponseEntity<String> modifyWorkD(
-            @RequestParam("workDId") String workDId,
-            @RequestParam("workDName") String workDName,
-            @RequestParam("workDEmplId") String workDEmplId,
-            @RequestParam("workDDate") LocalDate workDDate,
-            @RequestParam("workDRoomId") String workDRoomId,
-            @RequestParam("workDImpo") String workDImpo,
-            @RequestParam("workDContext") String workDContext,
-            @RequestParam("workDExtra") String workDExtra,
-            @RequestParam(value = "workDStartFile", required = false) MultipartFile workDStartFile,
-            @RequestParam(value = "workDEndFile", required = false) MultipartFile workDEndFile
-    ) throws Exception {
-        // 파일 업로드
-        String workDStartPath = null;
-        Timestamp workDStartTime = null;
-        if (workDStartFile != null && !workDStartFile.isEmpty()) {
-            workDStartPath = workService.saveFile(workDStartFile); // 파일 저장 후 경로 반환
-            workDStartTime = new Timestamp(System.currentTimeMillis());
+    public Map<String, String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        Path uploadDir = Paths.get("C:/hms_uploads/employee_photos");
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
         }
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path target = uploadDir.resolve(fileName);
+        Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
-        String workDEndPath = null;
-        Timestamp workDEndTime = null;
-        if (workDEndFile != null && !workDEndFile.isEmpty()) {
-            workDEndPath = workService.saveFile(workDEndFile);
-            workDEndTime = new Timestamp(System.currentTimeMillis());
-        }
+        return Map.of(
+                "filePath", fileName,
+                "uploadTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        );
+    }
 
-//        // 현재 timestamp
-//        Timestamp now = new Timestamp(System.currentTimeMillis());
+    @PostMapping("/modifyWorkD")
+    @ResponseBody
+    public Map<String, Object> modifyWorkD(@RequestBody WorkVO workVO, HttpSession session) throws Exception {
+
+        String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
+
+        workVO.setUpdatedId(loginUserId);
 
         // Service 호출해서 DB update
-        workService.updateWorkD(
-                workDId, workDName, workDEmplId, workDDate,
-                workDStartPath, workDStartTime, workDEndPath, workDEndTime
-        );
+        workService.updateWorkD(workVO);
 
-        return ResponseEntity.ok("ok");
+        return Map.of("success", true);
     }
 }
