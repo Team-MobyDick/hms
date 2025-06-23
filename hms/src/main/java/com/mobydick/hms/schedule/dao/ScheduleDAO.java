@@ -30,4 +30,7 @@ public interface ScheduleDAO {
     List<ScheduleVO> getSchedulesByTeamLeaderBetween(Map<String, Object> map);
 
     List<ScheduleVO> getSchedulesByEmployeeBetween(Map<String, Object> map);
+
+    void deleteSchedule(String scheId) throws DataAccessException;
+
 }

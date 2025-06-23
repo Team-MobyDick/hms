@@ -32,4 +32,6 @@ public interface ScheduleService {
 
     // 직원용
     List<ScheduleVO> getSchedulesByEmployeeBetween(String emplId, String startDate, String endDate);
+
+    void deleteSchedule(String scheId, String userGrade);
 }

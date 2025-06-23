@@ -130,4 +130,26 @@ public class ScheduleController {
         };
     }
 
+    @DeleteMapping("/delete/{scheId}")
+    @ResponseBody
+    public String deleteSchedule(@PathVariable String scheId, HttpSession session) {
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "error: 로그인 정보가 없습니다.";
+        }
+
+        String userGrade = loginUser.getEmplGrade();
+
+        try {
+            scheduleService.deleteSchedule(scheId, userGrade);
+            return "ok";
+        } catch (SecurityException e) {
+            return "error: " + e.getMessage();
+        } catch (IllegalArgumentException e) {
+            return "error: " + e.getMessage();
+        } catch (Exception e) {
+            return "error: 스케줄 삭제 중 오류가 발생했습니다. " + e.getMessage();
+        }
+    }
+
 }

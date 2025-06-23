@@ -96,4 +96,13 @@ public class ScheduleServiceImpl implements  ScheduleService {
         map.put("end", endDate);
         return scheduleDAO.getSchedulesByEmployeeBetween(map);
     }
+
+    @Override
+    public void deleteSchedule(String scheId, String userGrade) {
+        if ("GR_01".equals(userGrade) || "GR_02".equals(userGrade)) {
+            scheduleDAO.deleteSchedule(scheId);
+        } else {
+            throw new SecurityException("삭제할 권한이 없습니다.");
+        }
+    }
 }

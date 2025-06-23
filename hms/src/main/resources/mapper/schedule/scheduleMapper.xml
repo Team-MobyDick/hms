@@ -155,5 +155,9 @@
           AND TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
     </select>
 
+    <delete id="deleteSchedule" parameterType="String">
+        DELETE FROM TB_SCHEDULE
+        WHERE SCHE_ID = #{scheId}
+    </delete>
 
 </mapper>
