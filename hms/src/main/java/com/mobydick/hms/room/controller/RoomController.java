@@ -36,16 +36,18 @@ public class RoomController {
             @RequestParam(defaultValue = "10") int pageSize,
             HttpSession session
     ) throws Exception {
+        
         try {
 
-            int totalCount = roomService.selectAllRooms().size();
-            int totalPages = (int) Math.ceil((double) totalCount / pageSize);
-            int startIndex = (page - 1) * pageSize;
+            int totalCount = roomService.selectAllRooms().size();               // 전체 객실 수 조회
+            int totalPages = (int) Math.ceil((double) totalCount / pageSize);   // 한 페이지에 표시할 객실 수
+            int startIndex = (page - 1) * pageSize;                             // 시작 위치
 
             // 전체 객실 조회
             List<RoomVO> allRooms =  roomService.selectAllRooms();
             List<RoomVO> roomList;
 
+            // 페이징 처리
             if (startIndex < totalCount) {
                 roomList = allRooms.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
             } else {
@@ -66,10 +68,13 @@ public class RoomController {
             model.addAttribute("pageSize", pageSize);
 
             return "index";
+
         } catch (Exception e) {
-            e.printStackTrace();
+
+            e.printStackTrace();    // 에러 출력 용(운영시에는 뺼것)
             model.addAttribute("errorMessage", "목록 조회 중 오류 발생");
             return "error";
+
         }
 
     }
