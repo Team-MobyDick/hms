@@ -101,6 +101,9 @@
                             <td>${emp.emplName}</td>
                             <td>
                                 <c:choose>
+                                    <c:when test="${emp.emplGrade eq 'GR_01'}">
+                                        <span>관리자</span>
+                                    </c:when>
                                     <c:when test="${emp.emplDept eq 'DP_01'}">하우스키핑</c:when>
                                     <c:when test="${emp.emplDept eq 'DP_02'}">시설관리</c:when>
                                     <c:when test="${emp.emplDept eq 'DP_03'}">프론트</c:when>
