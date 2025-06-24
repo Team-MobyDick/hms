@@ -1,34 +1,110 @@
+/* 달력 스타일 */
 #calendar {
     max-width: 1000px;
     margin: 20px auto;
+    cursor: pointer;
 }
 
+/* 모달 스타일 */
 #scheduleModal {
     position: fixed;
-    top: 20%;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%); /* 화면 중앙 정렬 */
+    width: 600px;  /* 모달 크기 조정 */
     padding: 20px;
-    border: 1px solid #ccc;
     background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+    border-radius: 8px;  /* 모서리 둥글게 */
+    display: none; /* 기본적으로 모달 숨김 */
 }
 
+/* 모달 버튼 스타일 */
+#scheduleModal button[type="button"] {
+    background-color: #d9534f; /* 닫기 버튼 색상 */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.date-container {
+    display: flex;
+    align-items: center; /* 입력란 높이 맞추기 */
+    justify-content: center; /* 공간을 중앙으로 정렬 */
+    width: 100%;
+}
+
+.date-container input {
+    flex: 1;
+    margin: 0 10px; /* 날짜 입력란 사이에 여백 추가 */
+}
+
+.tilde {
+    margin: 0 auto; /* ~ 기호의 좌우 여백 조정 */
+    font-size: 20px; /* ~ 기호 크기 조정 */
+}
+
+#scheduleModal button[type="button"]:hover {
+    background-color: #c9302c;
+}
+
+/* 폼 스타일 */
 #scheduleModal form {
     display: flex;
     flex-direction: column;
+    gap: 15px; /* 각 요소들 간의 간격 */
 }
 
+/* 레이블 스타일 */
 #scheduleModal label {
     margin-top: 10px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
-#emplSelect, #emplSelect option {
-    color: #000 !important;
-    font-size: 14px !important;
-    background-color: #fff;
+/* 입력 필드와 선택 박스 스타일 */
+#scheduleModal input[type="text"],
+#scheduleModal input[type="date"],
+#scheduleModal select {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* 버튼 스타일 */
+#scheduleModal button[type="submit"] {
+    background-color: #28a745; /* 등록 버튼 색상 */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+#scheduleModal button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* 버튼 컨테이너 가운데 정렬 */
+#scheduleModal div {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* 세부 스케줄 박스 스타일 */
 #scheduleDetailBox {
     max-width: 1000px;
     margin: 20px auto;
@@ -36,28 +112,34 @@
     border: 1px solid #ccc;
 }
 
+/* 세부 스케줄 제목 스타일 */
 #scheduleDetailBox h3 {
     margin-bottom: 10px;
 }
 
+/* 세부 스케줄 목록 스타일 */
 #scheduleDetailBox ul {
     list-style-type: disc;
     padding-left: 20px;
 }
 
+/* 일정 박스 스타일 */
 .fc-event {
     background-color: #378006;
     border-color: #378006;
 }
 
+/* 상세 스케줄 내용 스타일 */
 #scheduleDetailContent strong {
     font-size: 1.1em;
 }
 
+/* 업무명 스타일 */
 #scheduleDetailContent .work-name {
     color: blue;
 }
 
+/* 오류 메시지 스타일 */
 #scheduleDetailContent .error-message {
     color: red;
 }

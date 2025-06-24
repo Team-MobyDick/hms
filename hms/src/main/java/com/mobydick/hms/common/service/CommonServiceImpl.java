@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -21,8 +22,10 @@ public class CommonServiceImpl implements CommonService {
     private CommonDAO commonDAO;
 
     private volatile List<EmployeeVO> cachedEmployeesOfTheDay;
-
     private volatile LocalDate lastEmployeesOfTheDayCachedDate;
+
+    private volatile EmployeeVO cachedCoffeeWinner;
+    private volatile LocalDate lastCoffeeWinnerCachedDate;
 
     @Override
     public CommonVO getDashboardData(String emplId) throws Exception {
@@ -32,6 +35,43 @@ public class CommonServiceImpl implements CommonService {
         // 오늘의 사원 정보 조회 후 CommonVO에 설정
         List<EmployeeVO> employees = getEmployeesOfTheDayDailyFixed();
         dashboardData.setEmployeesOfTheDay(employees);
+
+        LocalDate today = LocalDate.now();
+
+        if (cachedCoffeeWinner == null || !today.equals(lastCoffeeWinnerCachedDate)) {
+            synchronized (this) {
+                if (cachedCoffeeWinner == null || !today.equals(lastCoffeeWinnerCachedDate)) {
+                    System.out.println("====== 오늘의 커피 당첨자 선정 시작 (재시작/새날) ======");
+
+                    try {
+                        commonDAO.resetCoffeeWinnerStatus();
+
+                        if (employees != null && !employees.isEmpty()) {
+                            Random random = new Random();
+                            // '오늘의 사원' 3명 중 1명 선택
+                            int winnerIndex = random.nextInt(employees.size());
+                            EmployeeVO newlySelectedWinner = employees.get(winnerIndex);
+
+                            commonDAO.updateCoffeeWinner(newlySelectedWinner.getEmplId());
+
+                            cachedCoffeeWinner = newlySelectedWinner;
+                            lastCoffeeWinnerCachedDate = today;
+                            newlySelectedWinner.setCoffeeWinnerYn("Y");
+
+                            System.out.println("오늘의 커피 당첨자 ('오늘의 사원' 중): " + newlySelectedWinner.getEmplName());
+                        } else {
+                            System.out.println("'오늘의 사원'이 없어 커피 당첨자를 선정할 수 없습니다.");
+                            cachedCoffeeWinner = null;
+                        }
+                    } catch (Exception e) {
+                        System.err.println("오늘의 커피 당첨자 선정 중 오류 발생: " + e.getMessage());
+                        e.printStackTrace();
+                        cachedCoffeeWinner = null;
+                    }
+                    System.out.println("====== 오늘의 커피 당첨자 선정 종료 ======");
+                }
+            }
+        }
 
         // 주간 스케줄 정보 조회 후 CommonVO에 설정
         List<ScheduleVO> schedules = commonDAO.selectWeeklySchedules(emplId);
@@ -65,7 +105,7 @@ public class CommonServiceImpl implements CommonService {
                 return cachedEmployeesOfTheDay;
             }
 
-            List<EmployeeVO> newEmployees = commonDAO.selectRandomEmployeesGR03();
+            List<EmployeeVO> newEmployees = commonDAO.selectRandomEmployees();
 
             cachedEmployeesOfTheDay = newEmployees;
             lastEmployeesOfTheDayCachedDate = today;

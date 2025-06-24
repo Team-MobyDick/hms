@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="userRole" value="${sessionScope.loginUser.emplGrade}"/>
 
 <%-- detailRoom.jsp --%>
 
@@ -12,11 +13,17 @@
             </tr>
             <tr>
                 <th>객실 이름</th>
-                <td><input type="text" id="roomName" name="roomName" value="${roomDetail.roomName}" /></td>
+                <c:if test="${userRole == 'GR_01'}">
+                    <td><input type="text" id="roomName" name="roomName" value="${roomDetail.roomName}" /></td>
+                </c:if>
+                <c:if test="${userRole != 'GR_01'}">
+                    <td><input type="text" id="roomName" name="roomName" value="${roomDetail.roomName}" disabled/></td>
+                </c:if>
             </tr>
             <tr>
                 <th>객실 종류</th>
                 <td>
+                <c:if test="${userRole == 'GR_01'}">
                     <select name="roomType" id="roomType">
                         <c:forEach var="code" items="${codeList}">
                             <option
@@ -26,6 +33,18 @@
                             </option>
                         </c:forEach>
                     </select>
+                </c:if>
+                    <c:if test="${userRole != 'GR_01'}">
+                    <select name="roomType" id="roomType" disabled>
+                        <c:forEach var="code" items="${codeList}">
+                            <option
+                                value="${code.codeId}"
+                                ${roomDetail.roomClass eq code.codeId ? 'selected' : ''}>
+                                    ${code.codeName}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </c:if>
                 </td>
             </tr>
             <tr>
@@ -38,8 +57,10 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <button type="button" onclick="deleteRoom('${roomDetail.roomId}')">삭제하기</button>
-                    <button type="button" onclick="saveChanges('${roomDetail.roomId}')">수정하기</button>
+                    <c:if test="${userRole == 'GR_01'}">
+                        <button type="button" onclick="deleteRoom('${roomDetail.roomId}')">삭제하기</button>
+                        <button type="button" onclick="saveChanges('${roomDetail.roomId}')">수정하기</button>
+                    </c:if>
                     <button type="button" onclick="closeDetail('${roomDetail.roomId}')">닫기</button>
                 </td>
             </tr>

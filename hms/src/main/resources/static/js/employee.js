@@ -78,21 +78,28 @@ $(document).ready(function () {
                         </div>
                         <div class="detail-info-area">
                             <table style="width:100%; border-collapse: collapse;">
-                                <tr><th style="padding:8px;">직원 ID</th><td><input type="text" name="emplId" value="${empId}" readonly></td></tr>
+                                <tr><th style="padding:8px;">직원 ID</th><td><input type="text" name="emplId" value="${empId}" readonly disabled></td></tr>
                                 <tr><th style="padding:8px;">이름</th><td><input type="text" name="emplName" value="${name}"></td></tr>
                                 <tr><th style="padding:8px;">부서</th>
                                     <td>
-                                        <select name="emplDept">
-                                            <option value="DP_01" ${dept==='DP_01' ? 'selected' : ''}>하우스키핑</option>
-                                            <option value="DP_02" ${dept==='DP_02' ? 'selected' : ''}>시설관리</option>
-                                            <option value="DP_03" ${dept==='DP_03' ? 'selected' : ''}>프론트</option>
-                                        </select>
+                                           ${
+                                                grade  === 'GR_01'
+                                                ? `<span>관리자</span><input type="hidden" name="emplDept" value="DP_00">`
+                                                : `<select name="emplDept">
+                                                    <option value="DP_01" ${dept==='DP_01' ? 'selected' : ''}>하우스키핑</option>
+                                                    <option value="DP_02" ${dept==='DP_02' ? 'selected' : ''}>시설관리</option>
+                                                    <option value="DP_03" ${dept==='DP_03' ? 'selected' : ''}>프론트</option>
+                                               </select>`
+                                        }
                                     </td>
                                 </tr>
                                 <tr><th style="padding:8px;">직책</th>
                                     <td>
-                                        <select name="emplGrade">
-                                            <option value="GR_01" ${grade==='GR_01' ? 'selected' : ''}>총지배인</option>
+                                        <select name="emplGrade"
+                                            ${userRole === 'GR_02' && grade === 'GR_01' ? 'disabled' : ''}>
+                                            <option value="GR_01"
+                                                ${grade==='GR_01' ? 'selected' : ''}
+                                                ${userRole === 'GR_02' ? 'disabled' : ''}>총지배인</option>
                                             <option value="GR_02" ${grade==='GR_02' ? 'selected' : ''}>팀장</option>
                                             <option value="GR_03" ${grade==='GR_03' ? 'selected' : ''}>일반</option>
                                         </select>

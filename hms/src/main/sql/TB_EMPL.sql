@@ -12,7 +12,8 @@ CREATE TABLE TB_EMPL (
     CREATED_ID   VARCHAR2(100),
     UPDATED_DATE DATE DEFAULT SYSDATE,
     UPDATED_ID   VARCHAR2(100),
-    RETIRED_YN   VARCHAR2(1) DEFAULT 'N' NOT NULL
+    RETIRED_YN   VARCHAR2(1) DEFAULT 'N' NOT NULL,
+    COFFEE_WINNER_YN CHAR(1) DEFAULT 'N' NOT NULL;
 );
 
 -- 테이블 주석
@@ -32,3 +33,22 @@ COMMENT ON COLUMN TB_EMPL.CREATED_ID IS '작성자 ID';
 COMMENT ON COLUMN TB_EMPL.UPDATED_DATE IS '수정일자';
 COMMENT ON COLUMN TB_EMPL.UPDATED_ID IS '수정자 ID';
 COMMENT ON COLUMN TB_EMPL.RETIRED_YN IS '퇴사 여부 (Y: 퇴사, N: 재직)';
+COMMENT ON COLUMN TB_EMPL.COFFEE_WINNER_YN IS '오늘의 커피 당첨 여부 (Y: 당첨, N: 미당첨)';
+
+-- 처음 관리자 설정
+INSERT INTO TB_EMPL VALUES
+    (
+        SUBSTR(LOWER(RAWTOHEX(SYS_GUID())),1,30),
+        '관리자',
+        '01012345678',
+        'DP_01',
+        'GR_01',
+        '',
+        '',
+        '관리자입니다.',
+        SYSDATE,
+        'ADMIN',
+        SYSDATE,
+        'ADMIN',
+        'N'
+    );

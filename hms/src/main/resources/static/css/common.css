@@ -49,6 +49,12 @@
     align-items: center;
     flex-grow: 1;
 }
+/* 커피 직원 */
+.coffee-winner-badge {
+    font-weight: bold;
+    margin-left: 5px;
+    font-size: 0.9em;
+}
 
 .employee-item {
     display: flex;

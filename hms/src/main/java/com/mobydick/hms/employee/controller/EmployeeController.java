@@ -72,8 +72,6 @@ public class EmployeeController {
             employeeList = new ArrayList<>();
         }
 
-        System.out.println("test = " + employeeList.toString());
-
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
 
         model.addAttribute("currentPage", page); // 현재 페이지
@@ -119,9 +117,20 @@ public class EmployeeController {
                 return ResponseEntity.badRequest().body("필수 입력 항목(이름, 부서, 직책)을 모두 채워주세요.");
             }
 
-            // 등록 시에는 사진 관련 필드를 null로 설정
-            employeeVO.setPhotoName(null);
-            employeeVO.setPhotoPath(null);
+            // 전화번호가 없으면 공백으로 설정
+            if (employeeVO.getEmplPhone() == null || employeeVO.getEmplPhone().trim().isEmpty()) {
+                employeeVO.setEmplPhone(" ");
+            }
+
+            // 메모가 없으면 공백으로 설정
+            if (employeeVO.getEmplNotes() == null || employeeVO.getEmplNotes().trim().isEmpty()) {
+                employeeVO.setEmplNotes(" ");
+            }
+
+            // 등록 시에는 사진 관련 필드를 공백으로 설정
+            employeeVO.setPhotoName(" ");
+            employeeVO.setPhotoPath(" ");
+
 
             employeeService.insertEmployee(employeeVO);
 
@@ -167,12 +176,24 @@ public class EmployeeController {
 
             if (
                     employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() ||
-                    employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() ||
-                    employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()
+                            employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() ||
+                            employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()
             ) {
                 return ResponseEntity.badRequest().body("필수 입력 항목(이름, 부서, 직책)을 모두 채워주세요.");
             }
 
+            if ("GR_02".equals(userRole)) {
+                // 1. 팀장이 총지배인 직책으로 변경하려는 경우 (누구에게든)
+                if ("GR_01".equals(employeeVO.getEmplGrade())) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("팀장은 총지배인 직책으로 변경할 수 없습니다.");
+                }
+
+                // 2. 수정 대상이 총지배인인 경우, 팀장은 그 사람의 직책을 수정 불가
+                if ("GR_01".equals(targetEmployee.getEmplGrade())) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("팀장은 총지배인의 직책을 수정할 수 없습니다.");
+                }
+            }
+            
             employeeVO.setUpdatedId(loginUser.getEmplId());
             employeeService.updateEmployee(employeeVO);
 

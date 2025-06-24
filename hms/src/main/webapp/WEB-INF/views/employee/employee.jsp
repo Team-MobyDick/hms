@@ -12,7 +12,6 @@
         <title>직원 관리</title>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/employee.css"/>
     </head>
     <body>
 
@@ -50,7 +49,9 @@
                 <td>
                     <select name="emplGrade" required>
                         <option value="">직책 선택</option>
-                        <option value="GR_01">총지배인</option>
+                        <c:if test="${userRole == 'GR_01'}">
+                            <option value="GR_01">총지배인</option>
+                        </c:if>
                         <option value="GR_02">팀장</option>
                         <option value="GR_03">일반</option>
                     </select>
@@ -100,6 +101,9 @@
                             <td>${emp.emplName}</td>
                             <td>
                                 <c:choose>
+                                    <c:when test="${emp.emplGrade eq 'GR_01'}">
+                                        <span>관리자</span>
+                                    </c:when>
                                     <c:when test="${emp.emplDept eq 'DP_01'}">하우스키핑</c:when>
                                     <c:when test="${emp.emplDept eq 'DP_02'}">시설관리</c:when>
                                     <c:when test="${emp.emplDept eq 'DP_03'}">프론트</c:when>

@@ -1,43 +1,109 @@
 
-    h1 {
-        font-size: 28px;
+h1 {
+    font-size: 28px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #f3f3f3;
+}
+
+.detail-slide .slide-content {
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    animation: slideDown 0.3s ease;
+    text-align: left;
+}
+
+.action-btn {
+    margin: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.ann-row {
+    cursor: pointer;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
     }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: center;
-    }
+/* 공지사항 폼 전체 영역 스타일 */
+#noticeForm {
+    max-width: 700px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
-    th {
-        background-color: #f3f3f3;
-    }
+/* 제목 라벨 + input */
+#noticeForm label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    margin-top: 15px;
+}
 
-    .detail-slide .slide-content {
-        padding: 15px;
-        background: #f9f9f9;
-        border: 1px solid #ccc;
-        animation: slideDown 0.3s ease;
-        text-align: left;
-    }
+#noticeForm input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-    .action-btn {
-        margin: 5px;
-        padding: 6px 12px;
-        font-size: 14px;
-        cursor: pointer;
-    }
+/* 내용 textarea */
+#noticeForm textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
 
+/* 버튼 스타일 */
+#noticeForm button {
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 8px 18px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
+#saveBtn, #updateBtn {
+    background-color: #4CAF50;
+    color: white;
+}
 
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+#cancelBtn {
+    background-color: #ccc;
+    color: #333;
+}
 

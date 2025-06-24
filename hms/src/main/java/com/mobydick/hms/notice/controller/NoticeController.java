@@ -43,7 +43,7 @@ public class NoticeController {
             }
 
             model.addAttribute("noticeList", noticeList);
-            model.addAttribute("screenTitle", "공지사항 목록");
+            model.addAttribute("screenTitle", "공지사항");
             model.addAttribute("mode", "list");
             model.addAttribute("bodyPage", "notice/notice.jsp");
 

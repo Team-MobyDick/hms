@@ -22,4 +22,6 @@ public class EmployeeVO {
 
     private String emplGradeName;
 
+    private String coffeeWinnerYn;
+
 }

@@ -71,6 +71,7 @@
         <%-- 객실 상세 정보 페이지 --%>
         <div id="roomDetailContainer" style="display: none; margin-top: 20px;"></div>
 
+        <%-- 페이징 처리 영역 --%>
         <jsp:include page="/WEB-INF/views/include/pagination.jsp" />
 
     </body>
