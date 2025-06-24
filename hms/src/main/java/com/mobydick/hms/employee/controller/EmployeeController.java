@@ -72,8 +72,6 @@ public class EmployeeController {
             employeeList = new ArrayList<>();
         }
 
-        System.out.println("test = " + employeeList.toString());
-
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
 
         model.addAttribute("currentPage", page); // 현재 페이지
