@@ -12,8 +12,17 @@ import java.util.List;
 @Mapper
 public interface CommonDAO {
 
-    // 오늘의 사원 (직책 GR_03인 직원 중 3명 랜덤 조회)
-    List<EmployeeVO> selectRandomEmployeesGR03();
+    // 오늘의 사원
+    List<EmployeeVO> selectRandomEmployees();
+
+    // 모든 직원의 커피 당첨 상태를 'N'으로 초기화
+    void resetCoffeeWinnerStatus();
+
+    // 활성 상태의 모든 직원 조회 (커피 당첨자 선정을 위함)
+    List<EmployeeVO> selectAllActiveEmployees();
+
+    // 특정 직원의 커피 당첨 상태를 'Y'로 업데이트
+    void updateCoffeeWinner(@Param("emplId") String emplId);
 
     // 주간 스케줄 조회 (SYSDATE 기준 현재 주의 스케줄)
     List<ScheduleVO> selectWeeklySchedules(@Param("emplId") String emplId);

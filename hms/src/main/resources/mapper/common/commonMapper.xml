@@ -5,24 +5,17 @@
 
 <mapper namespace="com.mobydick.hms.common.dao.CommonDAO">
 
-    <select id="selectRandomEmployeesGR03" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
+    <select id="selectRandomEmployees" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
         <![CDATA[
-        SELECT
-            A.EMPL_ID,
-            A.EMPL_NAME,
-            A.EMPL_DEPT,
-            A.EMPL_GRADE,
-            B.CODE_NAME AS EMPL_GRADE_NAME,
-            A.PHOTO_NAME,
-            A.PHOTO_PATH
-        FROM (
             SELECT
-                EMPL_ID,
-                EMPL_NAME,
-                EMPL_DEPT,
-                EMPL_GRADE,
-                PHOTO_NAME,
-                PHOTO_PATH
+                A.EMPL_ID,
+                A.EMPL_NAME,
+                A.EMPL_DEPT,
+                A.EMPL_GRADE,
+                B.CODE_NAME AS EMPL_GRADE_NAME,
+                A.PHOTO_NAME,
+                A.PHOTO_PATH,
+                A.COFFEE_WINNER_YN
             FROM (
                 SELECT
                     EMPL_ID,
@@ -30,92 +23,134 @@
                     EMPL_DEPT,
                     EMPL_GRADE,
                     PHOTO_NAME,
-                    PHOTO_PATH
-                FROM TB_EMPL
-                WHERE EMPL_GRADE = 'GR_02' AND RETIRED_YN = 'N'
-                ORDER BY DBMS_RANDOM.VALUE
-            )
-            WHERE ROWNUM <= 1
+                    PHOTO_PATH,
+                    COFFEE_WINNER_YN
+                FROM (
+                    SELECT
+                        EMPL_ID,
+                        EMPL_NAME,
+                        EMPL_DEPT,
+                        EMPL_GRADE,
+                        PHOTO_NAME,
+                        PHOTO_PATH,
+                        COFFEE_WINNER_YN
+                    FROM TB_EMPL
+                    WHERE EMPL_GRADE = 'GR_02' AND RETIRED_YN = 'N'
+                    ORDER BY DBMS_RANDOM.VALUE
+                )
+                WHERE ROWNUM <= 1
 
-            UNION ALL
+                UNION ALL
 
-            SELECT
-                EMPL_ID,
-                EMPL_NAME,
-                EMPL_DEPT,
-                EMPL_GRADE,
-                PHOTO_NAME,
-                PHOTO_PATH
-            FROM (
                 SELECT
                     EMPL_ID,
                     EMPL_NAME,
                     EMPL_DEPT,
                     EMPL_GRADE,
                     PHOTO_NAME,
-                    PHOTO_PATH
-                FROM TB_EMPL
-                WHERE EMPL_GRADE = 'GR_03' AND RETIRED_YN = 'N'
-                ORDER BY DBMS_RANDOM.VALUE
-            )
-            WHERE ROWNUM <= 2
-        ) A
-        JOIN TB_CODE B ON A.EMPL_GRADE = B.CODE_ID
+                    PHOTO_PATH,
+                    COFFEE_WINNER_YN
+                FROM (
+                    SELECT
+                        EMPL_ID,
+                        EMPL_NAME,
+                        EMPL_DEPT,
+                        EMPL_GRADE,
+                        PHOTO_NAME,
+                        PHOTO_PATH,
+                        COFFEE_WINNER_YN
+                    FROM TB_EMPL
+                    WHERE EMPL_GRADE = 'GR_03' AND RETIRED_YN = 'N'
+                    ORDER BY DBMS_RANDOM.VALUE
+                )
+                WHERE ROWNUM <= 2
+            ) A
+            JOIN TB_CODE B ON A.EMPL_GRADE = B.CODE_ID
         ]]>
     </select>
 
+    <update id="resetCoffeeWinnerStatus">
+        <![CDATA[
+            UPDATE TB_EMPL
+            SET COFFEE_WINNER_YN = 'N'
+        ]]>
+    </update>
+
+    <select id="selectAllActiveEmployees" resultType="com.mobydick.hms.employee.vo.EmployeeVO">
+        <![CDATA[
+            SELECT
+                EMPL_ID,
+                EMPL_NAME,
+                EMPL_DEPT,
+                EMPL_GRADE,
+                PHOTO_NAME,
+                PHOTO_PATH,
+                COFFEE_WINNER_YN
+            FROM TB_EMPL
+            WHERE RETIRED_YN = 'N'
+        ]]>
+    </select>
+
+    <update id="updateCoffeeWinner">
+        <![CDATA[
+            UPDATE TB_EMPL
+            SET COFFEE_WINNER_YN = 'Y'
+            WHERE EMPL_ID = #{emplId}
+        ]]>
+    </update>
+
     <select id="selectWeeklySchedules" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         <![CDATA[
-        SELECT
-            A.SCHE_ID,
-            A.SCHE_DATE,
-            A.EMPL_ID,
-            B.EMPL_NAME,
-            A.SCHE_SHIFT,
-            A.CREATED_DATE
-        FROM TB_SCHEDULE A
-        JOIN TB_EMPL B ON A.EMPL_ID = B.EMPL_ID
-        WHERE A.SCHE_DATE >= TRUNC(SYSDATE, 'IW')
-        AND A.SCHE_DATE < TRUNC(SYSDATE, 'IW') + 7
-        AND A.EMPL_ID = #{emplId}
-        ORDER BY A.SCHE_DATE ASC
+            SELECT
+                A.SCHE_ID,
+                A.SCHE_DATE,
+                A.EMPL_ID,
+                B.EMPL_NAME,
+                A.SCHE_SHIFT,
+                A.CREATED_DATE
+            FROM TB_SCHEDULE A
+            JOIN TB_EMPL B ON A.EMPL_ID = B.EMPL_ID
+            WHERE A.SCHE_DATE >= TRUNC(SYSDATE, 'IW')
+            AND A.SCHE_DATE < TRUNC(SYSDATE, 'IW') + 7
+            AND A.EMPL_ID = #{emplId}
+            ORDER BY A.SCHE_DATE ASC
         ]]>
     </select>
 
     <select id="selectLatestNotices" resultType="com.mobydick.hms.notice.vo.NoticeVO">
         <![CDATA[
-        SELECT
-            NOTICE_ID,
-            NOTICE_TITLE,
-            A.EMPL_ID,
-            B.EMPL_NAME,
-            A.CREATED_DATE
-        FROM (
             SELECT
                 NOTICE_ID,
                 NOTICE_TITLE,
-                EMPL_ID,
-                CREATED_DATE
-            FROM TB_NOTICE
-            ORDER BY CREATED_DATE DESC, NOTICE_ID DESC
-        ) A
-        JOIN TB_EMPL B ON A.EMPL_ID = B.EMPL_ID
-        WHERE ROWNUM <= 3
+                A.EMPL_ID,
+                B.EMPL_NAME,
+                A.CREATED_DATE
+            FROM (
+                SELECT
+                    NOTICE_ID,
+                    NOTICE_TITLE,
+                    EMPL_ID,
+                    CREATED_DATE
+                FROM TB_NOTICE
+                ORDER BY CREATED_DATE DESC, NOTICE_ID DESC
+            ) A
+            JOIN TB_EMPL B ON A.EMPL_ID = B.EMPL_ID
+            WHERE ROWNUM <= 3
         ]]>
     </select>
 
     <select id="selectTodayWorks" resultType="com.mobydick.hms.work.vo.WorkVO">
         <![CDATA[
-        SELECT
-            TWD.WORKD_ID AS workDId,
-            TWD.WORKD_NAME AS workDName,
-            TO_CHAR(TWD.WORKD_DATE, 'MM/DD') AS workDDate,
-            TWD.WORKD_IMPO AS workDImpo,
-            TWD.WORKD_CONTEXT AS workDContext
-        FROM TB_WORK_D TWD
-        WHERE TWD.EMPL_ID = #{emplId}
-        AND TWD.WORKD_DATE = TRUNC(SYSDATE)
-        ORDER BY TWD.WORKD_IMPO DESC
+            SELECT
+                TWD.WORKD_ID AS workDId,
+                TWD.WORKD_NAME AS workDName,
+                TO_CHAR(TWD.WORKD_DATE, 'MM/DD') AS workDDate,
+                TWD.WORKD_IMPO AS workDImpo,
+                TWD.WORKD_CONTEXT AS workDContext
+            FROM TB_WORK_D TWD
+            WHERE TWD.EMPL_ID = #{emplId}
+            AND TWD.WORKD_DATE = TRUNC(SYSDATE)
+            ORDER BY TWD.WORKD_IMPO DESC
         ]]>
     </select>
 

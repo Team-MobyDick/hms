@@ -14,12 +14,15 @@
     <body>
         <div class="dashboard-container">
             <div class="dashboard-card">
+
                 <h2>오늘의 사원</h2>
+
                 <div class="employee-of-day-list">
                     <c:choose>
                         <c:when test="${not empty dashboardData.employeesOfTheDay}">
                             <c:forEach var="emp" items="${dashboardData.employeesOfTheDay}">
                                 <div class="employee-item" data-empl-grade="${emp.emplGrade}" onclick="return handleEmployeeClick(this);">
+
                                     <c:set var="photoSrc">
                                         <c:choose>
                                             <c:when test="${not empty emp.photoName && not empty emp.photoPath}">
@@ -30,28 +33,42 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:set>
+
                                     <img src="${photoSrc}" alt="${emp.emplName} 사진">
+
                                     <div class="employee-info">
-                                        <div class="name">${emp.emplName}</div>
+                                        <div class="name">
+                                            ${emp.emplName}
+                                            <c:if test="${emp.coffeeWinnerYn == 'Y'}">
+                                                <span class="coffee-winner-badge">☕ 오늘 커피 사는 사람!</span>
+                                            </c:if>
+                                        </div>
                                         <div class="grade">(${emp.emplGradeName})</div>
                                     </div>
+
                                 </div>
                             </c:forEach>
                         </c:when>
+
                         <c:otherwise>
                             <p class="empty-data">오늘의 사원 정보가 없습니다.</p>
                         </c:otherwise>
+
                     </c:choose>
                 </div>
             </div>
 
             <div class="dashboard-card">
+
                 <h2>주간 스케줄</h2>
+
                 <ul>
                     <c:choose>
                         <c:when test="${not empty dashboardData.weeklySchedules}">
                             <c:forEach var="schedule" items="${dashboardData.weeklySchedules}">
-                                <li class="schedule-item"> <a href="${pageContext.request.contextPath}/schedule/list">
+
+                                <li class="schedule-item">
+                                    <a href="${pageContext.request.contextPath}/schedule/list">
                                         <div class="schedule-content">
                                             <span class="schedule-date"><fmt:formatDate value="${schedule.scheDate}" pattern="MM/dd (E)" /></span>
                                             <span class="schedule-info">
@@ -67,17 +84,21 @@
                                         </div>
                                     </a>
                                 </li>
+
                             </c:forEach>
                         </c:when>
+
                         <c:otherwise>
                             <p class="empty-data">이번 주 스케줄이 없습니다.</p>
                         </c:otherwise>
+
                     </c:choose>
                 </ul>
             </div>
 
             <div class="dashboard-card">
                 <h2>오늘 할 일</h2>
+
                 <c:choose>
                     <c:when test="${not empty dashboardData.todayWorks}">
                         <table class="activity-table">
@@ -91,6 +112,7 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="work" items="${dashboardData.todayWorks}">
+
                                     <tr>
                                         <td>${work.workDDate}</td>
                                         <td>
@@ -106,18 +128,22 @@
                                         <td><strong>${work.workDName}</strong></td>
                                         <td><p>${work.workDContext}</p></td>
                                     </tr>
+
                                 </c:forEach>
                             </tbody>
                         </table>
                     </c:when>
+
                     <c:otherwise>
                         <p class="empty-data">오늘 할 일이 없습니다.</p>
                     </c:otherwise>
+
                 </c:choose>
             </div>
 
             <div class="dashboard-card">
                 <h2>공지사항</h2>
+
                 <c:choose>
                     <c:when test="${not empty dashboardData.latestNotices}">
                         <table class="notice-table">
@@ -130,18 +156,22 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="notice" items="${dashboardData.latestNotices}">
+
                                     <tr>
                                         <td><a href="${pageContext.request.contextPath}/notice/list"><strong>${notice.noticeTitle}</strong></a></td>
                                         <td>${notice.emplName}</td>
                                         <td><fmt:formatDate value="${notice.createdDate}" pattern="yyyy.MM.dd" /></td>
                                     </tr>
+
                                 </c:forEach>
                             </tbody>
                         </table>
                     </c:when>
+
                     <c:otherwise>
                         <p class="empty-data">최신 공지사항이 없습니다.</p>
                     </c:otherwise>
+
                 </c:choose>
             </div>
 
