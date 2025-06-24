@@ -3,7 +3,7 @@
 // 등록
 $("#saveBtn").click(function () {
 
-    const formData = $("#noticeForm").serialize();
+    var formData = $("#noticeForm").serialize();
 
     /* 제목과 내용 */
     var noticeTitle = document.getElementsByName("noticeTitle")[0].value.trim();
@@ -34,6 +34,8 @@ $("#saveBtn").click(function () {
 // 수정
 $("#updateBtn").click(function () {
     const noticeId = $("input[name='noticeId']").val();
+
+    var formData = $("#noticeForm").serialize();
 
     /* 제목과 내용 */
     var noticeTitle = document.getElementsByName("noticeTitle")[0].value.trim();
