@@ -9,6 +9,16 @@ function toggleAddRoom() {
 /* 객실 상세 정보 로딩 */
 function loadDetail(roomId) {
 
+    const $container = $('#roomDetailContainer');
+
+    // 이미 열려 있고, 같은 roomId의 상세가 열려 있으면 닫기
+    if ($container.is(':visible') && $container.data('roomId') === roomId) {
+
+        closeDetail();
+        return;
+
+    }
+
     /* 선택한 행의 아이디로 조회 */
     $.ajax({
         url: '/room/detail',
@@ -16,7 +26,10 @@ function loadDetail(roomId) {
         data:  {roomId : roomId},
         success: function (response) {
 
-            $('#roomDetailContainer').html(response).slideDown();
+            $('#roomDetailContainer')
+                .html(response)
+                .data('roomId', roomId)
+                .slideDown();
 
         },
         error: function (xhr, status, error) {
@@ -54,7 +67,7 @@ function addRoom() {
                 roomClass: roomClass,
                 roomClassName: roomClassName,
             },
-            success: function(response) {
+            success: function() {
                 alert('등록 성공!');
                 $('#addRoomContainer').slideUp(); // 등록 후 닫기
                 $('#addForm')[0].reset(); // 입력 초기화
@@ -92,7 +105,7 @@ function saveChanges(roomId) {
                 roomClass: roomClassId,
                 roomClassName: roomClassName,
             },
-            success: function(response) {
+            success: function() {
                 alert("수정이 완료되었습니다.");
                 // 수정 후 새로 고침 혹은 변경된 내용 반영
                 location.reload();
@@ -122,7 +135,7 @@ function deleteRoom(roomId) {
             data: {
                 roomId: roomId,
             },
-            success: function(response) {
+            success: function() {
                 alert("삭제가 완료되었습니다.");
                 location.reload();
             },
