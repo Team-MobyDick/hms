@@ -4,14 +4,21 @@
 
 <div class="header">
 
-            <!-- 좌측: 메뉴 아이콘 -->
+    <!-- 좌측: 메뉴 아이콘 -->
     <div class="header-left">
         <div class="menu-icon" id="menuToggle">☰</div>
-        <img id="mainIcon" class="mainIcon" src="../../images/sample.jpg" onclick="goMain();"></img>
+        <img
+            id="mainIcon"
+            class="mainIcon"
+            src="../../images/polarbear.png"
+            title="메인으로 이동"
+            onclick="goMain();"
+        >
+        </img>
         <div class="screen-title">${screenTitle}</div>
     </div>
 
-            <!-- 우측: 사용자 정보 + 로그아웃 -->
+    <!-- 우측: 사용자 정보 + 로그아웃 -->
     <div class="header-right">
         <span>${sessionScope.loginUser.emplName} 님 환영합니다</span>
         <a href="${pageContext.request.contextPath}/logout" class="logout-btn">로그아웃</a>

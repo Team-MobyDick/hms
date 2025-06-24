@@ -78,7 +78,7 @@ $(document).ready(function () {
                         </div>
                         <div class="detail-info-area">
                             <table style="width:100%; border-collapse: collapse;">
-                                <tr><th style="padding:8px;">직원 ID</th><td><input type="text" name="emplId" value="${empId}" readonly></td></tr>
+                                <tr><th style="padding:8px;">직원 ID</th><td><input type="text" name="emplId" value="${empId}" readonly disabled></td></tr>
                                 <tr><th style="padding:8px;">이름</th><td><input type="text" name="emplName" value="${name}"></td></tr>
                                 <tr><th style="padding:8px;">부서</th>
                                     <td>

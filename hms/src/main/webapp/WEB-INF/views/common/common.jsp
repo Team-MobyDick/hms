@@ -8,7 +8,6 @@
     <head>
         <meta charset="UTF-8">
         <title>HMS 대시보드</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css"/>
     </head>
 
     <body>

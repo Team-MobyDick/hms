@@ -11,7 +11,6 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/schedule.css"/>
 </head>
 
 <body>

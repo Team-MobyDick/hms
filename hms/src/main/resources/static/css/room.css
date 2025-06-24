@@ -25,6 +25,10 @@ th {
   background-color: #f3f3f3;
 }
 
+tbody tr{
+  cursor: pointer;
+}
+
 /* 상세 폼 애니메이션 */
 .detail-slide .slide-content {
   padding: 15px;
