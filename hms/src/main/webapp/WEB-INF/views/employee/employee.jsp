@@ -50,7 +50,9 @@
                 <td>
                     <select name="emplGrade" required>
                         <option value="">직책 선택</option>
-                        <option value="GR_01">총지배인</option>
+                        <c:if test="${userRole == 'GR_01'}">
+                            <option value="GR_01">총지배인</option>
+                        </c:if>
                         <option value="GR_02">팀장</option>
                         <option value="GR_03">일반</option>
                     </select>

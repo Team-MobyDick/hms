@@ -91,8 +91,11 @@ $(document).ready(function () {
                                 </tr>
                                 <tr><th style="padding:8px;">직책</th>
                                     <td>
-                                        <select name="emplGrade">
-                                            <option value="GR_01" ${grade==='GR_01' ? 'selected' : ''}>총지배인</option>
+                                        <select name="emplGrade"
+                                            ${userRole === 'GR_02' && grade === 'GR_01' ? 'disabled' : ''}>
+                                            <option value="GR_01"
+                                                ${grade==='GR_01' ? 'selected' : ''}
+                                                ${userRole === 'GR_02' ? 'disabled' : ''}>총지배인</option>
                                             <option value="GR_02" ${grade==='GR_02' ? 'selected' : ''}>팀장</option>
                                             <option value="GR_03" ${grade==='GR_03' ? 'selected' : ''}>일반</option>
                                         </select>
