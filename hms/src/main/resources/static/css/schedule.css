@@ -1,6 +1,7 @@
 #calendar {
     max-width: 1000px;
     margin: 20px auto;
+    cursor: pointer;
 }
 
 #scheduleModal {
