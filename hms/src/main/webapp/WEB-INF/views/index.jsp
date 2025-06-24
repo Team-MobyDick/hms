@@ -8,15 +8,19 @@
     <title>호텔 관리 시스템</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- 공통 CSS (순서 중요: reset → layout → header/sidebar/footer → 개별 페이지) -->
+    <!-- 공통 CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sidebar.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css"/>
 
-    <!-- 개별 페이지용 CSS (예: room.jsp)  -->
+    <!-- 개별 페이지용 CSS  -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/room.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/employee.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/schedule.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/notice.css"/>
 </head>
 
 <body>
