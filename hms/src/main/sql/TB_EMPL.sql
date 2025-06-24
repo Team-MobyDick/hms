@@ -32,3 +32,21 @@ COMMENT ON COLUMN TB_EMPL.CREATED_ID IS '작성자 ID';
 COMMENT ON COLUMN TB_EMPL.UPDATED_DATE IS '수정일자';
 COMMENT ON COLUMN TB_EMPL.UPDATED_ID IS '수정자 ID';
 COMMENT ON COLUMN TB_EMPL.RETIRED_YN IS '퇴사 여부 (Y: 퇴사, N: 재직)';
+
+-- 처음 관리자 설정
+INSERT INTO TB_EMPL VALUES
+    (
+        SUBSTR(LOWER(RAWTOHEX(SYS_GUID())),1,30),
+        '관리자',
+        '01012345678',
+        'DP_01',
+        'GR_01',
+        '',
+        '',
+        '관리자입니다.',
+        SYSDATE,
+        'ADMIN',
+        SYSDATE,
+        'ADMIN',
+        'N'
+    );
