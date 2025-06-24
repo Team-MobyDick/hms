@@ -119,9 +119,20 @@ public class EmployeeController {
                 return ResponseEntity.badRequest().body("필수 입력 항목(이름, 부서, 직책)을 모두 채워주세요.");
             }
 
-            // 등록 시에는 사진 관련 필드를 null로 설정
-            employeeVO.setPhotoName(null);
-            employeeVO.setPhotoPath(null);
+            // 전화번호가 없으면 공백으로 설정
+            if (employeeVO.getEmplPhone() == null || employeeVO.getEmplPhone().trim().isEmpty()) {
+                employeeVO.setEmplPhone(" ");
+            }
+
+            // 메모가 없으면 공백으로 설정
+            if (employeeVO.getEmplNotes() == null || employeeVO.getEmplNotes().trim().isEmpty()) {
+                employeeVO.setEmplNotes(" ");
+            }
+
+            // 등록 시에는 사진 관련 필드를 공백으로 설정
+            employeeVO.setPhotoName(" ");
+            employeeVO.setPhotoPath(" ");
+
 
             employeeService.insertEmployee(employeeVO);
 
@@ -167,8 +178,8 @@ public class EmployeeController {
 
             if (
                     employeeVO.getEmplName() == null || employeeVO.getEmplName().trim().isEmpty() ||
-                    employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() ||
-                    employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()
+                            employeeVO.getEmplDept() == null || employeeVO.getEmplDept().trim().isEmpty() ||
+                            employeeVO.getEmplGrade() == null || employeeVO.getEmplGrade().trim().isEmpty()
             ) {
                 return ResponseEntity.badRequest().body("필수 입력 항목(이름, 부서, 직책)을 모두 채워주세요.");
             }
