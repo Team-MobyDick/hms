@@ -42,6 +42,7 @@ public interface WorkService {
     void updateWorkD(WorkVO workVO) throws Exception;
 
     // 상세 업무 삭제 (최고관리자, 중간관리자)
+    void deleteWorkD(String workDId) throws Exception;
 
 
 

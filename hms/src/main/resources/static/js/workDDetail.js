@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    // 수정버튼 폼 submit
     $('.workDDetailForm').on('submit', function (e) {
         e.preventDefault();
 
@@ -63,5 +64,38 @@ $(document).ready(function () {
             });
         })
         .catch(err => alert('파일 업로드 실패'));
+    });
+
+    // 삭제 버튼 클릭
+    $(document).on('click', '.delete_btn_D', function (e) {
+        e.preventDefault();
+        const $form = $(this).closest('form');
+
+        const workDId = $form.find('input[name="workDId"]').val();
+        console.log(workDId);
+
+        $.ajax({
+            url: '/work/deleteWorkD',
+            method: 'POST',
+            data: {
+                workDId : workDId,
+            },
+            success: function (response) {
+                alert('상세 업무가 삭제되었습니다.');
+                history.back();
+            },
+            error: function (xhr) {
+                alert('삭제 실패: ' + xhr.responseText);
+            }
+        });
+    });
+
+    // 시작사진 등록 확인하고 종료사진 등록 열기
+    $(document).on('change', '#workDStartFile', function () {
+        if (this.files.length > 0) {
+            $('#endPhotoContainer').slideDown(200);
+        } else {
+            $('#endPhotoContainer').slideUp(200);
+        }
     });
 });

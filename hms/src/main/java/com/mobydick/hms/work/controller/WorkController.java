@@ -270,6 +270,7 @@ public class WorkController {
         );
     }
 
+    // 상세 업무 수정
     @PostMapping("/modifyWorkD")
     @ResponseBody
     public Map<String, Object> modifyWorkD(@RequestBody WorkVO workVO, HttpSession session) throws Exception {
@@ -282,5 +283,16 @@ public class WorkController {
         workService.updateWorkD(workVO);
 
         return Map.of("success", true);
+    }
+
+    // 상세 업무 삭제
+    @PostMapping("/deleteWorkD")
+    @ResponseBody
+    public String deleteWorkD(@RequestParam String workDId, HttpSession session) throws Exception {
+
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
+        workService.deleteWorkD(workDId);
+        return "success";
     }
 }

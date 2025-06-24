@@ -28,6 +28,10 @@ public interface WorkDAO {
 
     WorkVO selectDetailWorkD(String workDId) throws DataAccessException;
 
+    void updateWorkD(WorkVO workVO) throws DataAccessException;
+
+    void deleteWorkD(String workDId) throws DataAccessException;
+
     List<WorkVO> getDetailWorkList(String workMId, String date) throws DataAccessException;
 
     List<WorkVO> getDept() throws DataAccessException;
@@ -39,6 +43,4 @@ public interface WorkDAO {
     List<WorkVO> getEmpl() throws DataAccessException;
 
     List<WorkVO> selectEmployeesByDept(String emplDept) throws DataAccessException;
-
-    void updateWorkD(WorkVO workVO) throws DataAccessException;
 }

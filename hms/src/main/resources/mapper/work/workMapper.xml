@@ -175,6 +175,13 @@
         WHERE WORKD_ID = #{workDId}
     </update>
 
+    <!-- 상세 업무 삭제 -->
+    <delete id="deleteWorkD">
+        DELETE
+        FROM TB_WORK_D
+        WHERE WORKD_ID = #{workDId}
+    </delete>
+
     <!-- 주 업무 클릭시 해당 일자 상세업무 리스트 조회 -->
     <select id="getDetailWorkList" resultType="com.mobydick.hms.work.vo.WorkVO">
         SELECT  a.workd_id,

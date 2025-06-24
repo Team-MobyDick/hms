@@ -74,6 +74,11 @@ public class WorkServiceImpl implements WorkService{
     };
 
     @Override
+    public void deleteWorkD(String workDId) throws Exception {
+        workDAO.deleteWorkD(workDId);
+    };
+
+    @Override
     public List<WorkVO> getDept() {
         return workDAO.getDept();
     };

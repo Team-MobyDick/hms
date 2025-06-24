@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${d.workDName}</td>
                         <td>${d.emplName}</td>
                         <td>${res.codeMap[d.workDImpo]}</td>
-                        <td><button class="detail_btn_D">업무 상세</button></td>
+                        <td><button id="detail_btn_D">업무 상세</button></td>
                     </tr>
                 `);
             });
@@ -176,6 +176,26 @@ $(document).ready(function () {
         }
     });
 
+    // 모드 따라 주 업무 등록 버튼 숨김
+    $(document).ready(function() {
+        function toggleAddButton() {
+            const mode = $('input[name="mode"]:checked').val();
+            if (mode === 'MINE') {
+                $('#add_btn_M').hide();
+            } else {
+                $('#add_btn_M').show();
+            }
+        }
+
+        // 최초 상태 반영
+        toggleAddButton();
+
+        // 라디오 버튼 상태 바뀔 때마다 토글
+        $('input[name="mode"]').on('change', function() {
+            toggleAddButton();
+        });
+    });
+
     // 방 목록 전체 조회 (서버에서 가져오기)
     $.ajax({
         url: '/work/roomTypes', // 서버에서 방 타입 목록을 가져옵니다.
@@ -215,8 +235,14 @@ $(document).ready(function () {
         const workMId = $clickedRow.data('workm-id');
         const rawDate = String($clickedRow.data('date'));
         const date = rawDate.replaceAll('-', '');
-
         const $existingRows = $(`.workD-row[data-parent="${workMId}"]`);
+        let $insertAfter = $clickedRow;
+        const $newWorkDForm = $(`.newWorkDForm[data-parent="${workMId}"]`);
+
+        // newWorkDForm 있으면 그 아래
+        if ($newWorkDForm.length) {
+          $insertAfter = $newWorkDForm;
+        }
 
         // 이미 열려있으면 닫기
         if ($existingRows.length > 0) {
@@ -259,7 +285,7 @@ $(document).ready(function () {
 
                     // 역순으로 삽입 (순서 보존)
                     for (let i = detailRows.length - 1; i >= 0; i--) {
-                        $clickedRow.after(detailRows[i]);
+                        $insertAfter.after(detailRows[i]);
                         detailRows[i].slideDown(200);
                     }
                 }
@@ -475,7 +501,7 @@ $(document).on('click', '.add_btn_D', function (e) {
     if ($row.next().hasClass('newWorkDForm')) return;
 
     const formRow = $(`
-        <tr class="newWorkDForm">
+        <tr class="newWorkDForm" data-parent="${workMId}">
             <td colspan="5" style="background:#eef; padding:10px;">
                 <form class="workDForm">
                     <input type="hidden" name="workMId" value="${workMId}" />
@@ -523,6 +549,7 @@ $(document).on('click', '.add_btn_D', function (e) {
     roomList.forEach(i => {
         $roomSelect.append(`<option value="${i.codeId}">${i.codeName}</option>`);
     });
+    $roomSelect.append(`<option value="" selected>선택없음</option>`);
 
     // 직원 목록 추가
     const $emplSelect = formRow.find('select[name="workDEmplId"]');
@@ -567,6 +594,22 @@ $(document).on('submit', '.workDForm', function (e) {
             // 성공 후 필요한 작업
             $form.closest('tr.newWorkDForm').slideUp(200, function() {
                 $(this).remove();
+
+                // 현재 등록한 업무의 workMId
+                const workMId = data.workMId;
+                const $workMRow = $(`.workM-row[data-workm-id="${workMId}"]`);
+                const $existingRows = $(`.workD-row[data-parent="${workMId}"]`);
+
+                if ($existingRows.length > 0) {
+                    // 이미 열려 있는 경우 닫기 위해 한번 트리거
+                    $workMRow.trigger('click');
+                    setTimeout(() => {
+                        $workMRow.trigger('click');
+                    }, 250); // 애니메이션 200ms보다 조금 길게
+                } else {
+                     // 안 열려 있으면: 그냥 열기
+                     $workMRow.trigger('click');
+                }
             });
         },
         error: function (xhr) {

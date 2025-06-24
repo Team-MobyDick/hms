@@ -45,7 +45,7 @@
     </div>
 
     <c:if test="${userRole == 'GR_01'}">
-        <button id="add_btn_M">업무 등록</button>
+        <button id="add_btn_M">주 업무 등록</button>
     </c:if>
 
     <!-- 주 업무 등록 폼 -->

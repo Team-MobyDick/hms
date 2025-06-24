@@ -19,9 +19,9 @@
 
             <div style="display: flex; gap: 8px; margin-bottom: 12px;">
                 <button type="submit">수정</button>
-                <button type="button" class="delete_btn_D" onclick="history.back();">취소</button>
+                <button type="button" class="cancle_btn_D" onclick="history.back();">취소</button>
                 <c:if test="${userRole != 'GR_03'}">
-                    <button type="button" class="cancle_btn_D">삭제</button>
+                    <button type="button" class="delete_btn_D">삭제</button>
                 </c:if>
             </div>
             <input type="hidden" name="workDId" value="${detailWorkD.workDId}" >
@@ -89,11 +89,12 @@
                     </c:when>
                     <c:otherwise>
                         <select name="workDRoomId" >
+                            <option value="" <c:if test="${empty detailWorkD.workDRoomId}">selected</c:if>>선택 없음</option>
                             <c:forEach var="room" items="${roomList}">
-                              <option value="${room.codeId}"
+                                <option value="${room.codeId}"
                                   <c:if test="${room.codeId == detailWorkD.workDRoomId}">selected</c:if>>
                                   ${room.codeName}
-                              </option>
+                                </option>
                             </c:forEach>
                         </select>
                     </c:otherwise>
@@ -136,21 +137,29 @@
             <div class="form-group" style="display: flex; gap: 12px; align-items: center;">
                 <div style="text-align: center;">
                     <label>시작사진</label><br />
-                    <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDStartName}"
-                         alt="${detailWorkD.workDStartName}"
-                         style="width: 60px; height: 60px; border-radius: 50%;" />
-                    <br />
+                    <c:if test="${not empty detailWorkD.workDStartName}">
+                        <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDStartName}"
+                             alt="${detailWorkD.workDStartName}"
+                             style="width: 60px; height: 60px; border-radius: 50%;" /><br/>
+                    </c:if>
                     <input type="file" name="workDStartFile" id="workDStartFile" />
-                    <small>시작시간: <fmt:formatDate value="${detailWorkD.workDStartTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                    <c:if test="${not empty detailWorkD.workDStartTime}">
+                        <small>시작시간: <fmt:formatDate value="${detailWorkD.workDStartTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                    </c:if>
                 </div>
-                <div style="text-align: center;">
+
+                <!-- 종료 부분 -->
+                <div id="endPhotoContainer" style="text-align: center; ${empty detailWorkD.workDStartName ? 'display:none;' : ''}">
                     <label>종료사진</label><br />
-                    <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDEndName}"
-                         alt="${detailWorkD.workDEndName}"
-                         style="width: 60px; height: 60px; border-radius: 50%;" />
-                    <br />
+                    <c:if test="${not empty detailWorkD.workDEndName}">
+                        <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDEndName}"
+                             alt="${detailWorkD.workDEndName}"
+                             style="width: 60px; height: 60px; border-radius: 50%;" /><br/>
+                    </c:if>
                     <input type="file" name="workDEndFile" id="workDEndFile" />
-                    <small>종료시간: <fmt:formatDate value="${detailWorkD.workDEndTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                    <c:if test="${not empty detailWorkD.workDEndTime}">
+                        <small>종료시간: <fmt:formatDate value="${detailWorkD.workDEndTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                    </c:if>
                 </div>
             </div>
 
