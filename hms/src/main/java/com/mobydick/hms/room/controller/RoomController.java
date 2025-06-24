@@ -89,7 +89,6 @@ public class RoomController {
 
         // 객실 관련 코드 조회
         List<CodeVO> codeList =  codeService.getRoomCode();
-        System.out.println("codeList: " + codeList);
 
         // view에 전달할 값
         model.addAttribute("codeList", codeList);
