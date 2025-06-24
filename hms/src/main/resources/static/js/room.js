@@ -59,6 +59,11 @@ function addRoom() {
 
     if(confirm('등록 하시겠습니까?')) {
 
+        if (roomName === '' || roomName === null) {
+            alert('객실 이름은 필수입니다!');
+            return;
+        }
+
         $.ajax({
             url: '/room/add',
             type: 'POST',
