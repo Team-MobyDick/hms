@@ -52,7 +52,7 @@
 
             <label>업무일자</label>
             <input type="date" id="startDate" required/>
-            ~
+            <span class="tilde">~</span>
             <input type="date" id="endDate" required/>
 
             <div style="margin-top: 15px;">

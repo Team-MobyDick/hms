@@ -115,11 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
     calendar.render();
 });
 
-$('#btnOpenModal').on('click', function () {
-    loadEmployee();
-    $('#scheduleModal').show();
-});
-
 $('#scheduleForm').on('submit', function (e) {
     e.preventDefault();
 
@@ -195,3 +190,26 @@ $('#btnDeleteSchedule').on('click', function () {
         });
     }
 });
+
+// 모달 열기
+$('#btnOpenModal').on('click', function () {
+    loadEmployee();
+    if ($('#scheduleModal').is(':visible')) {
+        $('#scheduleModal').hide();  // 이미 열려 있으면 닫기
+    } else {
+        $('#scheduleModal').show();  // 닫혀 있으면 열기
+    }
+});
+
+// 모달 닫기 버튼 클릭 시
+$('#scheduleModal button[type="button"]').on('click', function() {
+    $('#scheduleModal').hide();
+});
+
+// 모달 외부 클릭 시 모달 닫기
+$(document).on('click', function(event) {
+    if (!$(event.target).closest('#scheduleModal').length && !$(event.target).closest('#btnOpenModal').length) {
+        $('#scheduleModal').hide();
+    }
+});
+
