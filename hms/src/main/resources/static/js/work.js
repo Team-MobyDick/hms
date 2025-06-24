@@ -13,6 +13,89 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateStr = document.getElementById("serverDate").value;
     let currentDate = new Date(dateStr);
 
+    function renderWorkTable(res, formattedDate) {
+        const $tbody = $('#workTableBody').empty();
+
+        if (res.workMList && res.workMList.length) {
+            res.workMList.forEach(m => {
+                let addButton = '';
+                if (userRole === 'GR_01' || userRole === 'GR_02') {
+                    addButton = '<button class="add_btn_D">업무 배분</button>';
+                }
+
+                $tbody.append(`
+                    <tr class="workM-row"
+                        data-workm-id="${m.workMId}"
+                        data-workm-name="${m.workMName}"
+                        data-workm-dept="${m.workMDept}"
+                        data-workm-deptname="${res.codeMap[m.workMDept]}"
+                        data-workm-impo="${m.workMImpo}"
+                        data-workm-imponame="${res.codeMap[m.workMImpo]}"
+                        data-workm-id="${m.workMId}"
+                        data-userrole="${userRole}"
+                        data-date="${formattedDate}"
+                        data-workm-context="${m.workMContext}">
+                        <td>${res.codeMap[m.workMDept]}</td>
+                        <td>${m.workMName}</td>
+                        <td></td>
+                        <td>${res.codeMap[m.workMImpo]}</td>
+                        <td>${addButton}<button class="detail_btn_M">업무 상세</button></td>
+                    </tr>
+                `);
+            });
+        } else if (res.workDList && res.workDList.length) {
+            res.workDList.forEach(d => {
+                $tbody.append(`
+                    <tr class="workD-row" data-workd-id="${d.workDId}">
+                        <td>${d.workDName}</td>
+                        <td>${d.emplName}</td>
+                        <td>${res.codeMap[d.workDImpo]}</td>
+                        <td><button class="detail_btn_D">업무 상세</button></td>
+                    </tr>
+                `);
+            });
+        } else {
+            $tbody.append('<tr><td colspan="5">업무 없음</td></tr>');
+        }
+    }
+
+    function renderWorkTableHead(mode) {
+        const $thead = $('#workTableHead').empty();
+
+        if (mode === 'ALL') {
+            $thead.append(`
+                <tr>
+                    <th>부서</th>
+                    <th>업무명</th>
+                    <th>담당자</th>
+                    <th>중요도</th>
+                    <th>업무배분/상세</th>
+                </tr>
+            `);
+        } else if (mode === 'MINE') {
+            $thead.append(`
+                <tr>
+                    <th>업무명</th>
+                    <th>담당자</th>
+                    <th>중요도</th>
+                    <th>업무배분/상세</th>
+                </tr>
+            `);
+        }
+    }
+
+    function loadWorkList() {
+        const mode = $('input[name="mode"]:checked').val();
+        const date = currentDate.toISOString().split('T')[0].replaceAll('-', '');
+        const formattedDate = currentDate.toISOString().split('T')[0];
+        $.get('/work/listData', { date, mode })
+          .done(res => {
+              renderWorkTableHead(mode);
+              renderWorkTable(res, formattedDate);
+          })
+          .fail(() => alert('업무 목록 불러오기 실패'));
+    }
+
     function updateDateDisplay() {
         const yyyy = currentDate.getFullYear();
         const mm = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -20,7 +103,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const formatted = `${yyyy}-${mm}-${dd}`;
         document.getElementById("dateText").textContent = formatted;
         document.getElementById("datePicker").value = formatted;
+        loadWorkList();
     }
+    // 라디오버튼 모드 체인지
+    $('input[name="mode"]').on('change', loadWorkList);
 
     // 날짜 클릭 시 input[type=date] 보이기
     $('#dateText').on('click', function () {
@@ -48,10 +134,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 초기 화면 표시
-    updateDateDisplay();
+//    updateDateDisplay();
 });
 
 $(document).ready(function () {
+
 
     // 부서 목록 조회 (서버에서 가져오기)
     $.ajax({
@@ -120,14 +207,14 @@ $(document).ready(function () {
     });
 
     // 주업무 클릭 → 상세 업무 열기
-    $('.workM-row').on('click', function (e) {
+    $(document).on('click', '.workM-row', function (e) {
         // 버튼 클릭으로 유입되었으면 무시
         if ($(e.target).closest('button').length > 0) return;
 
         const $clickedRow = $(this);
         const workMId = $clickedRow.data('workm-id');
-        const rawDate = $clickedRow.data('date');
-        const date = rawDate.replaceAll('/', '');
+        const rawDate = String($clickedRow.data('date'));
+        const date = rawDate.replaceAll('-', '');
 
         const $existingRows = $(`.workD-row[data-parent="${workMId}"]`);
 
@@ -138,10 +225,6 @@ $(document).ready(function () {
             });
             return;
         }
-
-//        $(`.workD-row[data-parent="${workMId}"]`).slideUp(200, function () {
-//            $(this).remove();
-//        }); // 기존 열림 닫기
 
         $.ajax({
             url: '/work/detailWorkList',
@@ -274,19 +357,28 @@ $(document).ready(function () {
 
         const $btn = $(this);
         const $row = $btn.closest('tr');
+        const userRole = $row.data('userrole');
         const workMId = $row.data('workm-id');
         const workMName = $row.data('workm-name');
         const workMDept = $row.data('workm-dept');
         const workMImpo = $row.data('workm-impo');
+        const workMDeptName = $row.data('workm-deptname');
+        const workMImpoName = $row.data('workm-imponame');
         const workMContext = $row.data('workm-context');
 
         // 값 채워주기
         const $modal = $('.workMDetail');
         $modal.find('[name="workMId"]').val(workMId);
         $modal.find('[name="workMName"]').val(workMName);
+        $modal.find('[name="workMContext"]').val(workMContext);
+
+        if (userRole==='GR_01') {
         $modal.find('[name="workMDept"]').val(workMDept);
         $modal.find('[name="workMImpo"]').val(workMImpo);
-        $modal.find('[name="workMContext"]').val(workMContext);
+        } else {
+        $modal.find('[name="workMDept"]').val(workMDeptName);
+        $modal.find('[name="workMImpo"]').val(workMImpoName);
+        };
 
         $modal.fadeIn(200);
     });
@@ -370,6 +462,7 @@ $(document).on('click', '.add_btn_D', function (e) {
     const workMName = $row.data('workm-name');
     const workMDept = $row.data('workm-dept');
     const workMImpo = $row.data('workm-impo');
+    const date = $row.data('date');
     const workMContext = $row.data('workm-context');
 
 
@@ -394,7 +487,7 @@ $(document).on('click', '.add_btn_D', function (e) {
                         <select name="workDEmplId"></select>
                     </label>
                     <label>업무일자
-                        <input type="date" name="workDDate" />
+                        <input type="date" name="workDDate" value="${date}" />
                     </label>
                     <label>객실
                         <select name="workDRoomId"></select>
@@ -481,58 +574,5 @@ $(document).on('submit', '.workDForm', function (e) {
         }
     });
 });
-
-
-
-
-
-//// * workDDetail.jsp
-//
-//// 수정 버튼 클릭
-//$(document).on('submit', '.workDDetailForm', function (e) {
-//    e.preventDefault();
-//    const formData = new FormData(this);
-//
-////    const data = {
-////     workDId: $form.find('input[name="workDId"]').val(),
-////     workDName: $form.find('input[name="workDName"]').val(),
-////     workDEmplId: $form.find('select[name="workDEmplId"]').val(),
-////     workDDate: $form.find('input[name="workDDate"]').val(),
-////     workDRoomId: $form.find('select[name="workDRoomId"]').val(),
-////     workDImpo: $form.find('select[name="workDImpo"]').val(),
-////     workDContext: $form.find('textarea[name="workDContext"]').val(),
-////     workDIssue: $form.find('input[name="workDIssue"]').val().is(':checked'),
-////     workDExtra: $form.find('textarea[name="workDExtra"]').val(),
-////    };
-////
-////    if (!data.workDName || !data.workDDate || !data.workDImpo) {
-////     alert("업무 이름과 날짜, 중요도는 필수입니다.");
-////     return;
-////    }
-//
-//    $.ajax({
-//        url: '/work/modifyWorkD',
-//        method: 'POST',
-////        contentType: 'application/json',
-////        data: JSON.stringify(data),
-//        data: formData,
-//        contentType: false,
-//        processData: false,
-//        success: function() {
-//            alert('업무가 수정되었습니다.');
-//            location.reload();
-//        },
-//        error: function(xhr) {
-//            alert('실패: ' + xhr.responseText);
-//        }
-////        success: function () {
-////            alert('업무 내용이 수정되었습니다.');
-////            location.reload();
-////        },
-////        error: function (xhr) {
-////            alert('수정 실패: ' + xhr.responseText);
-////        }
-//    });
-//});
 
 

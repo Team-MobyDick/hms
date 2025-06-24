@@ -134,7 +134,7 @@
         a.workd_name,
         a.empl_id        AS workDEmplId,
         a.workd_dept,
-        a.workd_date,
+        TO_CHAR(a.workd_date, 'YYYY-MM-DD') AS workd_date,
         a.workd_context,
         a.workd_extra,
         a.room_id        AS workDRoomId,
@@ -146,10 +146,12 @@
         a.end_name       AS workDEndName,
         a.end_time       AS workDEndTime,
         b.empl_name,
-        c.room_name
+        c.room_name,
+        d.code_name      AS workd_impoN
         FROM    TB_WORK_D a
         LEFT JOIN TB_EMPL b on a.empl_id = b.empl_id
         LEFT JOIN TB_ROOM c on a.room_id = c.room_id
+        LEFT JOIN TB_CODE d on a.workd_impo = d.code_id
         WHERE   a.workd_id = #{workDId}
     </select>
 

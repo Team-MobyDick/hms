@@ -19,13 +19,16 @@
 
             <div style="display: flex; gap: 8px; margin-bottom: 12px;">
                 <button type="submit">수정</button>
-                <button type="button" class="delete_btn_D">취소</button>
-                <button type="button" class="cancle_btn_D">삭제</button>
+                <button type="button" class="delete_btn_D" onclick="history.back();">취소</button>
+                <c:if test="${userRole != 'GR_03'}">
+                    <button type="button" class="cancle_btn_D">삭제</button>
+                </c:if>
             </div>
             <input type="hidden" name="workDId" value="${detailWorkD.workDId}" >
             <div class="form-group">
+                <label>지시자명</label>
                 <select name="workDOrderId" disabled>
-                    <c:forEach var="empl" items="${emplList}">
+                    <c:forEach var="empl" items="${allEmplList}">
                       <option value="${empl.codeId}"
                           <c:if test="${empl.codeId == detailWorkD.orderId}">selected</c:if>>
                           ${empl.codeName}
@@ -101,7 +104,7 @@
                 <label>중요도</label>
                 <c:choose>
                     <c:when test="${userRole != 'GR_01' && userRole != 'GR_02'}">
-                        <input type="text" name="workDImpoName" value="${detailWorkD.workDImpo}" readonly>
+                        <input type="text" name="workDImpoName" value="${detailWorkD.workDImpoN}" readonly>
                         <select name="workDImpo" style="display: none;" >
                             <c:forEach var="impo" items="${impoList}">
                               <option value="${impo.codeId}"

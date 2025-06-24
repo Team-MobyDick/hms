@@ -6,7 +6,7 @@
 
 <jsp:useBean id="now" class="java.util.Date" />
 <c:set var="setDate" value="${now}" />
-<fmt:formatDate value="${setDate}" pattern="yyyy/MM/dd" var="formattedDate" />
+<fmt:formatDate value="${setDate}" pattern="yyyy-MM-dd" var="formattedDate" />
 
 <!DOCTYPE html>
 <html>
@@ -15,32 +15,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/work.css"/>
 
-    <style>
-        .date-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 18px;
-            margin: 20px;
-        }
-        .hidden {
-            display: none;
-        }
-        button {
-            padding: 5px 10px;
-        }
-        #dateText {
-            cursor: pointer;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-        }
-    </style>
-
 </head>
 <body data-role="${userRole}">
 <input type="hidden" id="serverDate" value="${formattedDate}" />
     <h2>업무 목록</h2>
 
+    <!-- 날짜 영역 -->
     <div class="date-container">
         <button id="prevBtn">←</button>
 
@@ -51,6 +31,19 @@
 
         <button id="nextBtn">→</button>
     </div>
+
+    <!-- 라디오버튼 영역 -->
+    <div class="mode-container" style="margin-top: 8px;">
+        <label style="margin-right: 12px;">
+            <input type="radio" name="mode" value="ALL"
+               <c:if test="${userRole == 'GR_01' || userRole == 'GR_02'}">checked</c:if>> 전체업무
+        </label>
+        <label>
+            <input type="radio" name="mode" value="MINE"
+               <c:if test="${userRole != 'GR_01' && userRole != 'GR_02'}">checked</c:if>> 내업무
+        </label>
+    </div>
+
     <c:if test="${userRole == 'GR_01'}">
         <button id="add_btn_M">업무 등록</button>
     </c:if>
@@ -89,7 +82,7 @@
     <table>
         <c:choose>
             <c:when test="${not empty workMList}">
-                <thead>
+                <thead id="workTableHead">
                     <tr>
                         <th>부서</th>
                         <th>업무명</th>
@@ -98,7 +91,7 @@
                         <th>업무배분/상세</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="workTableBody">
                     <c:forEach var="workM" items="${workMList}">
                         <tr class="workM-row"
                             data-workm-name="${workM.workMName}"
@@ -116,7 +109,7 @@
                             <td data-label="중요도">${codeMap[workM.workMImpo]}</td>
                             <td data-label="상세/업무배분">
                             <c:if test="${userRole == 'GR_01'||userRole == 'GR_02'}">
-                                <button class="add_btn_D">업무 배분</button>
+                            <button class="add_btn_D" >업무 배분</button>
                             </c:if>
                             <button class="detail_btn_M">업무 상세</button>
                             </td>
@@ -125,7 +118,7 @@
                 </tbody>
             </c:when>
             <c:when test="${not empty workDList}">
-                <thead>
+                <thead id="workTableHead">
                     <tr>
                         <th>업무명</th>
                         <th>담당자</th>
@@ -133,7 +126,7 @@
                         <th>업무배분/상세</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="workTableBody">
                     <c:forEach var="workD" items="${workDList}">
                         <tr class="workD-row"
                             data-parent="${workD.workMId}"
@@ -147,7 +140,7 @@
                 </tbody>
             </c:when>
             <c:otherwise>
-                <thead>
+                <thead id="workTableHead">
                     <tr>
                         <th>부서</th>
                         <th>업무명</th>
@@ -156,7 +149,7 @@
                         <th>업무배분/상세</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="workTableBody">
                     <tr><td colspan="6">업무 목록이 비어 있습니다.</td></tr>
                 </tbody>
             </c:otherwise>
@@ -183,8 +176,14 @@
                 </c:choose>
             </label>
             <label>중요도
-                <select name="workMImpo"
-                            ${userRole != 'GR_01' ? 'readonly' : ''}>
+                <c:choose>
+                    <c:when test="${userRole != 'GR_01'}">
+                        <input type="text" name="workMImpo" readonly>
+                    </c:when>
+                    <c:otherwise>
+                        <select name="workMImpo">
+                    </c:otherwise>
+                </c:choose>
                 </select>
             </label>
             <label>업무내용
@@ -202,6 +201,7 @@
 </body>
 <script>
     const contextPath = '${pageContext.request.contextPath}';
+    var userRole = '${userRole}';
 </script>
 <script src="/js/work.js"></script>
 </html>

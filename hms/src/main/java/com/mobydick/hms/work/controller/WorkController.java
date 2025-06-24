@@ -69,6 +69,39 @@ public class WorkController {
         return "index";
     }
 
+    // 목록 재로딩
+    @GetMapping("/listData")
+    @ResponseBody
+    public Map<String, Object> listData(
+            @RequestParam String date,
+            @RequestParam(required = false) String mode,
+            HttpSession session) throws Exception {
+
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
+        List<WorkVO> workMList = null;
+        List<WorkVO> workDList = null;
+
+        if ("ALL".equals(mode)) {
+            workMList = workService.selectAllWorkM();
+        } else {
+            workDList = workService.selectWorkDByEmplByDate(loginUser.getEmplId(), date);
+        }
+
+        List<WorkVO> codeList = workService.getCodeIdAndName(); // 전체 코드 목록
+
+        // 맵 (코드ID → 코드명) 생성
+        Map<String, String> codeMap = codeList.stream()
+                .collect(Collectors.toMap(WorkVO::getCodeId, WorkVO::getCodeName, (v1, v2) -> v1, LinkedHashMap::new));
+
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("workMList", workMList);
+        result.put("workDList", workDList);
+        result.put("codeMap", codeMap);
+        return result;
+    }
+
     // 주 업무 등록
     @PostMapping("/addWorkM")
     public ResponseEntity<String> addWorkM(@RequestBody WorkVO vo, HttpSession session) {
@@ -149,6 +182,7 @@ public class WorkController {
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
         String grade = loginUser.getEmplGrade();
         List<WorkVO> emplList;
+        List<WorkVO> allEmplList = workService.getEmpl();
         List<WorkVO> roomList = workService.getRoom();
         List<WorkVO> impoList = workService.getImpo();
         if ("GR_01".equals(grade)) {
@@ -162,6 +196,7 @@ public class WorkController {
         WorkVO detailWorkD = workService.selectDetailWorkD(workDId);
 
         model.addAttribute("emplList", emplList);
+        model.addAttribute("allEmplList", allEmplList);
         model.addAttribute("roomList", roomList);
         model.addAttribute("impoList", impoList);
         model.addAttribute("detailWorkD", detailWorkD);

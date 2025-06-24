@@ -1,3 +1,22 @@
+
+.date-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    margin: 20px;
+}
+.hidden {
+    display: none;
+}
+button {
+    padding: 5px 10px;
+}
+#dateText {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+}
 /* 전체 모달 오버레이 스타일 */
 .workMDetail {
     position: fixed;
