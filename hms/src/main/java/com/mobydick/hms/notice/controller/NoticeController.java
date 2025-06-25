@@ -98,6 +98,7 @@ public class NoticeController {
             }
             noticeVO.setEmplId(loginUserId);
             noticeVO.setCreatedId(loginUserId);
+            noticeVO.setUpdatedId(loginUserId);
 
             noticeService.insertNotice(noticeVO);
             return ResponseEntity.ok("등록 성공");
