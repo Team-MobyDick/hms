@@ -2,6 +2,7 @@ package com.mobydick.hms.room.service;
 
 import com.mobydick.hms.room.dao.RoomDAO;
 import com.mobydick.hms.room.vo.RoomVO;
+import com.mobydick.hms.work.vo.WorkVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,4 +54,11 @@ public class RoomServiceImpl implements RoomService {
         roomDAO.roomDelete(roomId);
     }
 
+    // 객실 할일 조회
+
+
+    @Override
+    public List<WorkVO> selectWorkListByRoomId(String roomId) {
+        return roomDAO.selectWorkListByRoomId(roomId);
+    }
 }

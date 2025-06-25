@@ -54,37 +54,41 @@
             </thead>
 
             <tbody>
-
-                <c:choose>
-
-                    <c:when test="${not empty roomList}">
-
-                        <c:forEach var="room" items="${roomList}">
-                            <tr onclick="loadDetail('${room.roomId}')">
-                                <td>${room.roomName}</td>
-                                <td>${room.roomClassName}</td>
+            <c:choose>
+                <c:when test="${not empty roomList}">
+                    <c:forEach var="room" items="${roomList}">
+                        <tr onclick="loadDetail('${room.roomId}')">
+                            <td>${room.roomName}</td>
+                            <td>${room.roomClassName}</td>
+                            <td>
                                 <c:choose>
-                                    <c:when test="${not empty room.workdName}">
-                                        <td>${room.workdName} / ${room.emplName}</td>
+                                    <c:when test="${not empty room.workdList}">
+                                        <c:forEach var="w" items="${room.workdList}" varStatus="status">
+                                            <c:if test="${status.index < 3}">
+                                                <div style="margin-bottom: 2px;">
+                                                    <span style="font-weight: bold;">[${w.workDName}]</span>
+                                                    <span>${w.emplName}</span>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${fn:length(room.workdList) > 3}">
+                                            <div style="color: gray;">...외 ${fn:length(room.workdList) - 3}건</div>
+                                        </c:if>
                                     </c:when>
                                     <c:otherwise>
-                                      <td>-</td>
+                                        -
                                     </c:otherwise>
                                 </c:choose>
-
-                            </tr>
-                        </c:forEach>
-
-                    </c:when>
-
-                    <c:otherwise>
-                        <tr>
-                            <td colspan="4" style="text-align: center;">객실 목록이 비어 있습니다.</td>
+                            </td>
                         </tr>
-                    </c:otherwise>
-
-                </c:choose>
-
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                        <td colspan="3" style="text-align: center;">객실 목록이 비어 있습니다.</td>
+                    </tr>
+                </c:otherwise>
+            </c:choose>
             </tbody>
 
         </table>

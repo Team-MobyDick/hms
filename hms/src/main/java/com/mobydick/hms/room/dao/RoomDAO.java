@@ -1,6 +1,7 @@
 package com.mobydick.hms.room.dao;
 
 import com.mobydick.hms.room.vo.RoomVO;
+import com.mobydick.hms.work.vo.WorkVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
 import java.util.List;
@@ -26,5 +27,8 @@ public interface RoomDAO {
 
     // 객실 삭제
     void roomDelete(String roomId) throws DataAccessException;
+
+    // 객실 할일 조회
+    List<WorkVO> selectWorkListByRoomId(String roomId);
 
 }

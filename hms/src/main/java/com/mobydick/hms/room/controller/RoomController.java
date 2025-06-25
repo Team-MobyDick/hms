@@ -6,6 +6,7 @@ import com.mobydick.hms.code.vo.CodeVO;
 import com.mobydick.hms.login.vo.LoginVO;
 import com.mobydick.hms.room.service.RoomService;
 import com.mobydick.hms.room.vo.RoomVO;
+import com.mobydick.hms.work.vo.WorkVO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,9 +38,8 @@ public class RoomController {
             @RequestParam(required = false) String roomType,
             HttpSession session
     ) throws Exception {
-        
-        try {
 
+        try {
             List<RoomVO> allRooms;
 
             if (roomType != null && !roomType.isEmpty()) {
@@ -48,26 +48,23 @@ public class RoomController {
                 allRooms = roomService.selectAllRooms();
             }
 
-            int totalCount = allRooms.size();                                   // 전체 객실 수 조회
-            int totalPages = (int) Math.ceil((double) totalCount / pageSize);   // 한 페이지에 표시할 객실 수
-            int startIndex = (page - 1) * pageSize;                             // 시작 위치
+            int totalCount = allRooms.size();
+            int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+            int startIndex = (page - 1) * pageSize;
 
-            // 전체 객실 조회
-            List<RoomVO> roomList =  (startIndex < totalCount)
+            List<RoomVO> roomList = (startIndex < totalCount)
                     ? allRooms.subList(startIndex, Math.min(startIndex + pageSize, totalCount))
                     : new ArrayList<>();
 
-            // 페이징 처리
-            if (startIndex < totalCount) {
-                roomList = allRooms.subList(startIndex, Math.min(startIndex + pageSize, totalCount));
-            } else {
-                roomList = new ArrayList<>();
+            // 각 객실에 업무 리스트 붙이기
+            for (RoomVO room : roomList) {
+                List<WorkVO> workList = roomService.selectWorkListByRoomId(room.getRoomId());
+                room.setWorkdList(workList);
             }
 
             // 객실 관련 코드 조회
-            List<CodeVO> codeList =  codeService.getRoomCode();
+            List<CodeVO> codeList = codeService.getRoomCode();
 
-            // view에 전달할 값
             model.addAttribute("screenTitle", "객실 관리");
             model.addAttribute("roomList", roomList);
             model.addAttribute("codeList", codeList);
@@ -81,13 +78,10 @@ public class RoomController {
             return "index";
 
         } catch (Exception e) {
-
-            e.printStackTrace();    // 에러 출력 용(운영시에는 뺼것)
+            e.printStackTrace();
             model.addAttribute("errorMessage", "목록 조회 중 오류 발생");
             return "error";
-
         }
-
     }
 
     // 객실 세부 조회
@@ -100,6 +94,10 @@ public class RoomController {
 
         // 객실 관련 코드 조회
         List<CodeVO> codeList =  codeService.getRoomCode();
+
+        // detail용 업무 리스트 추가
+        List<WorkVO> workList = roomService.selectWorkListByRoomId(roomId);
+        vo.setWorkdList(workList);  // roomDetail에 세팅
 
         // view에 전달할 값
         model.addAttribute("codeList", codeList);

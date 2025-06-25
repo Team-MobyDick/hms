@@ -1,6 +1,8 @@
 package com.mobydick.hms.room.service;
 
 import com.mobydick.hms.room.vo.RoomVO;
+import com.mobydick.hms.work.vo.WorkVO;
+
 import java.util.List;
 
 // 객실 관리 서비스 인터페이스
@@ -23,4 +25,7 @@ public interface RoomService {
 
     // 객실 삭제
     void roomDelete(String roomId) throws Exception;
+
+    // 객실 할일 조회
+    List<WorkVO> selectWorkListByRoomId(String roomId);
 }

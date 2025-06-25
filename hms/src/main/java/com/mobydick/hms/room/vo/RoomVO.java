@@ -1,7 +1,9 @@
 package com.mobydick.hms.room.vo;
 
+import com.mobydick.hms.work.vo.WorkVO;
 import lombok.Data;
 import java.sql.Date;
+import java.util.List;
 
 // 객실 정보를 담는 VO
 @Data
@@ -22,5 +24,7 @@ public class RoomVO {
     // 업무명, 담당자명
     private String workdName;      // 업무명
     private String emplName;       // 담당자명
+
+    private List<WorkVO> workdList;
 
 }
