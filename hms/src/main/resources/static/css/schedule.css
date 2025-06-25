@@ -97,6 +97,16 @@
     background-color: #218838;
 }
 
+#btnDeleteSchedule {
+    background-color: #dc3545;
+    cursor: pointer;
+}
+
+#btnDeleteSchedule:hover {
+    background-color: #c82333;
+    cursor: pointer;
+}
+
 /* 버튼 컨테이너 가운데 정렬 */
 #scheduleModal div {
     display: flex;
