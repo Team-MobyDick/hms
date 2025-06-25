@@ -113,7 +113,7 @@
             c_state.CODE_NAME AS workdStateName
         FROM TB_SCHEDULE s
                  JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
-                 LEFT JOIN TB_WORK_D w ON s.EMPL_ID = w.EMPL_ID AND s.SCHE_DATE = w.WORKD_DATE
+                 LEFT JOIN TB_WORK_D w ON s.EMPL_ID = w.EMPL_ID AND TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') = TO_CHAR(w.WORKD_DATE, 'YYYYMMDD')
                  LEFT JOIN TB_CODE c_state ON w.WORKD_DEPT = c_state.CODE_ID
         WHERE s.SCHE_DATE LIKE #{start}
     </select>
