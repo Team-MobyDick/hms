@@ -59,7 +59,8 @@
                                 data-writer="${notice.emplId}"
                                 data-date="<fmt:formatDate value='${notice.createdDate}' pattern='yyyy-MM-dd' />"
                                 data-content="${fn:escapeXml(notice.noticeContent)}">
-                                <td>${(currentPage - 1) * pageSize + status.count}</td>
+                                <%--<td>${(currentPage - 1) * pageSize + status.count}</td>--%>
+                                <td>${notice.bno}</td>
                                 <td>${notice.noticeTitle}</td>
                                 <td>${notice.emplId}</td>
                                 <td><fmt:formatDate value="${notice.createdDate}" pattern="yyyy-MM-dd" /></td>

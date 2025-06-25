@@ -3,17 +3,13 @@
 // 등록
 $("#saveBtn").click(function () {
 
-    var formData = $("#noticeForm").serialize();
+    const formData = $("#noticeForm").serialize();
 
-    /* 제목과 내용 */
-    var noticeTitle = document.getElementsByName("noticeTitle")[0].value.trim();
-    var noticeContent = document.getElementsByName("noticeContent")[0].value.trim();
+    const form = document.getElementById('noticeForm');
 
-    if (noticeTitle === "" || noticeTitle === null || noticeContent === "" ||  noticeContent === null) {
-
-        alert("제목과 내용을 입력해주세요!");
+    if (!form.checkValidity()) {
+        form.reportValidity(); // 브라우저에서 메시지 자동 표시
         return;
-
     }
 
     $.ajax({
@@ -21,11 +17,11 @@ $("#saveBtn").click(function () {
         type: "POST",
         data: formData,
         success: function () {
-            alert("등록 성공");
+            alert("처리가 완료되었습니다.");
             location.href = contextPath + "/notice/list";
         },
         error: function (err) {
-            alert("등록 실패: " + err.responseText);
+            alert("등록 처리에 실패하였습니다. 잠시 후 다시 시도하시거나 관리자에게 문의 바랍니다.");
         }
     });
 
@@ -33,19 +29,15 @@ $("#saveBtn").click(function () {
 
 // 수정
 $("#updateBtn").click(function () {
+
     const noticeId = $("input[name='noticeId']").val();
+    const formData = $("#noticeForm").serialize();
 
-    var formData = $("#noticeForm").serialize();
+    const form = document.getElementById('noticeForm');
 
-    /* 제목과 내용 */
-    var noticeTitle = document.getElementsByName("noticeTitle")[0].value.trim();
-    var noticeContent = document.getElementsByName("noticeContent")[0].value.trim();
-
-    if (noticeTitle === "" || noticeTitle === null || noticeContent === "" ||  noticeContent === null) {
-
-        alert("제목과 내용을 입력해주세요!");
+    if (!form.checkValidity()) {
+        form.reportValidity(); // 브라우저에서 메시지 자동 표시
         return;
-
     }
 
     $.ajax({
@@ -53,11 +45,11 @@ $("#updateBtn").click(function () {
         type: "POST", // 🔥 PUT → POST 변경!
         data: formData,
         success: function () {
-            alert("수정 성공");
+            alert("처리가 완료되었습니다.");
             location.href = contextPath + "/notice/list";
         },
         error: function (err) {
-            alert("수정 실패: " + err.responseText);
+            alert("수정 처리에 실패하였습니다. 잠시 후 다시 시도하시거나 관리자에게 문의 바랍니다.");
         }
     });
 });

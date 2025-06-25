@@ -8,17 +8,18 @@ import java.sql.Date;
 public class NoticeVO {
 
     // 기본 공지사항 정보
-    private Integer noticeId;   // 공지 ID
-    private String noticeTitle; //공지 제목
-    private String emplId;  //글쓴이
-    private String noticeContent;   //공지 내용
+    private Integer noticeId;           // 공지 ID
+    private Integer bno;             // 화면에 보여줄 번호
+    private String noticeTitle;         //공지 제목
+    private String emplId;              //글쓴이
+    private String noticeContent;       //공지 내용
 
 
     // 생성/수정 정보
-    private Date createdDate;   // 작성일자
-    private String createdId;   // 작성자 ID
-    private Date updatedDate;   // 수정일자
-    private String updatedId;    // 수정자 ID
+    private Date createdDate;           // 작성일자
+    private String createdId;           // 작성자 ID
+    private Date updatedDate;           // 수정일자
+    private String updatedId;           // 수정자 ID
 
     // 작성자 이름 (JOIN을 통해 가져올 필드)
     private String emplName;

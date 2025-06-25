@@ -10,6 +10,7 @@
         <![CDATA[
         SELECT
             A.NOTICE_ID,
+            ROW_NUMBER() OVER(ORDER BY A.CREATED_DATE) AS BNO,
             A.NOTICE_TITLE,
 --             A.EMPL_ID,
             B.EMPL_NAME AS EMPL_ID,
@@ -54,13 +55,15 @@
         NOTICE_TITLE,
         EMPL_ID,
         NOTICE_CONTENT,
-        CREATED_ID
+        CREATED_ID,
+        UPDATED_ID
         ) VALUES (
         #{noticeId},
         #{noticeTitle},
         #{emplId},
         #{noticeContent},
-        #{createdId}
+        #{createdId},
+        #{updatedId}
         )
     </insert>
 
