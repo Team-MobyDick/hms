@@ -60,12 +60,12 @@ public class NoticeController {
     }
 
     // 공지사항 등록 폼
-    @GetMapping("/form")
+    @GetMapping("/noticeForm")
     public String showForm(Model model) {
         model.addAttribute("notice", new NoticeVO());  // 빈 객체
         model.addAttribute("mode", "add");
         model.addAttribute("screenTitle", "공지사항 등록");
-        model.addAttribute("bodyPage", "notice/form.jsp");
+        model.addAttribute("bodyPage", "notice/noticeForm.jsp");
         return "index";
     }
 
@@ -77,7 +77,7 @@ public class NoticeController {
             model.addAttribute("notice", notice);
             model.addAttribute("mode", "edit");
             model.addAttribute("screenTitle", "공지사항 수정");
-            model.addAttribute("bodyPage", "notice/form.jsp");
+            model.addAttribute("bodyPage", "notice/noticeForm.jsp");
             return "index";
         } catch (Exception e) {
             e.printStackTrace();

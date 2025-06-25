@@ -22,16 +22,19 @@
             <label>내용:</label><br/>
             <textarea name="noticeContent" rows="6" cols="60" required>${notice.noticeContent}</textarea><br/>
 
-            <c:choose>
-                <c:when test="${mode == 'edit'}">
-                    <button type="button" id="updateBtn">수정</button>
-                    <button type="button" id="cancelBtn">취소</button>
-                </c:when>
-                <c:otherwise>
-                    <button type="button" id="saveBtn">등록</button>
-                    <button type="button" id="cancelBtn">취소</button>
-                </c:otherwise>
-            </c:choose>
+            <div class="buttons" id="buttons">
+                <c:choose>
+                    <c:when test="${mode == 'edit'}">
+                        <button type="button" id="updateBtn" style="background-color: #007bff;">수정</button>
+                        <button type="button" id="cancelBtn">취소</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="button" id="saveBtn">등록</button>
+                        <button type="button" id="cancelBtn">취소</button>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+
         </form>
 
         <script>
