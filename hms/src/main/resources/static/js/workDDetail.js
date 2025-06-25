@@ -70,14 +70,15 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: function(res) {
-                    alert('수정됨');
+                    alert('업무 상세내용이 갱신되었습니다!');
+                    window.location.href = '/work/list';
                 },
                 error: function(xhr) {
                     alert('실패: ' + xhr.statusText);
                 }
             });
         })
-        .catch(err => alert('파일 업로드 실패'));
+        .catch(err => alert('파일 업로드 실패, 파일 형식과 크기를 확인해 주세요'));
     });
 
     // 삭제 버튼 클릭

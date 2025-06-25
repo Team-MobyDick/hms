@@ -15,15 +15,16 @@
 <body data-role="${userRole}">
     <div class="workDDetail">
         <form class="workDDetailForm" enctype="multipart/form-data">
-            <h3 style="margin-bottom: 12px;">할 일 상세보기/수정</h3>
+            <h3 style="margin-bottom: 12px;">업무 상세보기</h3>
 
             <div style="display: flex; gap: 8px; margin-bottom: 12px;">
                 <button type="submit">수정</button>
-                <button type="button" class="cancle_btn_D" onclick="history.back();">취소</button>
                 <c:if test="${userRole != 'GR_03'}">
                     <button type="button" class="delete_btn_D">삭제</button>
                 </c:if>
+                <button type="button" class="cancle_btn_D" onclick="history.back();">취소</button>
             </div>
+            <input type="hidden" name="workMId" value="${detailWorkD.workMId}" >
             <input type="hidden" name="workDId" value="${detailWorkD.workDId}" >
             <div class="form-group">
                 <label>지시자명</label>
@@ -129,7 +130,7 @@
             </div>
 
             <div class="form-group">
-                <label>업무 내용</label>
+                <label>업무 상세내용</label>
                 <textarea name="workDContext" rows="3"
                         ${userRole != 'GR_01' && userRole != 'GR_02' ? 'readonly' : ''}>${detailWorkD.workDContext}</textarea>
             </div>

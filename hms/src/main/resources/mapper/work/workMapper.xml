@@ -23,7 +23,7 @@
                 a.workm_context,
                 a.workm_impo
         FROM TB_WORK_M a
-        ORDER BY a.workm_dept, a.workm_impo desc
+        ORDER BY a.workm_dept, a.workm_impo desc, a.workm_name
     </select>
 
 
@@ -133,6 +133,7 @@
     <!-- 상세 업무 조회 -->
     <select id="selectDetailWorkD" parameterType="String" resultType="com.mobydick.hms.work.vo.WorkVO">
         SELECT  a.workd_id,
+        a.workm_id,
         a.workd_name,
         a.empl_id        AS workDEmplId,
         a.workd_dept,

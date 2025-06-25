@@ -60,11 +60,11 @@
     <insert id="insertSchedule" parameterType="com.mobydick.hms.schedule.vo.ScheduleVO">
         INSERT INTO TB_SCHEDULE (
             SCHE_ID, SCHE_DATE, EMPL_ID, SCHE_SHIFT,
-            CREATED_DATE, CREATED_ID, UPDATED_DATE, UPDATED_ID
+            CREATED_DATE, CREATED_ID, UPDATED_DATE, UPDATED_ID, DUP_CHECK
         )
         VALUES (
                    #{scheId}, #{scheDate}, #{emplId}, #{scheShift},
-                   SYSDATE, #{createdId}, SYSDATE, #{updatedId}
+                   SYSDATE, #{createdId}, SYSDATE, #{updatedId}, #{dupCheck}
                )
     </insert>
 

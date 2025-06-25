@@ -129,7 +129,8 @@ $('#scheduleForm').on('submit', function (e) {
         scheduleList.push({
             emplId: emplId,
             scheDate: isoDate,
-            scheShift: shift
+            scheShift: shift,
+            dupCheck: emplId+isoDate+shift,
         });
     }
 
@@ -144,7 +145,7 @@ $('#scheduleForm').on('submit', function (e) {
             calendar.refetchEvents();
         },
         error: function () {
-            alert("등록 실패. 입력값을 확인해주세요.");
+            alert("해당 직원의 스케줄이 중복으로 등록됐습니다. 다시 한 번 확인해주세요.");
         }
     });
 });

@@ -261,7 +261,7 @@ $(document).ready(function () {
                 if (detailWorks.length === 0) {
                     const emptyRow = $(`
                         <tr class="workD-row" data-parent="${workMId}">
-                            <td colspan="5" style="background:#f0f0f0;">상세업무가 없습니다.</td>
+                            <td colspan="5" style="background:#f0f0f0; font-size:14px;">상세업무가 없습니다.</td>
                         </tr>
                     `);
                     $clickedRow.after(emptyRow);
@@ -272,7 +272,7 @@ $(document).ready(function () {
                             <tr class="workD-row"
                                 data-parent="${workMId}"
                                 data-workd-id="${detail.workDId}"
-                                style="display:none; background:#f0f0f0;">
+                                style="display:none; background:#f0f0f0; font-size:14px;">
                                 <td data-label="부서"></td>
                                 <td data-label="업무명">${detail.workDName}</td>
                                 <td data-label="담당자">${detail.emplName}</td>
