@@ -16,11 +16,11 @@
 
             <!-- 관리자 또는 팀장 공통 메뉴 -->
             <c:if test="${grade == 'GR_01' || grade == 'GR_02'}">
-                <li onclick="location.href='${pageContext.request.contextPath}/room/list'">객실관리</li>
-                <li onclick="location.href='${pageContext.request.contextPath}/employee/list'">직원관리</li>
+                <li onclick="location.href='${pageContext.request.contextPath}/room/list'">객실</li>
+                <li onclick="location.href='${pageContext.request.contextPath}/employee/list'">직원</li>
             </c:if>
 
-            <li onclick="location.href='${pageContext.request.contextPath}/work/list'">업무관리</li>
+            <li onclick="location.href='${pageContext.request.contextPath}/work/list'">업무</li>
             <li onclick="location.href='${pageContext.request.contextPath}/schedule/list'">스케줄</li>
             <li onclick="location.href='${pageContext.request.contextPath}/notice/list'">공지사항</li>
 
