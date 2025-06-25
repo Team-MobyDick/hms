@@ -39,6 +39,10 @@
             TB_ROOM A
             LEFT JOIN TB_WORK_D B
                 ON A.ROOM_ID = B.ROOM_ID
+            <![CDATA[
+                AND B.WORKD_DATE >= TRUNC(SYSDATE)
+                AND B.WORKD_DATE < TRUNC(SYSDATE) + 1
+            ]]>
             LEFT JOIN TB_EMPL C
                 ON B.EMPL_ID = C.EMPL_ID
         GROUP BY

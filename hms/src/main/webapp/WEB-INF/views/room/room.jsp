@@ -49,8 +49,7 @@
                 <tr>
                     <th>객실 이름</th>
                     <th>객실 종류</th>
-                    <th>업무 내용</th>
-                    <th >담당자</th>
+                    <th>업무 / 담당자</th>
                 </tr>
             </thead>
 
@@ -64,8 +63,15 @@
                             <tr onclick="loadDetail('${room.roomId}')">
                                 <td>${room.roomName}</td>
                                 <td>${room.roomClassName}</td>
-                                <td>${room.workdName}</td>
-                                <td>${room.emplName}</td>
+                                <c:choose>
+                                    <c:when test="${not empty room.workdName}">
+                                        <td>${room.workdName} / ${room.emplName}</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                      <td>-</td>
+                                    </c:otherwise>
+                                </c:choose>
+
                             </tr>
                         </c:forEach>
 

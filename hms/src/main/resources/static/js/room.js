@@ -83,7 +83,7 @@ function addRoom() {
         return;
     }
 
-    if(confirm('등록 하시겠습니까?')) {
+    if(confirm('객실을 등록하시겠습니까?')) {
 
         $.ajax({
             url: '/room/add',
@@ -94,7 +94,7 @@ function addRoom() {
                 roomClassName: roomClassName,
             },
             success: function() {
-                alert('등록 성공!');
+                alert('처리가 완료되었습니다.');
                 $('#addRoomContainer').slideUp(); // 등록 후 닫기
                 $('#addForm')[0].reset(); // 입력 초기화
 
@@ -114,7 +114,7 @@ function addRoom() {
 /* 상세정보에서 수정하기 버튼 눌렀을 때 */
 function saveChanges(roomId) {
 
-    if(confirm('수정 하시겠습니까?')) {
+    if(confirm('객실을 수정하시겠습니까?')) {
         
         // 입력된 수정 값들 가져오기
         const roomName = $('#editForm_' + roomId + ' input[name="roomName"]').val();
@@ -132,7 +132,7 @@ function saveChanges(roomId) {
                 roomClassName: roomClassName,
             },
             success: function() {
-                alert("수정이 완료되었습니다.");
+                alert("처리가 완료되었습니다.");
                 // 수정 후 새로 고침 혹은 변경된 내용 반영
                 location.reload();
             },
@@ -152,7 +152,7 @@ function saveChanges(roomId) {
 /* 삭제하기 버튼 눌렀을 때 */
 function deleteRoom(roomId) {
 
-    if(confirm('삭제 하시겠습니까?')) {
+    if(confirm('객실을 삭제하시겠습니까?')) {
 
         // 삭제할 방의 ID전달
         $.ajax({
@@ -162,7 +162,7 @@ function deleteRoom(roomId) {
                 roomId: roomId,
             },
             success: function() {
-                alert("삭제가 완료되었습니다.");
+                alert("처리가 완료되었습니다.");
                 location.reload();
             },
             error: function(xhr, status, error) {

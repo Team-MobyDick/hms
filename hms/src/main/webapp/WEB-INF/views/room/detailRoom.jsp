@@ -49,12 +49,16 @@
                 </td>
             </tr>
             <tr>
-                <th>업무 내용</th>
-                <td>${roomDetail.workdName}</td>
-            </tr>
-            <tr>
-                <th>담당자</th>
-                <td>${roomDetail.emplName}</td>
+                <th>업무 / 담당자</th>
+                <c:choose>
+                    <c:when test="${not empty roomDetail.workdName}">
+                        <td>${roomDetail.workdName} / ${roomDetail.emplName}</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>-</td>
+                    </c:otherwise>
+                </c:choose>
+
             </tr>
             <tr>
                 <td colspan="2">
