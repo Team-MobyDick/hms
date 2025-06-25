@@ -63,6 +63,15 @@ img {
     background-color: #4CAF50;
 }
 
+#add_cancel {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 #add_btn:hover,
 .sort-btn:hover {
     background-color: #45a049;
@@ -94,6 +103,15 @@ img {
 }
 .btn-retire:hover {
     background-color: #8c1c1c;
+}
+
+.btn-close{
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 /* 이미 퇴사 처리된 버튼  */
