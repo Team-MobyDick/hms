@@ -51,6 +51,7 @@ public interface WorkService {
     List<WorkVO> getImpo();
     List<WorkVO> getRoom();
     List<WorkVO> getEmpl();
-    List<WorkVO> selectEmployeesByDept(String emplDept) throws Exception;
+    List<WorkVO> selectEmployeesByDept(String emplDept, String date) throws Exception;
 
+    List<WorkVO> getEmplbySche(String date) throws Exception;
 }

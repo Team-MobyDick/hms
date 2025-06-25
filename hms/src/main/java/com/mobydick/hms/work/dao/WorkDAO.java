@@ -42,5 +42,7 @@ public interface WorkDAO {
 
     List<WorkVO> getEmpl() throws DataAccessException;
 
-    List<WorkVO> selectEmployeesByDept(String emplDept) throws DataAccessException;
+    List<WorkVO> selectEmployeesByDept(String emplDept, String date) throws DataAccessException;
+
+    List<WorkVO> getEmplbySche(String date) throws DataAccessException;
 }

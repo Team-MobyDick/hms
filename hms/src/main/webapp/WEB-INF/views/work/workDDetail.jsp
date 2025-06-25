@@ -3,6 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}" />
+<c:set var="userId" value="${sessionScope.loginUser.emplId}" />
+<c:set var="userDept" value="${sessionScope.loginUser.emplDept}" />
 
 <!DOCTYPE html>
 <html>
@@ -18,8 +20,10 @@
             <h3 style="margin-bottom: 12px;">업무 상세보기</h3>
 
             <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                <c:if test="${userRole != 'GR_03' || userId == 'detailWorkD.workDEmplId'}">
                 <button type="submit">수정</button>
-                <c:if test="${userRole != 'GR_03'}">
+                </c:if>
+                <c:if test="${userRole == 'GR_01' || (userRole == 'GR_02' && userDept == detailWorkD.workDDept)}">
                     <button type="button" class="delete_btn_D">삭제</button>
                 </c:if>
                 <button type="button" class="cancle_btn_D" onclick="history.back();">취소</button>
@@ -37,7 +41,13 @@
                     </c:forEach>
                 </select>
                 <label>업무명</label>
-                <input type="text" name="workDName" value="${detailWorkD.workDName}"
+                <input type="text" name="workDName" value="${detailWorkD.workDName}" maxlength="50" required
+                        ${userRole != 'GR_01' && userRole != 'GR_02' ? 'readonly' : ''} />
+            </div>
+
+            <div class="form-group">
+                <label>업무일자</label>
+                <input type="date" name="workDDate" value="${detailWorkD.workDDate}" required
                         ${userRole != 'GR_01' && userRole != 'GR_02' ? 'readonly' : ''} />
             </div>
 
@@ -66,12 +76,6 @@
                         </select>
                     </c:otherwise>
                 </c:choose>
-            </div>
-
-            <div class="form-group">
-                <label>업무일자</label>
-                <input type="date" name="workDDate" value="${detailWorkD.workDDate}"
-                        ${userRole != 'GR_01' && userRole != 'GR_02' ? 'readonly' : ''} />
             </div>
 
             <div class="form-group">
@@ -136,10 +140,12 @@
             </div>
 
             <div class="form-group" style="display: flex; gap: 12px; align-items: center;">
+
+                <!-- 시작 부분 -->
                 <div style="text-align: center;">
                     <label>시작사진</label><br />
                     <c:if test="${not empty detailWorkD.workDStartName}">
-                        <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDStartName}"
+                        <img src="/work_photos/${detailWorkD.workDStartName}"
                              alt="${detailWorkD.workDStartName}"
                              style="width: 60px; height: 60px; border-radius: 50%;" /><br/>
                     </c:if>
@@ -155,7 +161,7 @@
                 <div id="endPhotoContainer" style="text-align: center; ${empty detailWorkD.workDStartName ? 'display:none;' : ''}">
                     <label>종료사진</label><br />
                     <c:if test="${not empty detailWorkD.workDEndName}">
-                        <img src="${pageContext.request.contextPath}/uploads/${detailWorkD.workDEndName}"
+                        <img src="/work_photos/${detailWorkD.workDEndName}"
                              alt="${detailWorkD.workDEndName}"
                              style="width: 60px; height: 60px; border-radius: 50%;" /><br/>
                     </c:if>

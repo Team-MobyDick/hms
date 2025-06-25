@@ -95,7 +95,11 @@ public class WorkServiceImpl implements WorkService{
         return workDAO.getEmpl();
     };
     @Override
-    public List<WorkVO> selectEmployeesByDept(String emplDept) throws Exception {
-        return workDAO.selectEmployeesByDept(emplDept);
+    public List<WorkVO> selectEmployeesByDept(String emplDept, String date) throws Exception {
+        return workDAO.selectEmployeesByDept(emplDept,date);
+    };
+    @Override
+    public List<WorkVO> getEmplbySche(String date) throws Exception {
+        return workDAO.getEmplbySche(date);
     };
 }

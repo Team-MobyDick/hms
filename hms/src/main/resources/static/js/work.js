@@ -272,6 +272,7 @@ $(document).ready(function () {
                             <tr class="workD-row"
                                 data-parent="${workMId}"
                                 data-workd-id="${detail.workDId}"
+                                data-date="${rawDate}"
                                 style="display:none; background:#f0f0f0; font-size:14px;">
                                 <td data-label="부서"></td>
                                 <td data-label="업무명">${detail.workDName}</td>
@@ -301,13 +302,14 @@ $(document).ready(function () {
         e.preventDefault();
 
         const workDId = $(this).closest('tr').data('workd-id');
+        const date = $(this).closest('tr').data('date');
 
         if (!workDId) {
             alert('업무 ID를 찾을 수 없습니다.');
             return;
         }
 
-        window.location.href = `${contextPath}/work/detailWorkD?workDId=${workDId}`;
+        window.location.href = `${contextPath}/work/detailWorkD?workDId=${workDId}&date=${date}`;
     });
 
 
@@ -356,11 +358,6 @@ $(document).ready(function () {
              workMImpo: $('select[name="workMImpo"]').val(),
              workMContext: $('textarea[name="workMContext"]').val(),
          };
-
-         if (!data.workMName || !data.workMDept || !data.workMImpo) {
-             alert("업무 이름과 부서, 중요도는 필수입니다.");
-             return;
-         }
 
          $.ajax({
              type: 'POST',
@@ -429,11 +426,6 @@ $(document).ready(function () {
          workMContext: $form.find('textarea[name="workMContext"]').val(),
         };
 
-        if (!data.workMName || !data.workMDept || !data.workMImpo) {
-         alert("업무 이름과 부서, 중요도는 필수입니다.");
-         return;
-        }
-
         $.ajax({
             url: '/work/modifyWorkM',
             method: 'POST',
@@ -495,6 +487,7 @@ $(document).on('click', '.add_btn_D', function (e) {
     const workMImpo = $row.data('workm-impo');
     const date = $row.data('date');
     const workMContext = $row.data('workm-context');
+    const emplListByDate = null;
 
 
     // 이미 열려있는 등록 폼 제거
@@ -512,13 +505,13 @@ $(document).on('click', '.add_btn_D', function (e) {
                     <input type="hidden" name="workMId" value="${workMId}" />
                     <input type="hidden" name="workDDept" value="${workMDept}" />
                     <label>업무명
-                        <input type="text" name="workDName" value="${workMName}" />
+                        <input type="text" name="workDName" value="${workMName}" maxlength="50" required />
+                    </label>
+                    <label>업무일자
+                        <input type="date" name="workDDate" value="${date}" required />
                     </label>
                     <label>담당자
                         <select name="workDEmplId"></select>
-                    </label>
-                    <label>업무일자
-                        <input type="date" name="workDDate" value="${date}" />
                     </label>
                     <label>객실
                         <select name="workDRoomId"></select>
@@ -556,10 +549,22 @@ $(document).on('click', '.add_btn_D', function (e) {
     });
     $roomSelect.append(`<option value="" selected>선택없음</option>`);
 
-    // 직원 목록 추가
+    // 부서별 출근 사원 목록 조회 (서버에서 가져오기)
     const $emplSelect = formRow.find('select[name="workDEmplId"]');
-    emplList.forEach(i => {
-        $emplSelect.append(`<option value="${i.codeId}">${i.codeName}</option>`);
+    $.ajax({
+        url: '/work/emplListByDate', // 서버에서 방 타입 목록을 가져옵니다.
+        type: 'GET',
+        data: {
+            date : date,
+        },
+        success: function(data) {
+            data.forEach(i => {
+                $emplSelect.append(`<option value="${i.codeId}">${i.codeName}</option>`);
+            });
+        },
+        error: function() {
+            console.error("중요도 목록을 불러오는 데 실패했습니다.");
+        }
     });
 });
 $(document).on('click', '.add_cancle_D', function () {
@@ -583,11 +588,6 @@ $(document).on('submit', '.workDForm', function (e) {
      workDImpo: $form.find('select[name="workDImpo"]').val(),
      workDContext: $form.find('textarea[name="workDContext"]').val(),
     };
-
-    if (!data.workDName || !data.workDDate || !data.workDImpo) {
-     alert("업무 이름과 날짜, 중요도는 필수입니다.");
-     return;
-    }
 
     $.ajax({
         url: '/work/addWorkD',

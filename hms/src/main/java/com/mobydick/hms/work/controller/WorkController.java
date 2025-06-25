@@ -5,6 +5,7 @@ import com.mobydick.hms.room.vo.RoomVO;
 import com.mobydick.hms.work.service.WorkService;
 import com.mobydick.hms.work.vo.WorkVO;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 // 할일 관리 컨트롤러
+@Slf4j
 @Controller
 @RequestMapping("/work")
 public class WorkController {
@@ -178,7 +180,7 @@ public class WorkController {
 
     // 상세업무 개별 버튼 클릭시 상세페이지 이동
     @GetMapping("/detailWorkD")
-    public String getDetailWorkD(Model model, HttpSession session, @RequestParam("workDId") String workDId) throws Exception {
+    public String getDetailWorkD(Model model, HttpSession session, @RequestParam("workDId") String workDId, @RequestParam("date") String date) throws Exception {
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
         String grade = loginUser.getEmplGrade();
         List<WorkVO> emplList;
@@ -186,12 +188,13 @@ public class WorkController {
         List<WorkVO> roomList = workService.getRoom();
         List<WorkVO> impoList = workService.getImpo();
         if ("GR_01".equals(grade)) {
-            emplList = workService.getEmpl();
+            emplList = workService.getEmplbySche(date);
         } else if ("GR_02".equals(grade)) {
-            emplList = workService.selectEmployeesByDept(loginUser.getEmplDept());
+            emplList = workService.selectEmployeesByDept(loginUser.getEmplDept(),date);
         } else {
             emplList = Collections.emptyList();
         }
+        log.info("date = {}", date);
 
         WorkVO detailWorkD = workService.selectDetailWorkD(workDId);
 
@@ -253,10 +256,27 @@ public class WorkController {
         }
     }
 
+    // 부서별 출근 직원 목록 (AJAX)
+    @GetMapping("/emplListByDate")
+    @ResponseBody
+    public List<WorkVO> getemplByDate(@RequestParam("date") String date, HttpSession session) throws Exception {
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+        String grade = loginUser.getEmplGrade();
+        List<WorkVO> emplList;
+        if ("GR_01".equals(grade)) {
+            emplList = workService.getEmplbySche(date);
+        } else if ("GR_02".equals(grade)) {
+            emplList = workService.selectEmployeesByDept(loginUser.getEmplDept(),date);
+        } else {
+            emplList = Collections.emptyList();
+        }
+        return emplList;
+    }
+
     @PostMapping("/uploadFile")
     @ResponseBody
     public Map<String, String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        Path uploadDir = Paths.get("C:/hms_uploads/employee_photos");
+        Path uploadDir = Paths.get("C:/hms_uploads/work_photos");
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);
         }

@@ -59,7 +59,7 @@
                 <th>동작</th>
             </tr>
             <tr>
-                <td><input id="workMName" type="text" name="workMName" placeholder="업무명" maxlength="50"></td>
+                <td><input id="workMName" type="text" name="workMName" placeholder="업무명" maxlength="50" required></td>
                 <td>
                     <select name="workMDept" id="workMDept">
                     </select>
@@ -161,7 +161,7 @@
         <form class="workMDetailForm">
             <input type="hidden" name="workMId" />
             <label>업무명
-                <input type="text" name="workMName"
+                <input type="text" name="workMName" maxlength="50" required
                             ${userRole != 'GR_01' ? 'readonly' : ''} />
             </label>
             <label>부서
