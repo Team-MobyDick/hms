@@ -33,7 +33,7 @@
                                         </c:choose>
                                     </c:set>
 
-                                    <img src="${photoSrc}" alt="${emp.emplName} 사진">
+                                    <img src="/employee_photos/${emp.photoName}" alt="${emp.emplName} 사진">
 
                                     <div class="employee-info">
                                         <div class="name">
