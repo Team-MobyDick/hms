@@ -105,7 +105,7 @@ $(document).ready(function () {
                                         </select>
                                     </td>
                                 </tr>
-                                <tr><th style="padding:8px;">전화번호</th><td><input type="text" name="emplPhone" value="${phone}"></td></tr>
+                                <tr><th style="padding:8px;">전화번호</th><td><input type="text" name="emplPhone" value="${maskPhoneNumber(phone)}" readonly></td></tr>
                                 <tr><th style="padding:8px;">메모</th><td><input type="text" name="emplNotes" value="${note}"></td></tr>
                                 <tr><th>등록일</th><td>${createdDate}</td></tr>
                                 <tr><th>퇴사 여부</th><td>${retiredYn === 'Y' ? '<span style="color: red; font-weight: bold;">퇴사</span>' : '<span>재직</span>'}</td></tr>
@@ -463,6 +463,15 @@ $(document).ready(function () {
     });
 
 });
+
+// 전화번호 뒷 4자리를 *로 마스킹
+function maskPhoneNumber(phoneNumber) {
+    if (!phoneNumber || phoneNumber.length < 4) {
+        return phoneNumber;
+    }
+
+    return phoneNumber.substring(0, phoneNumber.length - 4) + '****';
+}
 
 const modal = document.querySelector('.modal');
 

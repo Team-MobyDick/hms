@@ -69,7 +69,6 @@
     <table>
         <thead>
             <tr>
-                <th>직원 ID</th>
                 <th>이름</th>
                 <th>부서</th>
                 <th>직책</th>
@@ -97,7 +96,6 @@
                             data-photo-path="${emp.photoPath}"
                             data-retired-yn="${emp.retiredYn}"
                         >
-                            <td>${emp.emplId}</td>
                             <td>${emp.emplName}</td>
                             <td>
                                 <c:choose>
@@ -124,7 +122,13 @@
                                     <c:otherwise>미정</c:otherwise>
                                 </c:choose>
                             </td>
-                            <td>${emp.emplPhone}</td>
+                            <td>
+                                <c:set var="maskedPhone" value="${emp.emplPhone}" />
+                                <c:if test="${fn:length(maskedPhone) ge 4}">
+                                    <c:set var="maskedPhone" value="${fn:substring(maskedPhone, 0, fn:length(maskedPhone) - 4)}****" />
+                                </c:if>
+                                ${maskedPhone}
+                            </td>
                             <td>${emp.emplNotes}</td>
                             <td><fmt:formatDate value="${emp.createdDate}" pattern="yyyy-MM-dd"/></td>
                             <td>
