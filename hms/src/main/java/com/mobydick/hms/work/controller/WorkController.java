@@ -154,7 +154,7 @@ public class WorkController {
     public ResponseEntity<String> addWorkD(@RequestBody WorkVO vo, HttpSession session) {
         try {
             // 상세 업무 ID 생성
-            String workDId = "008" + String.format("%015d", new Random().nextInt(100000));
+            String workDId = "008" + String.format("%015d", new Random().nextInt(10000000));
             String loginUserId = ((LoginVO) session.getAttribute("loginUser")).getEmplId();
 
             vo.setWorkDId(workDId);

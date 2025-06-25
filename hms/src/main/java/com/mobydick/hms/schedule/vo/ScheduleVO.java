@@ -20,6 +20,7 @@ public class ScheduleVO {
     private String createdId;   // 작성자 ID
     private Date updatedDate;   // 수정일자
     private String updatedId;   // 수정자 ID
+    private String dupCheck;   // 중복체크
 
     // 세션 정보용
     private String emplGrade;

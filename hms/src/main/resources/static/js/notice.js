@@ -33,7 +33,7 @@ $(document).ready(function () {
     // 등록 버튼 클릭 시 폼 이동
     $('#add_btn').on('click', function getButtonsByRole (userRole, id) {
 
-        location.href = contextPath + '/notice/form';
+        location.href = contextPath + '/notice/noticeForm';
 
 
     });
