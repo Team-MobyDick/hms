@@ -35,7 +35,9 @@ public class LoginController {
                         Model model,
                         HttpSession session) throws Exception {
 
-        LoginVO loginUser = loginService.selectEmployeeById(emplId);
+        String strEmplId = emplId.replaceAll(" ","");
+
+        LoginVO loginUser = loginService.selectEmployeeById(strEmplId);
 
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
