@@ -102,7 +102,7 @@ function addRoom() {
 
             },
             error: function(xhr, status, error) {
-                alert('등록 실패: ' + error);
+                alert("등록 처리에 실패하였습니다. 잠시 후 다시 시도하시거나 관리자에게 문의 바랍니다.");
             }
         });
 
@@ -137,7 +137,7 @@ function saveChanges(roomId) {
                 location.reload();
             },
             error: function(xhr, status, error) {
-                alert("수정 실패: " + error);
+                alert("수정 처리에 실패하였습니다. 잠시 후 다시 시도하시거나 관리자에게 문의 바랍니다.");
             }
         });
 
