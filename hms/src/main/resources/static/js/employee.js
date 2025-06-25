@@ -170,11 +170,24 @@ $(document).ready(function () {
     });
 
     // 신규 등록 폼 열기/닫기
-    $('#add_btn').click(() => $('#newEmployeeForm').toggle(300));
+    $('#add_btn').click(() => {
+        const $newEmployeeForm = $('#newEmployeeForm');
+        const $addBtn = $('#add_btn');
+
+        if ($newEmployeeForm.is(':hidden')) {
+            $newEmployeeForm.show(300);
+            $addBtn.text('닫기'); // 닫기 버튼으로 변경
+        } else {
+            $newEmployeeForm[0].reset();
+            $newEmployeeForm.hide(300);
+            $addBtn.text('직원 등록'); // 원래 버튼으로 복원
+        }
+    });
 
     $('#add_cancel').click(() => {
         $('#newEmployeeForm')[0].reset();
         $('#newEmployeeForm').hide(300);
+        $('#add_btn').text('직원 등록');
     });
 
     // 신규 등록 폼 제출
