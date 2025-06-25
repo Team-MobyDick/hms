@@ -32,6 +32,8 @@ public class CommonServiceImpl implements CommonService {
         // 대시보드 데이터를 담을 CommonVO 객체 생성
         CommonVO dashboardData = new CommonVO();
 
+        commonDAO.resetCoffeeWinnerStatus();
+
         // 오늘의 사원 정보 조회 후 CommonVO에 설정
         List<EmployeeVO> employees = getEmployeesOfTheDayDailyFixed();
         dashboardData.setEmployeesOfTheDay(employees);
@@ -44,9 +46,9 @@ public class CommonServiceImpl implements CommonService {
                     System.out.println("====== 오늘의 커피 당첨자 선정 시작 (재시작/새날) ======");
 
                     try {
-                        commonDAO.resetCoffeeWinnerStatus();
 
                         if (employees != null && !employees.isEmpty()) {
+
                             Random random = new Random();
                             // '오늘의 사원' 3명 중 1명 선택
                             int winnerIndex = random.nextInt(employees.size());
