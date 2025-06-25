@@ -30,7 +30,7 @@
         <h3>스케줄 상세</h3>
         <div id="scheduleDetailContent">날짜를 클릭하면 스케줄이 표시됩니다.</div>
         <c:if test="${userRole eq 'GR_01' or userRole eq 'GR_02'}">
-            <button id="btnDeleteSchedule" style="display: none;">선택된 스케줄 삭제</button>
+            <button id="btnDeleteSchedule" style="display:none; background-color:#dc3545; cursor:pointer;">선택된 스케줄 삭제</button>
             <input type="hidden" id="selectedScheId"/>
         </c:if>
     </div>
