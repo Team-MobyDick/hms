@@ -129,7 +129,7 @@
                                 </c:if>
                                 ${maskedPhone}
                             </td>
-                            <td>${emp.emplNotes}</td>
+                            <td><span class="notes-display">${emp.emplNotes}</span></td>
                             <td><fmt:formatDate value="${emp.createdDate}" pattern="yyyy-MM-dd"/></td>
                             <td>
                                 <div class="photo-container">

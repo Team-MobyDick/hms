@@ -12,7 +12,7 @@ table {
 th,
 td {
   border: 1px solid #ddd;
-  padding: 12px;
+  padding: 6px 8px;
   text-align: center;
   vertical-align: middle;
 }
@@ -115,8 +115,8 @@ img {
 
 /* 직원 목록 및 상세 보기에서 사용되는 사진 컨테이너 */
 .photo-container {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto 10px;
@@ -127,6 +127,14 @@ img {
     background-color: #f0f0f0;
 }
 
+.notes-display {
+    display: block;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 auto;
+}
 
 /* JS에서 동적 생성되는 사진 업로드 영역 */
 .upload-section {
