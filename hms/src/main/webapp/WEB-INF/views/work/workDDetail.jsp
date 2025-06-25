@@ -142,7 +142,9 @@
                              alt="${detailWorkD.workDStartName}"
                              style="width: 60px; height: 60px; border-radius: 50%;" /><br/>
                     </c:if>
-                    <input type="file" name="workDStartFile" id="workDStartFile" />
+                    <c:if test="${empty detailWorkD.workDStartName}">
+                        <input type="file" name="workDStartFile" id="workDStartFile" />
+                    </c:if>
                     <c:if test="${not empty detailWorkD.workDStartTime}">
                         <small>시작시간: <fmt:formatDate value="${detailWorkD.workDStartTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                     </c:if>
@@ -156,7 +158,9 @@
                              alt="${detailWorkD.workDEndName}"
                              style="width: 60px; height: 60px; border-radius: 50%;" /><br/>
                     </c:if>
-                    <input type="file" name="workDEndFile" id="workDEndFile" />
+                    <c:if test="${empty detailWorkD.workDEndName}">
+                        <input type="file" name="workDEndFile" id="workDEndFile" />
+                    </c:if>
                     <c:if test="${not empty detailWorkD.workDEndTime}">
                         <small>종료시간: <fmt:formatDate value="${detailWorkD.workDEndTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                     </c:if>

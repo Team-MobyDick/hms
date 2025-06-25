@@ -443,6 +443,7 @@ $(document).ready(function () {
                 alert('주 업무 내용이 수정되었습니다.');
                 // 성공 후 필요한 작업
                 $formDiv.fadeOut(200);
+                location.reload();
             },
             error: function (xhr) {
                 alert('수정 실패: ' + xhr.responseText);
@@ -453,6 +454,9 @@ $(document).ready(function () {
     // 삭제 버튼 클릭
     $(document).on('click', '.delete_btn_M', function (e) {
         e.preventDefault();
+        if(!confirm('삭제하시겠습니까?')){
+            return;
+        }
         const $form = $(this).closest('form');
         const $formDiv = $form.closest('div');
 
@@ -468,6 +472,7 @@ $(document).ready(function () {
                 alert('주 업무 내용이 삭제되었습니다.');
                 // 성공 후 필요한 작업
                 $formDiv.fadeOut(200);
+                location.reload();
             },
             error: function (xhr) {
                 alert('삭제 실패: ' + xhr.responseText);
