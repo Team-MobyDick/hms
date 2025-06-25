@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sidebar.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css"/>
 
     <!-- 개별 페이지용 CSS  -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css"/>

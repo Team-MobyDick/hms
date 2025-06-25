@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<div class="pagination-container">
 <c:if test="${totalPages > 1}">
   <div class="pagination">
 
@@ -21,3 +21,4 @@
 
   </div>
 </c:if>
+</div>
