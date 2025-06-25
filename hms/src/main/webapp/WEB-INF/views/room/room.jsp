@@ -19,11 +19,26 @@
 
     <h2>객실 관리</h2>
 
-
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+        <!-- 왼쪽: 객실 등록 버튼 -->
         <button id="add_btn" onclick="toggleAddRoom();">객실 등록</button>
 
+        <!-- 오른쪽: 필터 셀렉트 -->
+        <form id="filterForm" method="get" action="/room/list" style="margin-left: auto;">
+            <select name="roomType" onchange="document.getElementById('filterForm').submit();"
+                    style="padding: 4px 8px; font-size: 13px; width: 140px;">
+                <option value="">전체 보기</option>
+                <c:forEach var="code" items="${codeList}">
+                    <option value="${code.codeId}" ${selectedType == code.codeId ? 'selected' : ''}>
+                            ${code.codeName}
+                    </option>
+                </c:forEach>
+            </select>
+        </form>
+    </div>
+
         <%-- 객실 등록 폼 --%>
-        <div id="addRoomContainer" style="display: none;">
+        <div id="addRoomContainer">
             <jsp:include page="addRoom.jsp" />
         </div>
 
@@ -67,9 +82,6 @@
             </tbody>
 
         </table>
-
-        <%-- 객실 상세 정보 페이지 --%>
-        <div id="roomDetailContainer" style="display: none; margin-top: 20px;"></div>
 
         <%-- 페이징 처리 영역 --%>
         <jsp:include page="/WEB-INF/views/include/pagination.jsp" />

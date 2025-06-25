@@ -101,6 +101,21 @@
                 ORDER BY A.ROOM_CLASS
     </select>
 
+    <!-- 객실 필터링 -->
+    <select id="selectRoomsByType" parameterType="String" resultType="com.mobydick.hms.room.vo.RoomVO">
+        SELECT
+               ROOM_ID,
+               ROOM_NAME,
+               ROOM_CLASS,
+               ROOM_CLASSNAME,
+               CREATED_DATE,
+               CREATED_ID,
+               UPDATED_DATE,
+               UPDATED_ID
+        FROM TB_ROOM
+            WHERE ROOM_CLASS = #{roomType}
+    </select>
+
     <!-- 객실 등록 -->
     <insert id="insertRoom" parameterType="com.mobydick.hms.room.vo.RoomVO">
         INSERT INTO TB_ROOM (

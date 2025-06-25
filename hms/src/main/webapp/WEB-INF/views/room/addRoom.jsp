@@ -22,7 +22,7 @@
                 <tr>
                     <th>객실 이름</th>
                     <th>객실 종류</th>
-                    <th>버튼</th>
+                    <th></th>
                 </tr>
 
                 <tr>
@@ -33,11 +33,13 @@
                                 type="text"
                                 name="roomName"
                                 placeholder="객실 이름을 100자 내로 적어주세요."
-                                maxlength="100">
+                                maxlength="100"
+                                required
+                        >
                     </td>
 
                     <td>
-                        <select name="roomType" id="roomType">
+                        <select name="roomType" id="roomType" required>
                             <c:forEach var="code" items="${codeList}">
                                 <option value="${code.codeId}">${code.codeName}</option>
                             </c:forEach>
@@ -45,8 +47,8 @@
                     </td>
 
                     <td>
-                        <button type="button" onclick="addRoom();">등록</button>
-                        <button type="button" id="add_cancle">취소</button>
+                        <button type="button" id="add_btn" class="add_btn" onclick="addRoom();">등록</button>
+                        <button type="button" id="cancelBtn" class="cancelBtn">취소</button>
                     </td>
 
                 </tr>

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/room.css"/>
 
 <%-- detailRoom.jsp --%>
 
@@ -9,7 +10,7 @@
     <form id="editForm_${roomDetail.roomId}">
         <table>
             <tr>
-                <th colspan="2">객실 상세 보기 / 수정</th>
+                <th colspan="2">객실 상세 정보</th>
             </tr>
             <tr>
                 <th>객실 이름</th>
@@ -58,8 +59,8 @@
             <tr>
                 <td colspan="2">
                     <c:if test="${userRole == 'GR_01'}">
-                        <button type="button" onclick="deleteRoom('${roomDetail.roomId}')">삭제하기</button>
-                        <button type="button" onclick="saveChanges('${roomDetail.roomId}')">수정하기</button>
+                        <button type="button" class="updateBtn" id="updateBtn" onclick="saveChanges('${roomDetail.roomId}')">수정하기</button>
+                        <button type="button" class="deleteBtn" id="deleteBtn" onclick="deleteRoom('${roomDetail.roomId}')">삭제하기</button>
                     </c:if>
                     <button type="button" onclick="closeDetail('${roomDetail.roomId}')">닫기</button>
                 </td>

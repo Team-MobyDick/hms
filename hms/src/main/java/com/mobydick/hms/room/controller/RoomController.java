@@ -34,18 +34,28 @@ public class RoomController {
             Model model,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(required = false) String roomType,
             HttpSession session
     ) throws Exception {
         
         try {
 
-            int totalCount = roomService.selectAllRooms().size();               // 전체 객실 수 조회
+            List<RoomVO> allRooms;
+
+            if (roomType != null && !roomType.isEmpty()) {
+                allRooms = roomService.selectRoomsByType(roomType);
+            } else {
+                allRooms = roomService.selectAllRooms();
+            }
+
+            int totalCount = allRooms.size();                                   // 전체 객실 수 조회
             int totalPages = (int) Math.ceil((double) totalCount / pageSize);   // 한 페이지에 표시할 객실 수
             int startIndex = (page - 1) * pageSize;                             // 시작 위치
 
             // 전체 객실 조회
-            List<RoomVO> allRooms =  roomService.selectAllRooms();
-            List<RoomVO> roomList;
+            List<RoomVO> roomList =  (startIndex < totalCount)
+                    ? allRooms.subList(startIndex, Math.min(startIndex + pageSize, totalCount))
+                    : new ArrayList<>();
 
             // 페이징 처리
             if (startIndex < totalCount) {
@@ -66,6 +76,7 @@ public class RoomController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("pageSize", pageSize);
+            model.addAttribute("selectedType", roomType);
 
             return "index";
 

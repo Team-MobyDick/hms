@@ -1,51 +1,70 @@
 /* room.jsp에서 사용될 js */
 
 /* 객실 등록 버튼 */
+
 function toggleAddRoom() {
     const container = document.getElementById('addRoomContainer');
-    container.style.display = (container.style.display === 'none') ? 'block' : 'none';
+    const button = document.getElementById('add_btn');
+
+    const isHidden = !container.classList.contains('show');
+
+    closeDetail();
+
+    container.classList.toggle('show');
+    button.textContent = isHidden ? '닫기' : '객실 등록';
 }
 
 /* 객실 상세 정보 로딩 */
 function loadDetail(roomId) {
+    const $clickedRow = $(event.currentTarget);
+    const $existingRow = $('.room-detail-row');
 
-    const $container = $('#roomDetailContainer');
+    $('#addRoomContainer').removeClass('show');
+    $('#add_btn').text('객실 등록');
 
-    // 이미 열려 있고, 같은 roomId의 상세가 열려 있으면 닫기
-    if ($container.is(':visible') && $container.data('roomId') === roomId) {
-
+    if ($existingRow.length && $existingRow.data('roomId') === roomId) {
         closeDetail();
         return;
-
     }
 
-    /* 선택한 행의 아이디로 조회 */
+    $existingRow.remove(); // 기존 상세 닫기
+
+    // 상세 <tr> 즉시 삽입 (애니메이션 없음)
+    const $newRow = $(`
+        <tr class="room-detail-row" data-room-id="${roomId}">
+            <td colspan="4">
+                <div class="room-detail-content" style="opacity: 0;">로딩중...</div>
+            </td>
+        </tr>
+    `);
+    $clickedRow.after($newRow);
+
+    // Ajax 요청
     $.ajax({
         url: '/room/detail',
         type: 'GET',
-        data:  {roomId : roomId},
+        data: { roomId: roomId },
         success: function (response) {
-
-            $('#roomDetailContainer')
-                .html(response)
-                .data('roomId', roomId)
-                .slideDown();
-
+            const $content = $newRow.find('.room-detail-content');
+            $content.html(response).css('opacity', 0).animate({ opacity: 1 }, 200); // 부드럽게 fade-in
         },
-        error: function (xhr, status, error) {
-            alert("상세 정보를 불러오지 못했습니다: " + error);
+        error: function () {
+            $newRow.find('.room-detail-content').text('불러오기 실패');
         }
     });
 }
 
 /* 상세 보기에서 닫기 버튼 눌렀을 때 */
 function closeDetail() {
-    $('#roomDetailContainer').slideUp();
+    const $row = $('.room-detail-row');
+    $row.fadeOut(150, function () {
+        $row.remove();
+    });
 }
 
 
 $(document).ready(function() {
-    $('#add_cancle').on('click', function() {
+    $('#cancelBtn').on('click', function() {
         $('#addRoomContainer').hide();
     });
 });
@@ -57,12 +76,14 @@ function addRoom() {
     const roomClass = $('#roomType').val();
     const roomClassName = $('#roomType option:selected').text();
 
-    if(confirm('등록 하시겠습니까?')) {
+    const form = document.getElementById('addForm');
 
-        if (roomName === '' || roomName === null) {
-            alert('객실 이름은 필수입니다!');
-            return;
-        }
+    if (!form.checkValidity()) {
+        form.reportValidity(); // 브라우저에서 메시지 자동 표시
+        return;
+    }
+
+    if(confirm('등록 하시겠습니까?')) {
 
         $.ajax({
             url: '/room/add',

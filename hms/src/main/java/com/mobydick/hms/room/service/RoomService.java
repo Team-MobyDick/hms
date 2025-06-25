@@ -12,6 +12,9 @@ public interface RoomService {
     // 객실 세부 조회
     RoomVO selectRoomById(String roomId) throws Exception;
 
+    // 객실 필터링
+    List<RoomVO> selectRoomsByType(String roomType) throws Exception;
+
     // 객실 등록
     void insertRoom(RoomVO roomVO) throws Exception;
 

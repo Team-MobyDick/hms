@@ -24,11 +24,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
     // 객실 세부 조회
-
-
     @Override
     public RoomVO selectRoomById(String roomId) throws Exception {
         return roomDAO.selectRoomById(roomId);
+    }
+
+    // 객실 필터링
+    @Override
+    public List<RoomVO> selectRoomsByType(String roomType) throws Exception {
+        return roomDAO.selectRoomsByType(roomType);
     }
 
     // 객실 등록
