@@ -23,7 +23,7 @@ qrLoginBtn.addEventListener('click', function () {
                 // QR 코드에서 ID 추출 후 폼으로 전송
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = '${pageContext.request.contextPath}/login';
+                form.action = '/login';
 
                 const input = document.createElement('input');
                 input.type = 'hidden';
