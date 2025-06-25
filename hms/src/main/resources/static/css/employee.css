@@ -72,6 +72,37 @@ img {
     opacity: 0.9;
 }
 
+.btn-update {
+    background-color: #007bff;
+    color: white;
+}
+.btn-update:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+.btn-retire {
+    background-color: #ff6347;
+    color: white;
+}
+.btn-retire:hover {
+    background-color: #8c1c1c;
+}
+
+/* 이미 퇴사 처리된 버튼  */
+.action-btn[disabled] {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+    color: #666;
+}
+
 
 /* === 상세 슬라이드 및 내용 === */
 .detail-slide .slide-content {
