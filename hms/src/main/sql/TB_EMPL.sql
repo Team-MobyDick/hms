@@ -50,5 +50,6 @@ INSERT INTO TB_EMPL VALUES
         'ADMIN',
         SYSDATE,
         'ADMIN',
+        'N',
         'N'
     );
