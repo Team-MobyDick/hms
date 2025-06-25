@@ -23,6 +23,7 @@
                 a.workm_context,
                 a.workm_impo
         FROM TB_WORK_M a
+        ORDER BY a.workm_dept, a.workm_impo desc
     </select>
 
 
@@ -50,6 +51,7 @@
         LEFT JOIN TB_ROOM c on a.room_id = c.room_id
         WHERE   TO_CHAR(a.workd_date, 'YYYYMMDD') = #{date}
         AND     a.empl_id = #{emplId}
+        ORDER BY a.workd_impo desc, a.workd_name
     </select>
 
     <!-- 주 업무 등록 -->
@@ -208,7 +210,7 @@
         LEFT JOIN TB_ROOM c on a.room_id = c.room_id
         WHERE a.workm_id = #{workMId}
         AND TO_CHAR(a.workd_date, 'YYYYMMDD') = #{date}
-        ORDER BY a.workd_name
+        ORDER BY a.empl_id, a.workd_impo desc, a.workd_name
     </select>
 
     <!-- 부서 목록 조회 (TP 코드만) -->
