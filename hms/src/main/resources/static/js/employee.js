@@ -413,7 +413,7 @@ $(document).ready(function () {
 
         // 총지배인만 퇴사된 직원 삭제 가능
         if (userRole !== 'GR_01' && retiredYn === 'Y') {
-            alert('퇴사된 직원은 총지배인만 영구 삭제할 수 있습니다.');
+            alert('퇴사된 직원은 총지배인만 삭제할 수 있습니다.');
             return;
         }
 
@@ -450,7 +450,10 @@ $(document).ready(function () {
         // 버튼의 data-empid 속성에서 직원 ID 가져오기
         const emplIdToRetire = $(this).data('empid');
 
-        if (confirm(`직원 ID: ${emplIdToRetire} 을(를) 정말 퇴사 처리하시겠습니까? (이 작업은 되돌릴 수 없습니다.)`)) {
+        // 직원 이름
+        const employeeName = $(this).closest('.detail-slide').prev('.employee-row').data('name');
+
+        if (confirm(`${employeeName} 님을 정말 퇴사 처리하시겠습니까? (이 작업은 되돌릴 수 없습니다.)`)) {
             $.ajax({
                 url: contextPath + '/employee/retire',
                 type: 'POST',
