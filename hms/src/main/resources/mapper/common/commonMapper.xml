@@ -151,6 +151,7 @@
             WHERE TWD.EMPL_ID = #{emplId}
             AND TWD.WORKD_DATE = TRUNC(SYSDATE)
             ORDER BY TWD.WORKD_IMPO DESC
+            FETCH FIRST 3 ROWS ONLY
         ]]>
     </select>
 

@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: column;
     border: 1px solid #d4edda;
+    overflow: hidden;
 }
 
 .dashboard-card h2 {
@@ -208,6 +209,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.activity-table td:nth-child(3) a { /* 업무명 */
+    text-decoration: none;
+    color: #333;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.activity-table td:nth-child(3) a:hover { /* 업무명 */
+    color: #218838;
 }
 
 .activity-table td:nth-child(4) { /* 내용 */

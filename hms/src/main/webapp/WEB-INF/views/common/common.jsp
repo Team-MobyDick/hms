@@ -124,10 +124,9 @@
                                                 </c:choose>
                                             </span>
                                         </td>
-                                        <td><strong>${work.workDName}</strong></td>
+                                        <td><a href="${pageContext.request.contextPath}/work/list"><strong>${work.workDName}</strong></a></td>
                                         <td><p>${work.workDContext}</p></td>
                                     </tr>
-
                                 </c:forEach>
                             </tbody>
                         </table>
