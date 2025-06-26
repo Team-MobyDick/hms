@@ -2,6 +2,7 @@ package com.mobydick.hms.room.service;
 
 import com.mobydick.hms.room.vo.RoomVO;
 import com.mobydick.hms.work.vo.WorkVO;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public interface RoomService {
     
     // 객실 등록 시 호실 중복 체크용
     RoomVO selectRoomsByName(String roomName) throws Exception;
+
+    // 객실 수정 시 객실 타입이 다르면 수정시키게 하기 위함
+    RoomVO selectRoomsByClass(String roomName) throws Exception;
 
     // 객실 수정
     void roomUpdate(RoomVO roomVO) throws Exception;

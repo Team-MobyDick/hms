@@ -56,6 +56,12 @@ public class RoomServiceImpl implements RoomService {
         roomDAO.roomUpdate(roomVO);
     }
 
+    // 객실 수정 시 객실 타입이 다르면 수정시키게 하기 위함
+    @Override
+    public RoomVO selectRoomsByClass(String roomName) throws Exception {
+        return roomDAO.selectRoomsByClass(roomName);
+    }
+
     // 객실 삭제
     @Override
     public void roomDelete(String roomId) throws Exception {

@@ -151,6 +151,11 @@ function saveChanges(roomId) {
                     // 수정 후 새로 고침 혹은 변경된 내용 반영
                     location.reload();
                 }
+
+                if (response === "false") {
+                    alert("처리에 실패 하였습니다. 잠시 후 다시 시도하시거나 관리자에게 문의 바랍니다.");
+                    return;
+                }
             },
             error: function(xhr, status, error) {
                 alert("수정 처리에 실패하였습니다. 잠시 후 다시 시도하시거나 관리자에게 문의 바랍니다.");

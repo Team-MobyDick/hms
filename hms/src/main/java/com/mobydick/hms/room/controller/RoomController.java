@@ -151,25 +151,37 @@ public class RoomController {
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
         String user = loginUser.getEmplId();
 
-        RoomVO regRoomName = roomService.selectRoomsByName(roomVO.getRoomName());
+        RoomVO vo = null;
 
-        if (regRoomName != null && regRoomName.getRoomName().equals(roomVO.getRoomName())) {
+        // 수정할 객실 정보 조회
+        vo = roomService.selectRoomById(roomId);
+
+        // 수정할 데이터 세팅
+        vo.setUpdatedId(user.trim());
+        vo.setRoomName(roomName.trim());
+        vo.setRoomClass(roomClass.trim());
+        vo.setRoomClassName(roomClassName.trim());
+
+        RoomVO updRoomName = roomService.selectRoomsByName(roomName);
+        RoomVO updRoomType = roomService.selectRoomsByClass(roomName);
+
+        if (updRoomName != null && updRoomName.getRoomName().equals(vo.getRoomName())) {
+
+            System.out.println("updRoomName = " + updRoomName.toString());
+
+            if (updRoomType != null && !updRoomType.getRoomClass().equals(vo.getRoomClass())) {
+
+                System.out.println("updRoomType = " + updRoomType.toString());
+                // 객실 수정
+                roomService.roomUpdate(vo);
+                return "success";
+
+            }
+
             return "duplicate";
         }
 
-        // 수정할 객실 정보 조회
-        RoomVO vo = roomService.selectRoomById(roomId);
-
-        // 수정할 데이터 세팅
-        vo.setUpdatedId(user);
-        vo.setRoomName(roomName);
-        vo.setRoomClass(roomClass);
-        vo.setRoomClassName(roomClassName);
-
-        // 객실 수정
-        roomService.roomUpdate(vo);
-
-        return "success";
+        return "false";
 
     }
 

@@ -25,6 +25,9 @@ public interface RoomDAO {
     // 객실 등록 시 호실 중복 체크
     RoomVO selectRoomsByName(String roomName) throws DataAccessException;
 
+    // 객실 수정 시 객실 타입이 다르면 수정시키게 하기 위함
+    RoomVO selectRoomsByClass(String roomName) throws DataAccessException;
+
     // 객실 수정
     void roomUpdate(RoomVO roomVO) throws DataAccessException;
 
