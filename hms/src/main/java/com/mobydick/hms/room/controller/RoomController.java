@@ -167,11 +167,8 @@ public class RoomController {
 
         if (updRoomName != null && updRoomName.getRoomName().equals(vo.getRoomName())) {
 
-            System.out.println("updRoomName = " + updRoomName.toString());
-
             if (updRoomType != null && !updRoomType.getRoomClass().equals(vo.getRoomClass())) {
 
-                System.out.println("updRoomType = " + updRoomType.toString());
                 // 객실 수정
                 roomService.roomUpdate(vo);
                 return "success";
