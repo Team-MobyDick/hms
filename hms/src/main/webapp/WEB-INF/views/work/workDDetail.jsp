@@ -20,7 +20,7 @@
             <h3 style="margin-bottom: 12px;">업무 상세보기</h3>
 
             <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-                <c:if test="${userRole != 'GR_03' || userId == 'detailWorkD.workDEmplId'}">
+                <c:if test="${userRole != 'GR_03' || userId == detailWorkD.workDEmplId}">
                 <button type="submit">수정</button>
                 </c:if>
                 <c:if test="${userRole == 'GR_01' || (userRole == 'GR_02' && userDept == detailWorkD.workDDept)}">
@@ -143,18 +143,21 @@
             <div class="form-group" style="display: flex; gap: 12px; align-items: center;">
 
                 <!-- 시작 부분 -->
-                <div style="text-align: center;">
+                <div id="startPhotoContainer" style="text-align: center;">
                     <label>시작사진</label><br />
                     <c:if test="${not empty detailWorkD.workDStartName}">
-                        <img src="/work_photos/${detailWorkD.workDStartName}"
+                        <img id="workDStartPreview"
+                             src="/work_photos/${detailWorkD.workDStartName}"
                              alt="${detailWorkD.workDStartName}"
                              style="width: 60px; height: 60px; border-radius: 50%;" /><br/>
                     </c:if>
                     <c:if test="${empty detailWorkD.workDStartName}">
-                        <input type="file" name="workDStartFile" id="workDStartFile" />
+                        <img id="workDStartPreview" style="width: 60px; height: 60px; border-radius: 50%; display:none;" alt="시작 미리보기" />
+                        <input type="file" name="workDStartFile" id="workDStartFile" accept="image/*" />
                     </c:if>
                     <c:if test="${not empty detailWorkD.workDStartTime}">
                         <small>시작시간: <fmt:formatDate value="${detailWorkD.workDStartTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                        <input type="file" name="workDStartFile" id="workDStartFile" accept="image/*" style="display:none"/>
                     </c:if>
                 </div>
 
@@ -162,15 +165,18 @@
                 <div id="endPhotoContainer" style="text-align: center; ${empty detailWorkD.workDStartName ? 'display:none;' : ''}">
                     <label>종료사진</label><br />
                     <c:if test="${not empty detailWorkD.workDEndName}">
-                        <img src="/work_photos/${detailWorkD.workDEndName}"
+                        <img id="workDEndPreview"
+                             src="/work_photos/${detailWorkD.workDEndName}"
                              alt="${detailWorkD.workDEndName}"
                              style="width: 60px; height: 60px; border-radius: 50%;" /><br/>
                     </c:if>
                     <c:if test="${empty detailWorkD.workDEndName}">
-                        <input type="file" name="workDEndFile" id="workDEndFile" />
+                        <img id="workDEndPreview" style="width: 60px; height: 60px; border-radius: 50%; display:none;" alt="종료 미리보기" />
+                        <input type="file" name="workDEndFile" id="workDEndFile" accept="image/*" />
                     </c:if>
                     <c:if test="${not empty detailWorkD.workDEndTime}">
                         <small>종료시간: <fmt:formatDate value="${detailWorkD.workDEndTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                        <input type="file" name="workDEndFile" id="workDEndFile" accept="image/*" style="display:none"/>
                     </c:if>
                 </div>
             </div>

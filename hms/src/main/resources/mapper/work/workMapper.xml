@@ -51,7 +51,7 @@
         LEFT JOIN TB_ROOM c on a.room_id = c.room_id
         WHERE   TO_CHAR(a.workd_date, 'YYYYMMDD') = #{date}
         AND     a.empl_id = #{emplId}
-        ORDER BY a.workd_impo desc, a.workd_name
+        ORDER BY a.workd_issue desc, a.end_name desc, a.start_name, a.workd_impo desc, a.workd_name
     </select>
 
     <!-- 주 업무 등록 -->
@@ -170,10 +170,18 @@
         ROOM_ID        = #{workDRoomId},
         WORKD_IMPO     = #{workDImpo},
         WORKD_ISSUE    = #{workDIssue},
-        START_NAME     = #{workDStartName, jdbcType=VARCHAR},
-        START_TIME     = #{workDStartTime, jdbcType=TIMESTAMP},
-        END_NAME       = #{workDEndName, jdbcType=VARCHAR},
-        END_TIME       = #{workDEndTime, jdbcType=TIMESTAMP},
+        <if test="workDStartName != null">
+            START_NAME = #{workDStartName, jdbcType=VARCHAR},
+        </if>
+        <if test="workDStartTime != null">
+            START_TIME = #{workDStartTime, jdbcType=TIMESTAMP},
+        </if>
+        <if test="workDEndName != null">
+            END_NAME = #{workDEndName, jdbcType=VARCHAR},
+        </if>
+        <if test="workDEndTime != null">
+            END_TIME = #{workDEndTime, jdbcType=TIMESTAMP},
+        </if>
         UPDATED_DATE   = SYSDATE,
         UPDATED_ID     = #{updatedId}
         WHERE WORKD_ID = #{workDId}

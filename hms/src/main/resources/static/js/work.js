@@ -46,7 +46,11 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (res.workDList && res.workDList.length) {
             res.workDList.forEach(d => {
                 $tbody.append(`
-                    <tr class="workD-row" data-workd-id="${d.workDId}">
+                    <tr class="workD-row"
+                        data-workd-id="${d.workDId}"
+                        data-start="${d.workDStartName}"
+                        data-end="${d.workDEndName}"
+                        data-issue="${d.workDIssue}">
                         <td>${d.workDName}</td>
                         <td>${d.emplName}</td>
                         <td>${res.codeMap[d.workDImpo]}</td>
@@ -268,13 +272,27 @@ $(document).ready(function () {
                 } else {
                     const detailRows = [];
                     detailWorks.forEach(detail => {
+                        const statusSticker = (() => {
+                            if (detail.workDIssue === 'Y') {
+                                return '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:red;"></span></br><span>문제발생</span>';
+                            } else if (detail.workDStartName && detail.workDEndName) {
+                                return '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:green;"></span></br><span>완료</span>';
+                            } else if (detail.workDStartName && !detail.workDEndName) {
+                                return '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:yellow;"></span></br><span>진행중</span>';
+                            } else {
+                                return '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:gray;"></span></br><span></span>';
+                            }
+                        })();
                         const detailRow = $(`
                             <tr class="workD-row"
                                 data-parent="${workMId}"
                                 data-workd-id="${detail.workDId}"
                                 data-date="${rawDate}"
+                                data-start="${detail.workDStartName}"
+                                data-end="${detail.workDEndName}"
+                                data-issue="${detail.workDIssue}"
                                 style="display:none; background:#f0f0f0; font-size:14px;">
-                                <td data-label="부서"></td>
+                                <td data-label="부서">${statusSticker}</td>
                                 <td data-label="업무명">${detail.workDName}</td>
                                 <td data-label="담당자">${detail.emplName}</td>
                                 <td data-label="중요도">${detail.workDImpoN}</td>

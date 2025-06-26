@@ -116,4 +116,32 @@ $(document).ready(function () {
             $('#endPhotoContainer').slideUp(200);
         }
     });
+
+    // 시작사진 미리보기
+    $('#workDStartFile').on('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#workDStartPreview')
+                    .attr('src', e.target.result)
+                    .show();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 종료사진 미리보기
+    $('#workDEndFile').on('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#workDEndPreview')
+                    .attr('src', e.target.result)
+                    .show();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 });

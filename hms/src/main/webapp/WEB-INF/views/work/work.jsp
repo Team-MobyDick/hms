@@ -128,9 +128,28 @@
                 </thead>
                 <tbody id="workTableBody">
                     <c:forEach var="workD" items="${workDList}">
+                    <c:set var="rowStyle" value="" />
+                    <c:choose>
+                        <c:when test="${workD.workDIssue eq 'Y'}">
+                            <c:set var="rowStyle" value="background:#ffe6e6;" />
+                        </c:when>
+                        <c:when test="${not empty workD.workDStartName and not empty workD.workDEndName}">
+                            <c:set var="rowStyle" value="background:#e6ffe6;" />
+                        </c:when>
+                        <c:when test="${not empty workD.workDStartName and empty workD.workDEndName}">
+                            <c:set var="rowStyle" value="background:#fffbe6;" />
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="rowStyle" value="background:#f2f2f2;" />
+                        </c:otherwise>
+                    </c:choose>
                         <tr class="workD-row"
+                            style="${rowStyle}"
                             data-parent="${workD.workMId}"
-                            data-workd-id="${workD.workDId}">
+                            data-workd-id="${workD.workDId}"
+                            data-start="${workD.workDStartName}"
+                            data-end="${workD.workDEndName}"
+                            data-issue="${workD.workDIssue}">
                             <td data-label="업무명">${workD.workDName}</td>
                             <td data-label="담당자">${workD.emplName}</td>
                             <td data-label="중요도">${codeMap[workD.workDImpo]}</td>
