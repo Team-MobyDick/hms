@@ -11,7 +11,7 @@
 <head>
     <title>업무 상세</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/work.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/workDDetail.css"/>
 
 </head>
 <body data-role="${userRole}">
@@ -153,7 +153,7 @@
                     </c:if>
                     <c:if test="${empty detailWorkD.workDStartName}">
                         <img id="workDStartPreview" style="width: 60px; height: 60px; border-radius: 50%; display:none;" alt="시작 미리보기" />
-                        <input type="file" name="workDStartFile" id="workDStartFile" accept="image/*" />
+                        <input type="file" name="workDStartFile" id="workDStartFile" accept="image/*"  style="width: 167px;"/>
                     </c:if>
                     <c:if test="${not empty detailWorkD.workDStartTime}">
                         <small>시작시간: <fmt:formatDate value="${detailWorkD.workDStartTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
@@ -172,11 +172,11 @@
                     </c:if>
                     <c:if test="${empty detailWorkD.workDEndName}">
                         <img id="workDEndPreview" style="width: 60px; height: 60px; border-radius: 50%; display:none;" alt="종료 미리보기" />
-                        <input type="file" name="workDEndFile" id="workDEndFile" accept="image/*" />
+                        <input type="file" name="workDEndFile" id="workDEndFile" accept="image/*" style="width: 167px;" />
                     </c:if>
                     <c:if test="${not empty detailWorkD.workDEndTime}">
                         <small>종료시간: <fmt:formatDate value="${detailWorkD.workDEndTime}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
-                        <input type="file" name="workDEndFile" id="workDEndFile" accept="image/*" style="display:none"/>
+                        <input type="file" name="workDEndFile" id="workDEndFile" accept="image/*" style="display:none;width: 167px;"/>
                     </c:if>
                 </div>
             </div>
