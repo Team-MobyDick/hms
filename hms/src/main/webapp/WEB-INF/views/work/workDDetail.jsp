@@ -47,7 +47,8 @@
 
             <div class="form-group">
                 <label>업무일자</label>
-                <input type="date" name="workDDate" value="${detailWorkD.workDDate}" required
+                <input type="date" name="workDate" value="${detailWorkD.workDDate}" disabled />
+                <input type="hidden" name="workDDate" value="${detailWorkD.workDDate}"
                         ${userRole != 'GR_01' && userRole != 'GR_02' ? 'readonly' : ''} />
             </div>
 
@@ -175,7 +176,8 @@
             </div>
 
             <div class="form-group" style="margin-top: 12px;">
-                <label><input type="checkbox" ${not empty detailWorkD.workDExtra ? 'checked' : ''}/> 문제발생</label>
+                <label><input type="checkbox" name='workDIssue'
+                        <c:if test="${detailWorkD.workDIssue == 'Y'}">checked</c:if> /> 문제발생</label>
             </div>
 
             <div class="form-group">

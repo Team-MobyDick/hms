@@ -59,6 +59,7 @@ $(document).ready(function () {
                 workDImpo: $('select[name="workDImpo"]').val(),
                 workDContext: $('textarea[name="workDContext"]').val(),
                 workDExtra: $('textarea[name="workDExtra"]').val(),
+                workDIssue: $('input[name="workDIssue"]').is(':checked') ? 'Y' : 'N',
                 workDStartName: startFileData ? startFileData.filePath : null,
                 workDStartTime: startFileData ? startFileData.uploadTime : null,
                 workDEndName: endFileData ? endFileData.filePath : null,

@@ -226,7 +226,7 @@ $(document).ready(function () {
         }
     });
 
-    // 주업무 클릭 → 상세 업무 열기
+    // 주업무 클릭 → 상세 업무 리스트 열기
     $(document).on('click', '.workM-row', function (e) {
         // 버튼 클릭으로 유입되었으면 무시
         if ($(e.target).closest('button').length > 0) return;
@@ -508,7 +508,8 @@ $(document).on('click', '.add_btn_D', function (e) {
                         <input type="text" name="workDName" value="${workMName}" maxlength="50" required />
                     </label>
                     <label>업무일자
-                        <input type="date" name="workDDate" value="${date}" required />
+                        <input type="date" name="workDate" value="${date}" disabled />
+                        <input type="hidden" name="workDDate" value="${date}" />
                     </label>
                     <label>담당자
                         <select name="workDEmplId"></select>

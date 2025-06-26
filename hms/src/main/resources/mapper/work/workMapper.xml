@@ -169,6 +169,7 @@
         WORKD_EXTRA    = #{workDExtra},
         ROOM_ID        = #{workDRoomId},
         WORKD_IMPO     = #{workDImpo},
+        WORKD_ISSUE    = #{workDIssue},
         START_NAME     = #{workDStartName, jdbcType=VARCHAR},
         START_TIME     = #{workDStartTime, jdbcType=TIMESTAMP},
         END_NAME       = #{workDEndName, jdbcType=VARCHAR},
