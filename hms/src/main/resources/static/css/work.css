@@ -89,3 +89,275 @@ button {
     color: #fff;
     border: none;
 }
+
+/* 페이지 공통 설정 */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    padding: 20px;
+}
+
+/* 제목 */
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    padding-left: 8px;
+}
+
+/* 날짜 영역 */
+.date-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+}
+.date-container button {
+    padding: 4px 8px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.date-container button:hover {
+    background: #218838;
+}
+.date-container #dateText {
+    font-size: 1.1rem;
+    padding: 0 8px;
+}
+.mode-container {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    gap: 16px;
+}
+
+/* 주업무 등록 버튼 */
+#add_btn_M {
+    padding: 6px 12px;
+    background: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+#add_btn_M:hover {
+    background: #0056b3;
+}
+
+/* 라디오 박스 라벨 정리 */
+.mode-container label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+.mode-container label input {
+    margin-right: 4px;
+}
+.mode-container label:hover {
+    background: #d5d8dc;
+}
+.mode-container input:checked + label {
+    background: #28a745;
+    color: white;
+    font-weight: bold;
+}
+
+/* 라디오들을 우측 정렬하기 위해 margin-left: auto; 추가 */
+.mode-container label:first-of-type {
+    margin-left: auto;
+}
+
+/* 폼 */
+#newWorkMForm {
+    background: white;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+#newWorkMForm table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#newWorkMForm th,
+#newWorkMForm td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+#newWorkMForm input[type="text"],
+#newWorkMForm select,
+#newWorkMForm textarea {
+    width: 100%;
+    padding: 4px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+#newWorkMForm textarea {
+    min-height: 60px;
+}
+#newWorkMForm button {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+#newWorkMForm button[type="submit"] {
+    background: #28a745;
+    color: white;
+}
+#newWorkMForm button[type="submit"]:hover {
+    background: #218838;
+}
+#newWorkMForm #add_cancle_M {
+    background: #6c757d;
+    color: white;
+}
+#newWorkMForm #add_cancle_M:hover {
+    background: #5a6268;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+th, td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: middle;
+}
+tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+button {
+  padding: 4px 8px;
+  border: none;
+  background: #28a745;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+button:hover {
+  background: #218838;
+}
+.add_btn_D, .detail_btn_M, #detail_btn_D {
+  background: #28a745;
+}
+
+/* 폼 행(tr) 스타일 */
+tr.newWorkDForm td {
+  background: #eef; /* 연보라빛 */
+  padding: 12px;
+  border: none; /* 위의 테이블 border와 구분되도록 */
+}
+
+/* 내부 폼 */
+.workDForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+/* label+input 그룹 정리 */
+.workDForm label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #333;
+  min-width: 120px;
+}
+
+/* 폼 안쪽의 input, select, textarea */
+.workDForm input[type="text"],
+.workDForm input[type="date"],
+.workDForm select,
+.workDForm textarea {
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  width: 180px;
+  box-sizing: border-box;
+}
+.workDForm textarea {
+  resize: vertical;
+  min-height: 60px;
+  width: 400px;
+}
+
+/* 폼 안쪽 버튼들 */
+.workDForm button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background: #28a745;
+  color: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.workDForm button:hover {
+  background: #218838;
+}
+.workDForm .add_cancle_D {
+  background: #6c757d;
+}
+.workDForm .add_cancle_D:hover {
+  background: #5a6268;
+}
+
+@media (max-width: 768px) {
+  thead {
+    display: none;
+  }
+  tbody, tr, td {
+    display: block;
+    width: 100%;
+  }
+  tr {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  td {
+    padding-left: 50%;
+    position: relative;
+    border: none;
+  }
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    white-space: nowrap;
+  }
+}

@@ -32,8 +32,12 @@
         <button id="nextBtn">→</button>
     </div>
 
-    <!-- 라디오버튼 영역 -->
+    <!-- 라디오버튼, 업무 등록 영역 -->
     <div class="mode-container" style="margin-top: 8px;">
+        <c:if test="${userRole == 'GR_01'}">
+            <button id="add_btn_M">주 업무 등록</button>
+        </c:if>
+
         <label style="margin-right: 12px;">
             <input type="radio" name="mode" value="ALL"
                <c:if test="${userRole == 'GR_01' || userRole == 'GR_02'}">checked</c:if>> 전체업무
@@ -43,10 +47,6 @@
                <c:if test="${userRole != 'GR_01' && userRole != 'GR_02'}">checked</c:if>> 내업무
         </label>
     </div>
-
-    <c:if test="${userRole == 'GR_01'}">
-        <button id="add_btn_M">주 업무 등록</button>
-    </c:if>
 
     <!-- 주 업무 등록 폼 -->
     <form id="newWorkMForm" hidden>
