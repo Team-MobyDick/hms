@@ -7,6 +7,7 @@ import com.mobydick.hms.schedule.vo.ScheduleVO;
 import com.mobydick.hms.login.vo.LoginVO;
 import com.mobydick.hms.employee.service.EmployeeService;
 import com.mobydick.hms.employee.vo.EmployeeVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -116,17 +117,18 @@ public class ScheduleController {
         // 로그인 유저 정보
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
 
-        if (loginUser.getEmplGrade().equals("GR_01")) {
-            loginUser.setEmplId("");
-        }
-
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
         DateTimeFormatter dbFormat = DateTimeFormatter.ofPattern("yy/MM/dd");
 
         LocalDate parsedDate = LocalDate.parse(date, inputFormat);
         String formatted = parsedDate.format(dbFormat) + "%";
 
-        return scheduleService.getScheduleByDate(formatted, loginUser.getEmplId());
+        return scheduleService.getScheduleByDate(
+                formatted,
+                loginUser.getEmplId(),
+                loginUser.getEmplGrade()
+        );
+
     }
 
     private String convertShiftName(String code) {

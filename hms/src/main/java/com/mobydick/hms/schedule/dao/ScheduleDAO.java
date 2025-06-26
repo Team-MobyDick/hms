@@ -4,6 +4,7 @@ import com.mobydick.hms.schedule.vo.EmpVO;
 import com.mobydick.hms.schedule.vo.ScheduleDetailVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
@@ -28,7 +29,11 @@ public interface ScheduleDAO {
 
     List<EmpVO> getEmployeesByDept(String deptId);
 
-    List<ScheduleDetailVO> getScheduleByDate(String date, String emplId) throws DataAccessException;
+    List<ScheduleDetailVO> getScheduleByDate(
+            @Param("date") String date,
+            @Param("emplId") String emplId,
+            @Param("emplGrade") String emplGrade
+    ) throws DataAccessException;
 
     List<ScheduleVO> getSchedulesForAdminBetween(Map<String, Object> map);
 

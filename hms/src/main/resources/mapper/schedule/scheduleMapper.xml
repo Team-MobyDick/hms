@@ -104,7 +104,7 @@
         WHERE s.SCHE_ID = #{scheId}
     </select>
 
-    <select id="getScheduleByDate" parameterType="String" resultType="com.mobydick.hms.schedule.vo.ScheduleDetailVO">
+    <select id="getScheduleByDate" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleDetailVO">
         SELECT
             s.SCHE_ID,
             s.SCHE_DATE,
@@ -120,10 +120,22 @@
                  LEFT JOIN TB_CODE c_state
                      ON w.WORKD_DEPT = c_state.CODE_ID
         <where>
-                s.SCHE_DATE LIKE #{param1}
-            <if test="emplId != null and emplId != ''">
-                AND e.EMPL_ID = #{param2}
-            </if>
+                s.SCHE_DATE LIKE #{date}
+
+            <choose>
+                <when test="emplGrade == 'GR_03'">
+                    AND e.EMPL_ID = #{emplId}
+                </when>
+
+                <when test="emplGrade == 'GR_02'">
+                    AND e.EMPL_DEPT = (
+                    SELECT EMPL_DEPT FROM TB_EMPL WHERE EMPL_ID = #{emplId}
+                    )
+                </when>
+
+                <!-- GR_01은 조건 없음 (날짜만 적용됨) -->
+            </choose>
+
         </where>
 
     </select>

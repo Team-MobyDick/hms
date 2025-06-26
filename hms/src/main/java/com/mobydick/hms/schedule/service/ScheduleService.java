@@ -27,7 +27,7 @@ public interface ScheduleService {
     List<EmpVO> getEmployeesByDept(String deptId);
 
     // ScheduleService.java
-    List<ScheduleDetailVO> getScheduleByDate(String date, String emplId);
+    List<ScheduleDetailVO> getScheduleByDate(String date, String emplId, String emplGrade);
 
     // 관리자용
     List<ScheduleVO> getSchedulesForAdminBetween(String startDate, String endDate);
