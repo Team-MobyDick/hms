@@ -51,4 +51,7 @@ public class WorkVO {
     // 코드테이블 조인해온 코드명(임시)
     private String workDDeptN;         // 부서명
     private String workDImpoN;       // 중요도
+
+    // 대시보드 링크 매개변수용
+    private  String workDate;
 }

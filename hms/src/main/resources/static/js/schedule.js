@@ -66,7 +66,9 @@ function loadScheduleDetailByDate(dateStr) {
                                 <input type="radio" name="selectScheduleToDelete" value="${escapeHtml(item.scheId)}" id="schedule-${escapeHtml(item.scheId)}">
                                 <label for="schedule-${escapeHtml(item.scheId)}">
                                     <strong>${escapeHtml(item.emplName)}</strong> -
+                                    <a href="${contextPath}/work/detailWorkD?workDId=${escapeHtml(item.workDId)}&date=${escapeHtml(item.workDate)}">
                                     <span class="work-name">${escapeHtml(item.workdName || '업무명 없음')}</span> ${escapeHtml(item.workdStateName)}
+                                    </a>
                                 </label>
                              </li>`;
                 });

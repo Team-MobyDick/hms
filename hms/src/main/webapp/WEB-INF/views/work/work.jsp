@@ -169,7 +169,7 @@
                     </tr>
                 </thead>
                 <tbody id="workTableBody">
-                    <tr><td colspan="6">업무 목록이 비어 있습니다.</td></tr>
+                    <tr><td colspan="6" style="text-align:center">업무 목록이 비어 있습니다.</td></tr>
                 </tbody>
             </c:otherwise>
         </c:choose>

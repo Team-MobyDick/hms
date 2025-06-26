@@ -17,5 +17,7 @@ public class ScheduleDetailVO {
     private String workdImpoName;
     private String workdStateName;
     private String roomName;
+    private String workDId;
+    private String workDate;
 
 }

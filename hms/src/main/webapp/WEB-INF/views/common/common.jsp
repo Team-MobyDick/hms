@@ -124,7 +124,7 @@
                                                 </c:choose>
                                             </span>
                                         </td>
-                                        <td><a href="${pageContext.request.contextPath}/work/list"><strong>${work.workDName}</strong></a></td>
+                                        <td><a href="${pageContext.request.contextPath}/work/detailWorkD?workDId=${work.workDId}&date=${work.workDate}"><strong>${work.workDName}</strong></a></td>
                                         <td><p>${work.workDContext}</p></td>
                                     </tr>
                                 </c:forEach>

@@ -145,6 +145,7 @@
                 TWD.WORKD_ID AS workDId,
                 TWD.WORKD_NAME AS workDName,
                 TO_CHAR(TWD.WORKD_DATE, 'MM/DD') AS workDDate,
+                TO_CHAR(TWD.WORKD_DATE, 'MM/DD') AS workDate,
                 TWD.WORKD_IMPO AS workDImpo,
                 TWD.WORKD_CONTEXT AS workDContext
             FROM TB_WORK_D TWD

@@ -110,6 +110,9 @@
             s.SCHE_DATE,
             e.EMPL_NAME,
             w.WORKD_NAME,
+            w.WORKD_ID AS workDId,
+            TO_CHAR(w.workd_date, 'YYYY-MM-DD') AS workDate,
+            w.WORKD_NAME,
             c_state.CODE_NAME AS workdStateName
         FROM TB_SCHEDULE s
                  JOIN TB_EMPL e

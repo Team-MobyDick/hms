@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 `);
             });
         } else {
-            $tbody.append('<tr><td colspan="5">업무 없음</td></tr>');
+            $tbody.append('<tr><td colspan="5" style="text-align:center">업무 목록이 비어 있습니다.</td></tr>');
         }
     }
 
@@ -333,11 +333,15 @@ $(document).ready(function () {
 
     // 주 업무 등록 폼 토글
     $('#add_btn_M').click(function () {
-        $('#newWorkMForm').toggle(300);
+        $('#newWorkMForm').toggle(300, function () {
+            const isVisible = $(this).is(':visible');
+            $('#add_btn_M').text(isVisible ? '닫기' : '주 업무 등록');
+        });
     });
 
     $('#add_cancle_M').click(function () {
         $('#newWorkMForm').hide(300);
+        $('#add_btn_M').text('주 업무 등록');
     });
 
     // 업무 배분 폼 토글
@@ -511,10 +515,15 @@ $(document).on('click', '.add_btn_D', function (e) {
     // 이미 열려있는 등록 폼 제거
     $('.newWorkDForm').slideUp(200, function () {
         $(this).remove();
+        // 모든 버튼 텍스트 원상복귀
+        $('.add_btn_D').text('업무 배분');
     });
 
     // 이미 해당 row 밑에 폼이 있다면 return
     if ($row.next().hasClass('newWorkDForm')) return;
+
+    // 버튼 텍스트 변경
+    $button.text('닫기');
 
     const formRow = $(`
         <tr class="newWorkDForm" data-parent="${workMId}">
@@ -589,6 +598,7 @@ $(document).on('click', '.add_btn_D', function (e) {
 $(document).on('click', '.add_cancle_D', function () {
     $(this).closest('tr.newWorkDForm').slideUp(200, function () {
         $(this).remove();
+        $('.add_btn_D').text('업무 배분');
     });
 });
 
