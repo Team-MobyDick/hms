@@ -39,7 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${m.workMName}</td>
                         <td></td>
                         <td>${res.codeMap[m.workMImpo]}</td>
-                        <td>${addButton}<button class="detail_btn_M">업무 상세</button></td>
+                        <td><button class="detail_btn_M">업무 상세</button>
+                        ${addButton}</td>
                     </tr>
                 `);
             });

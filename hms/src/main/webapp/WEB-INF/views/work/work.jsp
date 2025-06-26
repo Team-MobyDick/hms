@@ -108,10 +108,10 @@
                             <td data-label="담당자"></td>
                             <td data-label="중요도">${codeMap[workM.workMImpo]}</td>
                             <td data-label="상세/업무배분">
+                            <button class="detail_btn_M">업무 상세</button>
                             <c:if test="${userRole == 'GR_01'||userRole == 'GR_02'}">
                             <button class="add_btn_D" >업무 배분</button>
                             </c:if>
-                            <button class="detail_btn_M">업무 상세</button>
                             </td>
                         </tr>
                     </c:forEach>
