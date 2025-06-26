@@ -58,7 +58,7 @@
                     <c:when test="${userRole != 'GR_01' && userRole != 'GR_02'}">
                         <input type="text" name="workDEmplName" value="${detailWorkD.emplName}" readonly>
                         <select name="workDEmplId" style="display: none;">
-                            <c:forEach var="empl" items="${emplList}">
+                            <c:forEach var="empl" items="${allEmplList}">
                               <option value="${empl.codeId}"
                                   <c:if test="${empl.codeId == detailWorkD.workDEmplId}">selected</c:if>>
                                   ${empl.codeName}
