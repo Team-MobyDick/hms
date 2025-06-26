@@ -194,7 +194,6 @@ public class WorkController {
         } else {
             emplList = Collections.emptyList();
         }
-        log.info("date = {}", date);
 
         WorkVO detailWorkD = workService.selectDetailWorkD(workDId);
 

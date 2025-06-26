@@ -220,7 +220,7 @@
         LEFT JOIN TB_ROOM c on a.room_id = c.room_id
         WHERE a.workm_id = #{workMId}
         AND TO_CHAR(a.workd_date, 'YYYYMMDD') = #{date}
-        ORDER BY a.empl_id, a.workd_impo desc, a.workd_name
+        ORDER BY a.workd_issue desc, a.end_name desc, a.start_name, a.empl_id, a.workd_impo desc, a.workd_name
     </select>
 
     <!-- 부서 목록 조회 (TP 코드만) -->
