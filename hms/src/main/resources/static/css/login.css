@@ -1,5 +1,6 @@
-/* login.css - 로그인 페이지 전용 스타일 */
+@charset "UTF-8";
 
+/* login.css - 로그인 페이지 전용 스타일 */
 body {
   background-color: #eeeeee;
   display: flex;

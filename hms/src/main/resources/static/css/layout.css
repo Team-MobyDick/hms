@@ -1,5 +1,6 @@
-/* 컨테이너, 메인 콘텐츠 스타일 */
+@charset "UTF-8";
 
+/* 컨테이너, 메인 콘텐츠 스타일 */
 .container {
   display: flex;
   flex-direction: row;

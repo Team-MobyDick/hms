@@ -1,5 +1,6 @@
-/* 공통 바디 스타일 */
+@charset "UTF-8";
 
+/* 공통 바디 스타일 */
 body {
   margin: 0;
   font-family: Arial, sans-serif;

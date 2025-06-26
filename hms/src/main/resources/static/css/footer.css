@@ -1,5 +1,6 @@
-/* 푸터 스타일 */
+@charset "UTF-8";
 
+/* 푸터 스타일 */
 .footer {
   display: flex;
   justify-content: space-between;

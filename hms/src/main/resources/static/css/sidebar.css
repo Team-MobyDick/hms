@@ -1,5 +1,6 @@
-/* 사이드바 관련 스타일 */
+@charset "UTF-8";
 
+/* 사이드바 관련 스타일 */
 .sidebar {
   width: 150px;
   background-color: #e0e0e0;
