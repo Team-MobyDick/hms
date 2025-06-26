@@ -111,7 +111,14 @@ public class ScheduleController {
 
     @GetMapping("/detailByDate")
     @ResponseBody
-    public List<ScheduleDetailVO> getScheduleByDate(@RequestParam String date) {
+    public List<ScheduleDetailVO> getScheduleByDate(@RequestParam String date, HttpSession session) {
+
+        // 로그인 유저 정보
+        LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
+
+        if (loginUser.getEmplGrade().equals("GR_01")) {
+            loginUser.setEmplId("");
+        }
 
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
         DateTimeFormatter dbFormat = DateTimeFormatter.ofPattern("yy/MM/dd");
@@ -119,7 +126,7 @@ public class ScheduleController {
         LocalDate parsedDate = LocalDate.parse(date, inputFormat);
         String formatted = parsedDate.format(dbFormat) + "%";
 
-        return scheduleService.getScheduleByDate(formatted);
+        return scheduleService.getScheduleByDate(formatted, loginUser.getEmplId());
     }
 
     private String convertShiftName(String code) {

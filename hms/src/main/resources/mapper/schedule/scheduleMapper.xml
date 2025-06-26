@@ -112,10 +112,20 @@
             w.WORKD_NAME,
             c_state.CODE_NAME AS workdStateName
         FROM TB_SCHEDULE s
-                 JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
-                 LEFT JOIN TB_WORK_D w ON s.EMPL_ID = w.EMPL_ID AND TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') = TO_CHAR(w.WORKD_DATE, 'YYYYMMDD')
-                 LEFT JOIN TB_CODE c_state ON w.WORKD_DEPT = c_state.CODE_ID
-        WHERE s.SCHE_DATE LIKE #{start}
+                 JOIN TB_EMPL e
+                     ON s.EMPL_ID = e.EMPL_ID
+                 LEFT JOIN TB_WORK_D w
+                     ON s.EMPL_ID = w.EMPL_ID
+                     AND TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') = TO_CHAR(w.WORKD_DATE, 'YYYYMMDD')
+                 LEFT JOIN TB_CODE c_state
+                     ON w.WORKD_DEPT = c_state.CODE_ID
+        <where>
+                s.SCHE_DATE LIKE #{param1}
+            <if test="emplId != null and emplId != ''">
+                AND e.EMPL_ID = #{param2}
+            </if>
+        </where>
+
     </select>
 
     <select id="getSchedulesForAdminBetween" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">

@@ -17,13 +17,18 @@ public interface ScheduleDAO {
     List<ScheduleVO> getAllSchedules() throws DataAccessException;
 
     List<ScheduleVO> getSchedulesForAdmin(String deptId) throws DataAccessException;;
+
     List<ScheduleVO> getSchedulesByTeamLeader(String emplId) throws DataAccessException;;
+
     List<ScheduleVO> getSchedulesByEmployee(String emplId) throws DataAccessException;;
+
     void insertSchedule(ScheduleVO vo);
+
     List<EmpVO> getAllEmployees();
+
     List<EmpVO> getEmployeesByDept(String deptId);
 
-    List<ScheduleDetailVO> getScheduleByDate(String date);
+    List<ScheduleDetailVO> getScheduleByDate(String date, String emplId) throws DataAccessException;
 
     List<ScheduleVO> getSchedulesForAdminBetween(Map<String, Object> map);
 

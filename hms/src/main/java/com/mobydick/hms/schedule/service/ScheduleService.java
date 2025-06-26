@@ -13,16 +13,21 @@ public interface ScheduleService {
     List<ScheduleVO> getAllSchedules() throws Exception;
 
     List<ScheduleVO> getSchedulesForAdmin(String deptId);     // GR_01
+
     List<ScheduleVO> getSchedulesByTeamLeader(String emplId); // GR_02
+
     List<ScheduleVO> getSchedulesByEmployee(String emplId);   // GR_03
+
     void insertSchedule(ScheduleVO vo);
+
     List<EmpVO> getEmployeesByGrade(String grade, String deptId);
 
     List<EmpVO> getAllEmployees();
+
     List<EmpVO> getEmployeesByDept(String deptId);
 
     // ScheduleService.java
-    List<ScheduleDetailVO> getScheduleByDate(String date);
+    List<ScheduleDetailVO> getScheduleByDate(String date, String emplId);
 
     // 관리자용
     List<ScheduleVO> getSchedulesForAdminBetween(String startDate, String endDate);
