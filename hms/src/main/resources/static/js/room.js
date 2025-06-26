@@ -93,12 +93,20 @@ function addRoom() {
                 roomClass: roomClass,
                 roomClassName: roomClassName,
             },
-            success: function() {
-                alert('처리가 완료되었습니다.');
-                $('#addRoomContainer').slideUp(); // 등록 후 닫기
-                $('#addForm')[0].reset(); // 입력 초기화
+            success: function(response) {
 
-                location.reload();
+                if (response === "duplicate") {
+                    alert("이미 같은 호실명이 존재합니다!");
+                    return;
+                }
+
+                if (response === "success") {
+                    alert('처리가 완료되었습니다.');
+                    $('#addRoomContainer').slideUp();   // 등록 후 닫기
+                    $('#addForm')[0].reset();           // 입력 초기화
+
+                    location.reload();
+                }
 
             },
             error: function(xhr, status, error) {
@@ -131,10 +139,18 @@ function saveChanges(roomId) {
                 roomClass: roomClassId,
                 roomClassName: roomClassName,
             },
-            success: function() {
-                alert("처리가 완료되었습니다.");
-                // 수정 후 새로 고침 혹은 변경된 내용 반영
-                location.reload();
+            success: function(response) {
+
+                if (response === "duplicate") {
+                    alert("이미 같은 호실명이 존재합니다!");
+                    return;
+                }
+
+                if (response === "success") {
+                    alert("처리가 완료되었습니다.");
+                    // 수정 후 새로 고침 혹은 변경된 내용 반영
+                    location.reload();
+                }
             },
             error: function(xhr, status, error) {
                 alert("수정 처리에 실패하였습니다. 잠시 후 다시 시도하시거나 관리자에게 문의 바랍니다.");

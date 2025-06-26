@@ -19,6 +19,9 @@ public interface RoomService {
 
     // 객실 등록
     void insertRoom(RoomVO roomVO) throws Exception;
+    
+    // 객실 등록 시 호실 중복 체크용
+    RoomVO selectRoomsByName(String roomName) throws Exception;
 
     // 객실 수정
     void roomUpdate(RoomVO roomVO) throws Exception;

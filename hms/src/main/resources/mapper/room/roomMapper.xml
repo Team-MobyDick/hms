@@ -105,6 +105,14 @@
                  )
     </insert>
 
+    <!-- 객실 등록 시 호실 중복체크용 -->
+    <select id="selectRoomsByName" parameterType="String" resultType="com.mobydick.hms.room.vo.RoomVO">
+        SELECT
+            ROOM_NAME
+        FROM TB_ROOM
+        WHERE ROOM_NAME = #{roomName}
+    </select>
+
     <!-- 객실 수정 -->
     <update id="roomUpdate">
         UPDATE TB_ROOM SET

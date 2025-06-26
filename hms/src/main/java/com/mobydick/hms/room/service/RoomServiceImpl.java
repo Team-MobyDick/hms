@@ -41,6 +41,14 @@ public class RoomServiceImpl implements RoomService {
     public void insertRoom(RoomVO roomVO) throws Exception {
         roomDAO.insertRoom(roomVO);
     }
+    
+    // 객실 등록 시 호실 중복 체크
+
+
+    @Override
+    public RoomVO selectRoomsByName(String roomName) throws Exception {
+        return roomDAO.selectRoomsByName(roomName);
+    }
 
     // 객실 수정
     @Override

@@ -22,6 +22,9 @@ public interface RoomDAO {
     // 객실 등록
     void insertRoom(RoomVO roomVO) throws DataAccessException;
 
+    // 객실 등록 시 호실 중복 체크
+    RoomVO selectRoomsByName(String roomName) throws DataAccessException;
+
     // 객실 수정
     void roomUpdate(RoomVO roomVO) throws DataAccessException;
 

@@ -110,11 +110,17 @@ public class RoomController {
     // 객실 등록
     @PostMapping("/add")
     @ResponseBody
-    public String addRoom(RoomVO roomVO, HttpSession session) throws Exception {
+    public String addRoom(RoomVO roomVO, HttpSession session, Model model) throws Exception {
 
         // 로그인 유저 정보
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
         String user = loginUser.getEmplId();
+
+        RoomVO regRoomName = roomService.selectRoomsByName(roomVO.getRoomName());
+
+        if (regRoomName != null && regRoomName.getRoomName().equals(roomVO.getRoomName())) {
+            return "duplicate";
+        }
 
         // 객실 번호 생성
         String roomId = UUID.randomUUID().toString().replace("-", "").substring(0, 20);
@@ -144,6 +150,12 @@ public class RoomController {
         // 로그인 유저 정보
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
         String user = loginUser.getEmplId();
+
+        RoomVO regRoomName = roomService.selectRoomsByName(roomVO.getRoomName());
+
+        if (regRoomName != null && regRoomName.getRoomName().equals(roomVO.getRoomName())) {
+            return "duplicate";
+        }
 
         // 수정할 객실 정보 조회
         RoomVO vo = roomService.selectRoomById(roomId);
