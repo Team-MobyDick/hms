@@ -155,7 +155,8 @@
         SELECT
         B.WORKD_NAME     AS workDName,
         C.EMPL_NAME      AS emplName,
-        B.ROOM_ID        AS workDRoomId
+        B.ROOM_ID        AS workDRoomId,
+        B.WORKD_ID       AS workdId
         FROM
         TB_WORK_D B
         LEFT JOIN TB_EMPL C

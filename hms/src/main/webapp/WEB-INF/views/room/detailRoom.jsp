@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<c:set var="today" value="<%= new java.util.Date() %>" />
+<fmt:formatDate value="${today}" pattern="yyyy-MM-dd" var="todayFormatted"/>
 <c:set var="userRole" value="${sessionScope.loginUser.emplGrade}"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/room.css"/>
 
@@ -55,8 +58,10 @@
                         <c:when test="${not empty roomDetail.workdList}">
                             <c:forEach var="w" items="${roomDetail.workdList}">
                                 <div style="margin-bottom: 2px;">
-                                    <span style="font-weight: bold;">[${w.workDName}]</span>
-                                    <span>${w.emplName}</span>
+                                    <a href="${contextPath}/work/detailWorkD?workDId=${w.workDId}&date=${todayFormatted}" style="font-weight: bold;">
+                                        [${w.workDName}]
+                                         ${w.emplName}
+                                    </a>
                                 </div>
                             </c:forEach>
                         </c:when>
