@@ -162,23 +162,17 @@ public class RoomController {
         vo.setRoomClass(roomClass.trim());
         vo.setRoomClassName(roomClassName.trim());
 
-        RoomVO updRoomName = roomService.selectRoomsByName(roomName);
-        RoomVO updRoomType = roomService.selectRoomsByClass(roomName);
+        RoomVO existing = roomService.selectRoomsByName(roomName);
 
-        if (updRoomName != null && updRoomName.getRoomName().equals(vo.getRoomName())) {
-
-            if (updRoomType != null && !updRoomType.getRoomClass().equals(vo.getRoomClass())) {
-
-                // 객실 수정
-                roomService.roomUpdate(vo);
-                return "success";
-
+        if (existing != null && existing.getRoomName().equals(roomName)) {
+            if (existing.getRoomClass().equals(roomClass)) {
+                return "duplicate";
             }
-
-            return "duplicate";
         }
 
-        return "false";
+        // 객실 수정
+        roomService.roomUpdate(vo);
+        return "success";
 
     }
 
