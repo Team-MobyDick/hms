@@ -20,7 +20,7 @@
             TB_SCHEDULE
     </select>
 
-    <!-- GR_01: 자기 부서 전체 일정 (부서명 포함) -->
+    <!-- 관리자(GR_01): 본인 부서 전체 스케줄 조회 (부서명 포함) -->
     <select id="getSchedulesForAdmin" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         SELECT
             S.SCHE_ID,
@@ -38,7 +38,7 @@
         WHERE E.EMPL_DEPT = #{deptId}
     </select>
 
-    <!-- GR_02: 팀장 - 본인 팀 팀원 일정 -->
+    <!-- 팀장(GR_02): 본인 부서 팀원들 스케줄 조회 -->
     <select id="getSchedulesByTeamLeader" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         SELECT S.*
         FROM TB_SCHEDULE S
@@ -51,12 +51,14 @@
         )
     </select>
 
-    <!-- GR_03: 본인 일정 -->
+    <!-- 일반 직원(GR_03): 본인 스케줄 조회 -->
     <select id="getSchedulesByEmployee" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
-        SELECT * FROM TB_SCHEDULE
+        SELECT *
+        FROM TB_SCHEDULE
         WHERE EMPL_ID = #{emplId}
     </select>
 
+    <!-- 스케줄 등록 -->
     <insert id="insertSchedule" parameterType="com.mobydick.hms.schedule.vo.ScheduleVO">
         INSERT INTO TB_SCHEDULE (
             SCHE_ID, SCHE_DATE, EMPL_ID, SCHE_SHIFT,
@@ -68,14 +70,14 @@
                )
     </insert>
 
-    <!-- 등급: GR_01 전체 직원 -->
+    <!-- 관리자: 전체 직원 목록 조회 -->
     <select id="getAllEmployees" resultType="com.mobydick.hms.schedule.vo.EmpVO">
         SELECT E.EMPL_ID, E.EMPL_NAME, C.CODE_NAME AS DEPT_NAME
         FROM TB_EMPL E
                  JOIN TB_CODE C ON E.EMPL_DEPT = C.CODE_ID
     </select>
 
-    <!-- 등급: GR_02 팀장 - 자기 부서 직원만 -->
+    <!-- 팀장: 본인 부서 직원 목록 조회 -->
     <select id="getEmployeesByDept" resultType="com.mobydick.hms.schedule.vo.EmpVO">
         SELECT E.EMPL_ID, E.EMPL_NAME, C.CODE_NAME AS DEPT_NAME
         FROM TB_EMPL E
@@ -83,103 +85,125 @@
         WHERE E.EMPL_DEPT = #{deptId}
     </select>
 
+    <!-- 단일 스케줄 상세 조회 (스케줄 ID 기준) -->
     <select id="getScheduleDetail" parameterType="String" resultType="com.mobydick.hms.schedule.vo.ScheduleDetailVO">
         SELECT
-            s.SCHE_ID,
-            s.SCHE_DATE,
-            c_shift.CODE_NAME AS scheShiftName,
-            e.EMPL_NAME,
-            w.WORKD_NAME,
-            w.WORKD_CONTEXT,
-            c_impo.CODE_NAME AS workdImpoName,
-            c_state.CODE_NAME AS workdStateName,
-            r.ROOM_NAME
-        FROM TB_SCHEDULE s
-                 JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
-                 LEFT JOIN TB_WORK_D w ON s.SCHE_ID = w.WORKD_ID
-                 LEFT JOIN TB_CODE c_shift ON s.SCHE_SHIFT = c_shift.CODE_ID
-                 LEFT JOIN TB_CODE c_impo ON w.WORKD_IMPO = c_impo.CODE_ID
-                 LEFT JOIN TB_CODE c_state ON w.WORKD_DEPT = c_state.CODE_ID
-                 LEFT JOIN TB_ROOM r ON w.ROOM_ID = r.ROOM_ID
-        WHERE s.SCHE_ID = #{scheId}
+            S.SCHE_ID,
+            S.SCHE_DATE,
+            C_SHIFT.CODE_NAME AS SCHE_SHIFT_NAME,
+            E.EMPL_NAME,
+            W.WORKD_NAME,
+            W.WORKD_CONTEXT,
+            C_IMPO.CODE_NAME AS WORKD_IMPO_NAME,
+            C_STATE.CODE_NAME AS WORKD_STATE_NAME,
+            R.ROOM_NAME
+        FROM TB_SCHEDULE S
+                 JOIN TB_EMPL E
+                     ON S.EMPL_ID = E.EMPL_ID
+                 LEFT JOIN TB_WORK_D W
+                     ON S.SCHE_ID = W.WORKD_ID
+                 LEFT JOIN TB_CODE C_SHIFT
+                     ON S.SCHE_SHIFT = C_SHIFT.CODE_ID
+                 LEFT JOIN TB_CODE C_IMPO
+                     ON W.WORKD_IMPO = C_IMPO.CODE_ID
+                 LEFT JOIN TB_CODE C_STATE
+                     ON W.WORKD_DEPT = C_STATE.CODE_ID
+                 LEFT JOIN TB_ROOM R
+                     ON W.ROOM_ID = R.ROOM_ID
+        WHERE S.SCHE_ID = #{scheId}
     </select>
 
+    <!-- 날짜 기준 스케줄 조회 (역할별로 조건 분기) -->
     <select id="getScheduleByDate" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleDetailVO">
         SELECT
-            s.SCHE_ID,
-            s.SCHE_DATE,
-            e.EMPL_NAME,
-            w.WORKD_NAME,
-            w.WORKD_ID AS workDId,
-            TO_CHAR(w.workd_date, 'YYYY-MM-DD') AS workDate,
-            w.WORKD_NAME,
-            c_state.CODE_NAME AS workdStateName
-        FROM TB_SCHEDULE s
-                 JOIN TB_EMPL e
-                     ON s.EMPL_ID = e.EMPL_ID
-                 LEFT JOIN TB_WORK_D w
-                     ON s.EMPL_ID = w.EMPL_ID
-                     AND TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') = TO_CHAR(w.WORKD_DATE, 'YYYYMMDD')
-                 LEFT JOIN TB_CODE c_state
-                     ON w.WORKD_DEPT = c_state.CODE_ID
+        S.SCHE_ID,
+        S.SCHE_DATE,
+--         E.EMPL_DEPT,
+--         E.EMPL_GRADE,
+        E.EMPL_NAME,
+        W.WORKD_NAME,
+        W.WORKD_ID AS WORKD_ID,
+        TO_CHAR(W.WORKD_DATE, 'YYYY-MM-DD') AS WORK_DATE,
+        W.WORKD_NAME,
+        C_STATE.CODE_NAME AS WORKD_STATE_NAME,
+        DEPT_CODE.CODE_NAME AS EMPL_DEPT,
+        GRADE_CODE.CODE_NAME AS EMPL_GRADE
+        FROM TB_SCHEDULE S
+            JOIN TB_EMPL E
+                ON S.EMPL_ID = E.EMPL_ID
+            LEFT JOIN TB_CODE DEPT_CODE
+                ON E.EMPL_DEPT = DEPT_CODE.CODE_ID
+            LEFT JOIN TB_CODE GRADE_CODE
+                ON E.EMPL_GRADE = GRADE_CODE.CODE_ID
+            LEFT JOIN TB_WORK_D W
+                ON S.EMPL_ID = W.EMPL_ID
+                AND TO_CHAR(S.SCHE_DATE, 'YYYYMMDD') = TO_CHAR(W.WORKD_DATE, 'YYYYMMDD')
+            LEFT JOIN TB_CODE C_STATE
+                ON W.WORKD_DEPT = C_STATE.CODE_ID
         <where>
-                s.SCHE_DATE LIKE #{date}
-
+            S.SCHE_DATE LIKE #{date}
             <choose>
                 <when test="emplGrade == 'GR_03'">
-                    AND e.EMPL_ID = #{emplId}
+                    AND E.EMPL_ID = #{emplId}
                 </when>
-
                 <when test="emplGrade == 'GR_02'">
-                    AND e.EMPL_DEPT = (
+                    AND E.EMPL_DEPT = (
                     SELECT EMPL_DEPT FROM TB_EMPL WHERE EMPL_ID = #{emplId}
                     )
                 </when>
-
-                <!-- GR_01은 조건 없음 (날짜만 적용됨) -->
             </choose>
-
         </where>
-
+        ORDER BY
+        E.EMPL_DEPT,
+        E.EMPL_GRADE,
+        E.EMPL_NAME,
+        W.WORKD_DATE
     </select>
 
+    <!-- 관리자: 날짜 범위 스케줄 조회 -->
     <select id="getSchedulesForAdminBetween" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         SELECT
-            s.SCHE_ID,
-            s.SCHE_DATE,
-            s.EMPL_ID,
-            s.SCHE_SHIFT,
-            c_dept.CODE_NAME AS DEPT_NAME,
-            c_shift.CODE_NAME AS scheShiftName
-        FROM TB_SCHEDULE s
-                 JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
-                 LEFT JOIN TB_CODE c_dept ON e.EMPL_DEPT = c_dept.CODE_ID
-                 LEFT JOIN TB_CODE c_shift ON s.SCHE_SHIFT = c_shift.CODE_ID
-        WHERE TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
+            S.SCHE_ID,
+            S.SCHE_DATE,
+            S.EMPL_ID,
+            S.SCHE_SHIFT,
+            C_DEPT.CODE_NAME AS DEPT_NAME,
+            C_SHIFT.CODE_NAME AS SCHE_SHIFT_NAME
+        FROM TB_SCHEDULE S
+                 JOIN TB_EMPL E
+                     ON S.EMPL_ID = E.EMPL_ID
+                 LEFT JOIN TB_CODE C_DEPT
+                     ON E.EMPL_DEPT = C_DEPT.CODE_ID
+                 LEFT JOIN TB_CODE C_SHIFT
+                     ON S.SCHE_SHIFT = C_SHIFT.CODE_ID
+        WHERE TO_CHAR(S.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
     </select>
 
+    <!-- 팀장: 날짜 범위 팀원 스케줄 조회 -->
     <select id="getSchedulesByTeamLeaderBetween" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         SELECT
-            s.SCHE_ID,
-            s.SCHE_DATE,
-            s.EMPL_ID,
-            s.SCHE_SHIFT
-        FROM TB_SCHEDULE s
-                 JOIN TB_EMPL e ON s.EMPL_ID = e.EMPL_ID
-        WHERE TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
+            S.SCHE_ID,
+            S.SCHE_DATE,
+            S.EMPL_ID,
+            S.SCHE_SHIFT
+        FROM TB_SCHEDULE S
+                 JOIN TB_EMPL E ON S.EMPL_ID = E.EMPL_ID
+        WHERE TO_CHAR(S.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
     </select>
 
+    <!-- 직원: 날짜 범위 본인 스케줄 조회 -->
     <select id="getSchedulesByEmployeeBetween" parameterType="map" resultType="com.mobydick.hms.schedule.vo.ScheduleVO">
         SELECT
-            s.SCHE_ID,
-            s.SCHE_DATE,
-            s.EMPL_ID,
-            s.SCHE_SHIFT
-        FROM TB_SCHEDULE s
-        WHERE s.EMPL_ID = #{emplId}
-          AND TO_CHAR(s.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
+            S.SCHE_ID,
+            S.SCHE_DATE,
+            S.EMPL_ID,
+            S.SCHE_SHIFT
+        FROM TB_SCHEDULE S
+        WHERE S.EMPL_ID = #{emplId}
+          AND TO_CHAR(S.SCHE_DATE, 'YYYYMMDD') BETWEEN #{start} AND #{end}
     </select>
 
+    <!-- 스케줄 삭제 -->
     <delete id="deleteSchedule" parameterType="String">
         DELETE FROM TB_SCHEDULE
         WHERE SCHE_ID = #{scheId}

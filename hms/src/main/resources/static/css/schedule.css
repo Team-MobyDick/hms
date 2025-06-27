@@ -157,21 +157,37 @@
     color: red;
 }
 
-li a {
+a {
     color: #000000;
-    text-decoration: none; 
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* 마우스 호버 시 스타일 변경 */
-li a:hover {
+a:hover {
     color: #007BFF;
+    text-decoration: none;
 }
 
-li a:visited {
+a:visited {
     color: #000000;
     text-decoration: none;
 }
 
-li a span.work-name {
+a span.work-name {
     color: inherit !important
+}
+
+.inline-delete-btn {
+    margin-left: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.inline-delete-btn:hover {
+    background-color: #c82333;
 }

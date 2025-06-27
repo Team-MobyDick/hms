@@ -29,10 +29,6 @@
     <div id="scheduleDetailBox">
         <h3>스케줄 상세</h3>
         <div id="scheduleDetailContent">날짜를 클릭하면 스케줄이 표시됩니다.</div>
-        <c:if test="${userRole eq 'GR_01' or userRole eq 'GR_02'}">
-            <button id="btnDeleteSchedule" style="display:none;">선택된 스케줄 삭제</button>
-            <input type="hidden" id="selectedScheId"/>
-        </c:if>
     </div>
 
     <!-- 등록 모달 -->
@@ -65,6 +61,7 @@
 
     <script>
         const contextPath = '${pageContext.request.contextPath}';
+        const userRole = '${userRole}';
     </script>
     <script src="${pageContext.request.contextPath}/js/schedule.js" defer></script>
 

@@ -6,14 +6,12 @@ import com.mobydick.hms.schedule.vo.ScheduleDetailVO;
 import com.mobydick.hms.schedule.vo.ScheduleVO;
 import com.mobydick.hms.login.vo.LoginVO;
 import com.mobydick.hms.employee.service.EmployeeService;
-import com.mobydick.hms.employee.vo.EmployeeVO;
-import org.apache.ibatis.annotations.Param;
+
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpSession;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -31,6 +29,9 @@ public class ScheduleController {
     @Autowired
     private EmployeeService employeeService;
 
+    /**
+     * 스케줄 화면 이동
+     */
     @GetMapping("/list")
     public String schedulePage(HttpSession session, Map<String, Object> model) {
         model.put("screenTitle", "스케줄");
@@ -38,6 +39,12 @@ public class ScheduleController {
         return "index";
     }
 
+    /**
+     * fullCalendar에 표시할 스케줄 데이터 조회
+     * - 관리자: 부서별 스케줄
+     * - 팀장: 부서 팀원 스케줄
+     * - 일반: 본인 스케줄
+     */
     @GetMapping("/display")
     @ResponseBody
     public List<Map<String, Object>> getScheduleList(
@@ -52,7 +59,7 @@ public class ScheduleController {
         String emplId = loginUser.getEmplId();
         String deptId = loginUser.getEmplDept();
 
-        // 날짜 파라미터 포맷 자르기 (ISO → yyyyMMdd)
+        // ISO 8601 → yyyyMMdd 포맷
         String startDate = start.substring(0, 10).replace("-", "");
         String endDate = end.substring(0, 10).replace("-", "");
 
@@ -74,6 +81,10 @@ public class ScheduleController {
         }).toList();
     }
 
+    /**
+     * 스케줄 등록
+     * - JSON 배열로 넘어온 ScheduleVO 리스트 처리
+     */
     @PostMapping("/insert")
     @ResponseBody
     public String insertSchedules(@RequestBody List<ScheduleVO> list, HttpSession session) {
@@ -88,6 +99,11 @@ public class ScheduleController {
         return "ok";
     }
 
+    /**
+     * 등록 모달용 직원 목록 조회
+     * - GR_01: 전체 직원
+     * - GR_02: 본인 부서 직원
+     */
     @GetMapping("/employees")
     @ResponseBody
     public List<Map<String, String>> getEmployees(HttpSession session, Model model) {
@@ -95,11 +111,9 @@ public class ScheduleController {
         String grade = loginUser.getEmplGrade();
         String deptId = loginUser.getEmplDept();
 
-        //List<EmpVO> list = scheduleService.getEmployeesByGrade(grade, deptId);
-
         List<EmpVO> list = "GR_01".equals(grade)
-                ? scheduleService.getAllEmployees()  // 관리자: 전체 직원
-                : scheduleService.getEmployeesByDept(deptId);  // 팀장: 본인 부서 직원
+                ? scheduleService.getAllEmployees()
+                : scheduleService.getEmployeesByDept(deptId);
 
         return list.stream()
                 .map(emp -> Map.of(
@@ -110,11 +124,12 @@ public class ScheduleController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 날짜 클릭 시 하단 상세 스케줄 조회
+     */
     @GetMapping("/detailByDate")
     @ResponseBody
     public List<ScheduleDetailVO> getScheduleByDate(@RequestParam String date, HttpSession session) {
-
-        // 로그인 유저 정보
         LoginVO loginUser = (LoginVO) session.getAttribute("loginUser");
 
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -128,9 +143,11 @@ public class ScheduleController {
                 loginUser.getEmplId(),
                 loginUser.getEmplGrade()
         );
-
     }
 
+    /**
+     * 교대조 코드 → 이름 변환 (주간/야간)
+     */
     private String convertShiftName(String code) {
         return switch (code) {
             case "SH_01" -> "주간";
@@ -139,6 +156,10 @@ public class ScheduleController {
         };
     }
 
+    /**
+     * 스케줄 삭제
+     * - 관리자, 팀장만 가능
+     */
     @DeleteMapping("/delete/{scheId}")
     @ResponseBody
     public String deleteSchedule(@PathVariable String scheId, HttpSession session) {

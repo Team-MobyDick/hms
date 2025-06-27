@@ -60,30 +60,97 @@ function loadScheduleDetailByDate(dateStr) {
             if (!list || list.length === 0) {
                 html += `<p>등록된 스케줄이 없습니다.</p>`;
             } else {
-                html += '<ul>';
+                let prevDept = '';
+                let prevGrade = '';
+                let prevName = '';
+
                 list.forEach(item => {
-                    html += `<li>
-                                <input type="radio" name="selectScheduleToDelete" value="${escapeHtml(item.scheId)}" id="schedule-${escapeHtml(item.scheId)}">
-                                <label for="schedule-${escapeHtml(item.scheId)}">
-                                    <strong>${escapeHtml(item.emplName)}</strong> -
-                                    <a href="${contextPath}/work/detailWorkD?workDId=${escapeHtml(item.workDId)}&date=${escapeHtml(item.workDate)}">
-                                    <span class="work-name">${escapeHtml(item.workdName || '업무명 없음')}</span> ${escapeHtml(item.workdStateName)}
-                                    </a>
-                                </label>
-                             </li>`;
+                    const { emplDept, emplGrade, emplName, workdName, workDId, workDate, workdStateName, scheId } = item;
+
+                    if (prevDept !== emplDept) {
+                        html += `<h4>[${escapeHtml(emplDept)}]</h4>`;
+                        prevDept = emplDept;
+                        prevGrade = '';
+                        prevName = '';
+                    }
+
+                    if (prevGrade !== emplGrade) {
+                        html += `<h5 style="margin-left: 10px;">${escapeHtml(emplGrade)}</h5>`;
+                        prevGrade = emplGrade;
+                        prevName = '';
+                    }
+
+                    if (prevName !== emplName) {
+                        const escapedName = escapeHtml(emplName);
+                        html += `<p class="employee-line" data-empl-name="${escapedName}" style="margin-left: 20px;">
+                        - ${escapedName}
+                     </p>`;
+                        prevName = emplName;
+                    }
+
+                    html += `<p style="margin-left: 40px;">
+            <input type="radio" name="selectScheduleToDelete" value="${escapeHtml(scheId)}" data-empl-name="${escapeHtml(emplName)}" id="schedule-${escapeHtml(scheId)}">
+            <label for="schedule-${escapeHtml(scheId)}">
+                · <a href="${contextPath}/work/detailWorkD?workDId=${escapeHtml(workDId)}&date=${escapeHtml(workDate)}">
+                    <span class="work-name">${escapeHtml(workdName || '업무명 없음')}</span> ${escapeHtml(workdStateName || '')}
+                </a>
+            </label>
+        </p>`;
                 });
-                html += '</ul>';
 
-                $('#scheduleDetailContent').off('change', 'input[name="selectScheduleToDelete"]').on('change', 'input[name="selectScheduleToDelete"]', function() {
-                    $('#selectedScheId').val($(this).val());
+                // 삭제 라디오 버튼 처리
+                $('#scheduleDetailContent').off('change', 'input[name="selectScheduleToDelete"]').on('change', 'input[name="selectScheduleToDelete"]', function () {
+                    const selectedId = $(this).val();
+                    const selectedName = $(this).data('empl-name');  // 직원 이름
+                    $('#selectedScheId').val(selectedId);
 
-                    if ($('#btnDeleteSchedule').length) {
-                        $('#btnDeleteSchedule').show();
+                    // 기존 삭제 버튼 제거
+                    $('.inline-delete-btn').remove();
+
+                    // 삭제 버튼 생성
+                    if (userRole === 'GR_01' || userRole === 'GR_02') {
+                        const deleteBtn = $('<button>')
+                            .text('선택된 스케줄 삭제')
+                            .addClass('inline-delete-btn')
+                            .css({
+                                marginLeft: '10px',
+                                backgroundColor: '#dc3545',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '4px',
+                                padding: '4px 10px',
+                                fontSize: '12px',
+                                cursor: 'pointer'
+                            })
+                            .on('click', function () {
+                                if (confirm("선택된 스케줄을 삭제하시겠습니까?")) {
+                                    $.ajax({
+                                        url: `/schedule/delete/${selectedId}`,
+                                        method: 'DELETE',
+                                        success: function (response) {
+                                            if (response === "ok") {
+                                                alert("스케줄이 성공적으로 삭제되었습니다.");
+                                                calendar.refetchEvents();
+                                                $('#scheduleDetailContent').html('날짜를 클릭하면 스케줄이 표시됩니다.');
+                                            } else {
+                                                alert("스케줄 삭제 실패: " + response);
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("스케줄 삭제 중 오류가 발생했습니다.");
+                                        }
+                                    });
+                                }
+                            });
+
+                        // 해당 직원 이름 줄에 버튼 붙이기
+                        $(`.employee-line[data-empl-name="${selectedName}"]`).append(deleteBtn);
                     }
                 });
             }
 
             $('#scheduleDetailContent').html(html);
+
         },
         error: function () {
             $('#scheduleDetailContent').html('<p class="error-message">스케줄을 불러오는 중 오류가 발생했습니다.</p>');
@@ -109,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
         events: '/schedule/display',
         dateClick: function (info) {
             const dateStr = info.dateStr;
-            console.log("dateStr = " + dateStr);
             loadScheduleDetailByDate(dateStr);
         }
     });

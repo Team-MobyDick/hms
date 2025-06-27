@@ -81,7 +81,9 @@
                UPDATED_ID
         FROM TB_ROOM
             WHERE ROOM_CLASS = #{roomType}
-        ORDER BY ROOM_CLASS
+        ORDER BY
+            ROOM_CLASS,
+            ROOM_NAME
     </select>
 
     <!-- 객실 등록 -->
