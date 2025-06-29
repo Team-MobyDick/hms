@@ -62,7 +62,8 @@ public class WorkController {
         // 맵 (코드ID → 코드명) 생성
         Map<String, String> codeMap = codeList.stream()
                 .collect(Collectors.toMap(WorkVO::getCodeId, WorkVO::getCodeName, (v1, v2) -> v1, LinkedHashMap::new));
-
+        
+        model.addAttribute("screenTitle", "할일 관리");
         model.addAttribute("codeMap", codeMap);
         model.addAttribute("workMList", workMList);
         model.addAttribute("workDList", workDList);
